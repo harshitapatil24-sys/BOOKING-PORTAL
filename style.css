@@ -73,3 +73,38 @@ body {
   color: gray;
 }
 
+
+/* ACTION BUTTONS */
+.actionBtn{
+border:none;
+padding:9px 18px;
+border-radius:7px;
+font-weight:600;
+cursor:pointer;
+margin:6px;
+}
+
+.bookBtn{
+background:#0b3d91;
+color:white;
+}
+
+.bookBtn:hover{
+background:#082c6c;
+}
+
+.viewBtn{
+background:#e9eefc;
+color:#0b3d91;
+border:1px solid #0b3d91;
+}
+
+.dropdown{ display:none; }
+.dropdown.show{ display:block; }
+.viewBtn:hover{
+background:#dbe4ff;
+}
+.login-image{
+  width: 90px;
+  margin-bottom: 15px;
+}
