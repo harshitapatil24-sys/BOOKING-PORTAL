@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Booking Portal Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="login-container">
+  <div class="login-box">
+    <h2>Booking Portal</h2>
+    <p class="subtitle">Login to your account</p>
+
+    <input type="email" id="email" placeholder="Enter Email">
+    <input type="password" id="password" placeholder="Enter Password">
+
+    <button id="loginBtn">Login</button>
+
+    <p class="footer-text">© 2026 College Booking System</p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const client = supabase.createClient(
+  "https://xgrzymhgssxjjkogvuvw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhncnp5bWhnc3N4amprb2d2dXZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNzAyNTYsImV4cCI6MjA4Nzg0NjI1Nn0.A6tbTA6D2mmGdNTrm2oS5HSTJzgkMFbGARQQi5dL-TQ"
+);
+
+document.getElementById("loginBtn").addEventListener("click", async () => {
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const { error } = await client.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    alert("Invalid Email or Password");
+    return;
+  }
+
+  window.location.href = "dashboard.html";
+});
+</script>
+
+</body>
+</html>

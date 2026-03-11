@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Venue Booking Portal</title>
+<link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+<div class="logo">PCCOE</div>
+
+<ul class="nav-links">
+
+<li><a href="dashboard.html">Home</a></li>
+<li><a href="#">Halls</a></li>
+<li><a href="#">Blog</a></li>
+<li><a href="#">Portfolio</a></li>
+<li><a href="#">Q/A</a></li>
+<li><a href="#">Contact</a></li>
+
+</ul>
+
+
+<div class="profile">
+
+<button id="profileBtn">👤</button>
+
+<div class="dropdown" id="profileMenu">
+
+<a href="#">View Profile</a>
+
+<a href="book.html" id="bookVenue" style="display:none;">Book Venue</a>
+
+<a href="mybookings.html" id="myBookings" style="display:none;">Your Bookings</a>
+
+<a href="accept-booking.html" id="acceptBooking" style="display:none;">Accept Booking</a>
+
+<a href="#" id="logoutBtn">Logout</a>
+
+</div>
+
+</div>
+
+</nav>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+<h2 id="facultyInfo">Faculty Name | RegID | Department</h2>
+
+<h1>Venue Booking Portal</h1>
+
+<p>Book halls and venues easily</p>
+
+</section>
+
+
+
+<!-- FILTER + DATE -->
+
+<section class="filters">
+
+<label>Select Date :</label>
+
+<input type="date" id="bookingDate">
+
+<br><br>
+
+<button onclick="filterVenues('all')">All</button>
+<button onclick="filterVenues('auditorium')">Auditorium</button>
+<button onclick="filterVenues('seminar')">Seminar Hall</button>
+<button onclick="filterVenues('sports')">Sports</button>
+<button onclick="filterVenues('reading')">Reading Hall</button>
+
+</section>
+
+
+
+<!-- VENUE CARDS -->
+
+<section class="cards">
+
+<div class="card auditorium">
+<h3>Auditorium</h3>
+<p>Capacity : 500</p>
+<button onclick="bookVenue('auditorium')" class="btn">Book</button>
+</div>
+
+
+<div class="card seminar">
+<h3>Seminar Hall</h3>
+<p>Capacity : 200</p>
+<button onclick="bookVenue('seminar')" class="btn">Book</button>
+</div>
+
+
+<div class="card sports">
+<h3>Sports Hall</h3>
+<p>Indoor Events</p>
+<button onclick="bookVenue('sports')" class="btn">Book</button>
+</div>
+
+
+<div class="card reading">
+<h3>Reading Hall</h3>
+<p>Study Area</p>
+<button onclick="bookVenue('reading')" class="btn">Book</button>
+</div>
+
+</section>
+
+
+
+<footer>
+
+<p>Contact : 9876543210</p>
+
+</footer>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const client = supabase.createClient(
+"https://xgrzymhgssxjjkogvuvw.supabase.co",
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhncnp5bWhnc3N4amprb2d2dXZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNzAyNTYsImV4cCI6MjA4Nzg0NjI1Nn0.A6tbTA6D2mmGdNTrm2oS5HSTJzgkMFbGARQQi5dL-TQ"
+);
+
+
+const profileBtn = document.getElementById("profileBtn");
+const profileMenu = document.getElementById("profileMenu");
+
+profileBtn.onclick = () => {
+profileMenu.classList.toggle("show");
+};
+
+
+
+function filterVenues(type){
+
+const cards = document.querySelectorAll(".card");
+
+cards.forEach(card => {
+
+if(type === "all"){
+card.style.display="block";
+}
+else{
+
+if(card.classList.contains(type)){
+card.style.display="block";
+}
+else{
+card.style.display="none";
+}
+
+}
+
+});
+
+}
+
+
+
+function bookVenue(venue){
+
+const date = document.getElementById("bookingDate").value;
+
+if(!date){
+
+alert("Please select date first");
+
+return;
+
+}
+
+window.location.href = "book.html?venue=" + venue + "&date=" + date;
+
+}
+
+
+
+async function init(){
+
+const { data:{ session } } = await client.auth.getSession();
+
+if(!session){
+
+window.location.replace("login.html");
+
+return;
+
+}
+
+const userId = session.user.id;
+
+
+const { data: profile } = await client
+.from("profiles")
+.select("*")
+.eq("id",userId)
+.single();
+
+
+
+document.getElementById("facultyInfo").innerText =
+(profile.name || "Name") + " | " +
+(profile.reg_id || "RegID") + " | " +
+(profile.department || "Dept");
+
+
+
+if(profile.role === "faculty"){
+
+document.getElementById("bookVenue").style.display="block";
+document.getElementById("myBookings").style.display="block";
+
+}
+
+
+
+if(profile.role === "admin"){
+
+document.getElementById("acceptBooking").style.display="block";
+
+}
+
+}
+
+
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+
+await client.auth.signOut();
+
+window.location.replace("index.html");
+
+});
+
+
+init();
+
+</script>
+
+</body>
+</html>
