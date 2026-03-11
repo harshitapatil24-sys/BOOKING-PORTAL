@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>College ERP Dashboard</title>
+</head>
+<body>
+
+<h1>College ERP Dashboard</h1>
+
+<button id="logoutBtn">Logout</button>
+
+<hr>
+
+<div id="adminSection" style="display:none;">
+  <h2>Admin Panel</h2>
+  <p>Manage Users</p>
+</div>
+
+<div id="facultySection" style="display:none;">
+  <h2>Faculty Panel</h2>
+  <p>Upload Marks</p>
+</div>
+
+<div id="staffSection" style="display:none;">
+  <h2>Staff Panel</h2>
+  <p>Manage Attendance</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const client = supabase.createClient(
+  "https://xgrzymhgssxjjkogvuvw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhncnp5bWhnc3N4amprb2d2dXZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNzAyNTYsImV4cCI6MjA4Nzg0NjI1Nn0.A6tbTA6D2mmGdNTrm2oS5HSTJzgkMFbGARQQi5dL-TQ"
+);
+
+async function init() {
+
+  // Wait for session
+  const { data: { session }, error } = await client.auth.getSession();
+
+  if (!session) {
+    window.location.replace("login.html");
+    return;
+  }
+
+  const userId = session.user.id;
+
+  const { data: profile, error: profileError } = await client
+    .from("profiles")
+    .select("role")
+    .eq("id", userId)
+    .single();
+
+  if (profileError || !profile) {
+    console.log(profileError);
+    alert("Role not found");
+    return;
+  }
+
+  if (profile.role === "admin") {
+    document.getElementById("adminSection").style.display = "block";
+  }
+
+  if (profile.role === "faculty") {
+    document.getElementById("facultySection").style.display = "block";
+  }
+
+  if (profile.role === "staff") {
+    document.getElementById("staffSection").style.display = "block";
+  }
+}
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  await client.auth.signOut();
+  window.location.replace("index.html");
+});
+
+init();
+</script>
