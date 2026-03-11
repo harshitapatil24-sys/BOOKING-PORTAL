@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCCOE Auditorium Documents</title>
+    <!-- Using Tailwind CSS to exactly match the previous project's theme -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Fade In Animation from previous project */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col font-sans text-gray-900">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <!-- Dashboard Icon SVG -->
+                    <svg class="h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="7" height="9" x="3" y="3" rx="1"></rect>
+                        <rect width="7" height="5" x="14" y="3" rx="1"></rect>
+                        <rect width="7" height="9" x="14" y="12" rx="1"></rect>
+                        <rect width="7" height="5" x="3" y="16" rx="1"></rect>
+                    </svg>
+                    <div>
+                        <span class="font-bold text-xl text-gray-800">PCCOE</span>
+                        <span class="text-xs block text-gray-500">Auditorium Allocation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full animate-fade-in">
+        
+        <!-- Header Section -->
+        <div class="mb-10 text-center md:text-left">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Supporting Documents</h1>
+            <p class="text-gray-500 max-w-2xl">
+                Download the official guidelines, seating arrangements, and technical specifications for each auditorium before submitting your booking request.
+            </p>
+        </div>
+
+        <!-- Auditoriums Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Audi 1 Card -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+                <div class="p-6 bg-blue-50 border-b border-blue-100 flex items-center gap-4">
+                    <div class="p-3 bg-blue-600 text-white rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M4 20V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16"/><path d="M10 16v4"/><path d="M14 16v4"/><path d="M10 12h4"/><path d="M10 8h4"/></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900">Arch Hall</h2>
+                        <span class="text-sm font-medium text-blue-600">Capacity: 300</span>
+                    </div>
+                </div>
+                <div class="p-6 flex-1 flex flex-col">
+                    <p class="text-gray-600 text-sm mb-6 flex-1">
+                        Contains detailed seating layout, stage dimensions, audio-visual equipment list, and general usage rules for the main Arch Hall.
+                    </p>
+                    <!-- Download Button -->
+                    <a href="arch_hall_guidelines.pdf" download class="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-gray-900 hover:bg-gray-800 text-white rounded-lg font-medium transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                        Download PDF
+                    </a>
+                </div>
+            </div>
+
+            <!-- Audi 2 Card -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+                <div class="p-6 bg-blue-50 border-b border-blue-100 flex items-center gap-4">
+                    <div class="p-3 bg-blue-600 text-white rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M4 20V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16"/><path d="M10 16v4"/><path d="M14 16v4"/><path d="M10 12h4"/><path d="M10 8h4"/></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900">MECH 1</h2>
+                        <span class="text-sm font-medium text-blue-600">Capacity: 150</span>
+                    </div>
+                </div>
+                <div class="p-6 flex-1 flex flex-col">
+                    <p class="text-gray-600 text-sm mb-6 flex-1">
+                        Includes projector specifications, AC control guidelines, and emergency exit routes for the MECH 1 Seminar Hall.
+                    </p>
+                    <!-- Download Button -->
+                    <a href="mech1_guidelines.pdf" download class="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-gray-900 hover:bg-gray-800 text-white rounded-lg font-medium transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                        Download PDF
+                    </a>
+                </div>
+            </div>
+
+            <!-- Audi 3 Card -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+                <div class="p-6 bg-blue-50 border-b border-blue-100 flex items-center gap-4">
+                    <div class="p-3 bg-blue-600 text-white rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M4 20V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16"/><path d="M10 16v4"/><path d="M14 16v4"/><path d="M10 12h4"/><path d="M10 8h4"/></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900">MECH 2</h2>
+                        <span class="text-sm font-medium text-blue-600">Capacity: 150</span>
+                    </div>
+                </div>
+                <div class="p-6 flex-1 flex flex-col">
+                    <p class="text-gray-600 text-sm mb-6 flex-1">
+                        Includes projector specifications, AC control guidelines, and emergency exit routes for the MECH 2 Seminar Hall.
+                    </p>
+                    <!-- Download Button -->
+                    <a href="mech2_guidelines.pdf" download class="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-gray-900 hover:bg-gray-800 text-white rounded-lg font-medium transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                        Download PDF
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center flex-col md:flex-row gap-4">
+            <div class="text-sm text-gray-500">
+                &copy; 2026 PCCOE Auditorium Booking System.
+            </div>
+            <div class="font-mono text-sm text-gray-400">
+                @c2hsix
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
