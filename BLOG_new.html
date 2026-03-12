@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Supporting Documents – PCCOE Auditorium Booking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #eef0f3;
+      --white: #ffffff;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --text-dark: #111827;
+      --text-mid: #374151;
+      --text-muted: #6b7280;
+      --text-caption: #9ca3af;
+      --border: #e5e7eb;
+      --card-bg: #f9fafb;
+      --icon-bg: #2563eb;
+      --btn-bg: #111827;
+      --btn-hover: #1f2937;
+      --capacity-color: #2563eb;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-logo-icon {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+    }
+    .nav-logo-icon span {
+      display: block;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+    .nav-logo-icon span:last-child {
+      background: var(--primary);
+      opacity: 0.45;
+    }
+
+    .nav-brand h1 { font-size: 15px; font-weight: 700; color: var(--text-dark); line-height: 1.2; }
+    .nav-brand p  { font-size: 11px; color: var(--text-muted); }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      padding: 56px 40px 80px;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+      padding: 48px 40px;
+      color: white;
+    }
+    .hero-inner { max-width: 1280px; margin: 0 auto; }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 7px; height: 7px;
+      background: #86efac;
+      border-radius: 50%;
+    }
+    .hero h2 { font-size: 32px; font-weight: 700; margin-bottom: 10px; line-height: 1.25; }
+    .hero p  { font-size: 14px; opacity: 0.8; max-width: 520px; line-height: 1.65; }
+
+    .page-header { margin-bottom: 40px; }
+    .page-header h2 { font-size: 22px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+    .page-header p  { font-size: 14px; color: var(--text-muted); max-width: 560px; line-height: 1.6; }
+
+    /* ── GRID ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 24px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .card:hover {
+      box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+      transform: translateY(-2px);
+    }
+
+    /* top accent strip */
+    .card-header {
+      background: #eff6ff;
+      padding: 20px 20px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-bottom: 1px solid #dbeafe;
+    }
+
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--icon-bg);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .card-icon svg { width: 22px; height: 22px; fill: none; stroke: white; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+    .card-title h3  { font-size: 15px; font-weight: 700; color: var(--text-dark); }
+    .card-title span { font-size: 13px; color: var(--capacity-color); font-weight: 500; }
+
+    /* body */
+    .card-body {
+      padding: 18px 20px 20px;
+      flex: 1;
+    }
+    .card-body p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* download btn */
+    .card-footer { padding: 0 20px 20px; }
+    .btn-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 11px 0;
+      background: var(--btn-bg);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.18s ease;
+      font-family: inherit;
+    }
+    .btn-download:hover { background: var(--btn-hover); }
+    .btn-download svg { width: 16px; height: 16px; fill: none; stroke: white; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--white);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer span { font-size: 12px; color: var(--text-caption); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      main { padding: 32px 20px 60px; }
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo-icon">
+      <span></span><span></span>
+      <span></span><span style="opacity:.4"></span>
+    </div>
+    <div class="nav-brand">
+      <h1>PCCOE</h1>
+      <p>Auditorium Allocation</p>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">Blog Section</div>
+      <h2>PCCOE Venue Information Hub</h2>
+      <p>Stay informed about all bookable venues on campus. This blog section provides official documentation, guidelines, and technical specs to help staff plan and reserve spaces with ease.</p>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+    <div class="page-header">
+      <h2>Venue Management</h2>
+      <p>Download the official guidelines, seating arrangements, and technical specifications for each venue before submitting your booking request.</p>
+    </div>
+
+    <div class="cards-grid">
+
+      <!-- Card 1 – LRDC Hall -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <!-- building/hall icon -->
+            <svg viewBox="0 0 24 24"><rect x="3" y="10" width="18" height="11" rx="1"/><path d="M3 10l9-7 9 7"/><rect x="9" y="14" width="6" height="7"/></svg>
+          </div>
+          <div class="card-title">
+            <h3>LRDC Hall</h3>
+            <span>Capacity: 500</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>Includes detailed seating layout, projector & AV equipment list, AC control zones, emergency exit routes, and usage guidelines for the LRDC Hall.</p>
+        </div>
+        <div class="card-footer">
+          <a href="docs/lrdc-hall.pdf" class="btn-download">
+            <svg viewBox="0 0 24 24"><path d="M12 15V3m0 12l-4-4m4 4l4-4"/><path d="M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17"/></svg>
+            Download PDF
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 2 – Seminar Hall -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="1"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+          </div>
+          <div class="card-title">
+            <h3>Seminar Hall</h3>
+            <span>Capacity: 150</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>Contains projector specifications, podium setup guidelines, AC control settings, and emergency exit maps for the Seminar Hall.</p>
+        </div>
+        <div class="card-footer">
+          <a href="docs/seminar-hall.pdf" class="btn-download">
+            <svg viewBox="0 0 24 24"><path d="M12 15V3m0 12l-4-4m4 4l4-4"/><path d="M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17"/></svg>
+            Download PDF
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 3 – Auditorium -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M2 20h20"/><path d="M4 20V10a8 8 0 0116 0v10"/><path d="M8 20v-5a4 4 0 018 0v5"/></svg>
+          </div>
+          <div class="card-title">
+            <h3>Auditorium</h3>
+            <span>Capacity: 800</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>Full seating layout, stage dimensions, audio-visual equipment list, lighting rig details, green room access policy, and general usage rules for the Main Auditorium.</p>
+        </div>
+        <div class="card-footer">
+          <a href="docs/auditorium.pdf" class="btn-download">
+            <svg viewBox="0 0 24 24"><path d="M12 15V3m0 12l-4-4m4 4l4-4"/><path d="M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17"/></svg>
+            Download PDF
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 4 – Badminton Court -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M2 12h4M18 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          </div>
+          <div class="card-title">
+            <h3>Badminton Court</h3>
+            <span>Courts: 4</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>Covers court dimensions, equipment inventory, booking slot rules, footwear policy, and safety guidelines for all four Badminton Courts.</p>
+        </div>
+        <div class="card-footer">
+          <a href="docs/badminton-court.pdf" class="btn-download">
+            <svg viewBox="0 0 24 24"><path d="M12 15V3m0 12l-4-4m4 4l4-4"/><path d="M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17"/></svg>
+            Download PDF
+          </a>
+        </div>
+      </div>
+
+    </div><!-- /cards-grid -->
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2026 PCCOE Auditorium Booking System.</span>
+    <span>@c2hsix</span>
+  </footer>
+
+</body>
+</html>
