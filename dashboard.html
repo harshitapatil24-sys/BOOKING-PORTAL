@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Venue Booking Portal</title>
+<link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+<img src="pccoe.jpg" class="logo">
+
+<ul class="nav-links">
+<li><a href="dashboard.html">Home</a></li>
+<li><a href="#">Halls</a></li>
+<li><a href="#">Blog</a></li>
+<li><a href="#">Q/A</a></li>
+<li><a href="#">Contact</a></li>
+</ul>
+
+<div class="profile">
+<button id="profileBtn">👤</button>
+
+<div class="dropdown" id="profileMenu">
+<a href="#">View Profile</a>
+<a href="book.html" id="bookVenue" style="display:none;">Book Venue</a>
+<a href="#" id="myBookings" style="display:none;">Your Bookings</a>
+<a href="accept.html" id="acceptBooking" style="display:none;">Accept Booking</a>
+<a href="#" id="logoutBtn">Logout</a>
+</div>
+
+</div>
+</nav>
+
+
+<!-- USER BAR -->
+<div class="userbar">
+<span id="facultyInfo">Loading user...</span>
+</div>
+
+
+<!-- HERO -->
+<section class="hero">
+<div class="hero-overlay">
+<div class="hero-content">
+<h1>Venue Booking Portal</h1>
+<p>PCCOE Campus Booking Management System</p>
+</div>
+</div>
+</section>
+
+
+<!-- FILTER BUTTONS -->
+<section class="filter-buttons">
+<button onclick="filterVenues('all')">All</button>
+<button onclick="filterVenues('auditorium')">Auditorium</button>
+<button onclick="filterVenues('seminar1')">Seminar Hall 1</button>
+<button onclick="filterVenues('seminar2')">Seminar Hall 2</button>
+<button onclick="filterVenues('sports')">Sports Hall</button>
+<button onclick="filterVenues('reading')">Reading Hall</button>
+</section>
+
+
+
+<!-- CARDS -->
+<section class="cards">
+
+<div class="card auditorium">
+<h3>Auditorium</h3>
+<p>Capacity : 500</p>
+<button class="actionBtn bookBtn" onclick="bookVenue('Auditorium')">Book</button>
+<button class="actionBtn viewBtn" onclick="viewVenue('Auditorium')">View</button>
+</div>
+
+<div class="card seminar1">
+<h3>Seminar Hall 1</h3>
+<p>Capacity : 200</p>
+<button class="actionBtn bookBtn" onclick="bookVenue('Seminar Hall 1')">Book</button>
+<button class="actionBtn viewBtn" onclick="viewVenue('Seminar Hall 1')">View</button>
+</div>
+
+<div class="card seminar2">
+<h3>Seminar Hall 2</h3>
+<p>Capacity : 180</p>
+<button class="actionBtn bookBtn" onclick="bookVenue('Seminar Hall 2')">Book</button>
+<button class="actionBtn viewBtn" onclick="viewVenue('Seminar Hall 2')">View</button>
+</div>
+
+<div class="card sports">
+<h3>Sports Hall</h3>
+<p>Indoor Events</p>
+<button class="actionBtn bookBtn" onclick="bookVenue('Sports Hall')">Book</button>
+<button class="actionBtn viewBtn" onclick="viewVenue('Sports Hall')">View</button>
+</div>
+
+<div class="card reading">
+<h3>Reading Hall</h3>
+<p>Study Area</p>
+<button class="actionBtn bookBtn" onclick="bookVenue('Reading Hall')">Book</button>
+<button class="actionBtn viewBtn" onclick="viewVenue('Reading Hall')">View</button>
+</div>
+
+</section>
+
+
+<footer>
+<p>© PCCOE Venue Booking Portal</p>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+/* SUPABASE */
+const client = supabase.createClient(
+"https://xgrzymhgssxjjkogvuvw.supabase.co",
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhncnp5bWhnc3N4amprb2d2dXZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNzAyNTYsImV4cCI6MjA4Nzg0NjI1Nn0.A6tbTA6D2mmGdNTrm2oS5HSTJzgkMFbGARQQi5dL-TQ"
+);
+
+
+/* PROFILE DROPDOWN */
+
+const profileBtn = document.getElementById("profileBtn");
+const profileMenu = document.getElementById("profileMenu");
+
+profileBtn.addEventListener("click", (e)=>{
+e.stopPropagation();
+profileMenu.classList.toggle("show");
+});
+
+document.addEventListener("click", ()=>{
+profileMenu.classList.remove("show");
+});
+
+
+/* FILTER */
+
+function filterVenues(type){
+
+const cards = document.querySelectorAll(".card");
+
+cards.forEach(card=>{
+card.style.display = (type==="all" || card.classList.contains(type)) ? "block":"none";
+});
+
+}
+
+
+/* BOOK VENUE */
+
+function bookVenue(venue){
+
+window.location.href =
+`book.html?venue=${encodeURIComponent(venue)}`;
+
+}
+
+
+/* VIEW VENUE */
+
+function viewVenue(venue){
+
+alert("Viewing details for " + venue);
+
+}
+
+
+/* ROLE SYSTEM */
+
+async function init(){
+
+const { data:{ session } } = await client.auth.getSession();
+
+if(!session){
+location="login.html";
+return;
+}
+
+console.log("Logged user:",session.user.id);
+
+/* FETCH PROFILE */
+
+const { data: profile, error } = await client
+.from("profiles")
+.select("*")
+.eq("id", session.user.id)
+.single();
+
+console.log("Profile:",profile);
+
+if(error){
+console.error(error);
+alert("Profile not found in database");
+return;
+}
+
+
+/* SHOW USER INFO */
+
+document.getElementById("facultyInfo").innerText =
+`${profile.name} | ${profile.employee_id} | ${profile.department}`;
+
+
+/* HIDE ALL */
+
+document.getElementById("bookVenue").style.display="none";
+document.getElementById("myBookings").style.display="none";
+document.getElementById("acceptBooking").style.display="none";
+
+document.querySelectorAll(".bookBtn").forEach(b=>b.style.display="none");
+document.querySelectorAll(".viewBtn").forEach(b=>b.style.display="none");
+
+
+/* FACULTY */
+
+if(profile.role==="faculty"){
+
+document.getElementById("bookVenue").style.display="block";
+document.getElementById("myBookings").style.display="block";
+
+document.querySelectorAll(".bookBtn").forEach(b=>b.style.display="inline-block");
+
+}
+
+
+/* ADMIN */
+
+else if(profile.role==="admin"){
+
+document.getElementById("acceptBooking").style.display="block";
+
+document.querySelectorAll(".viewBtn").forEach(b=>b.style.display="inline-block");
+
+}
+
+
+/* STAFF */
+
+else if(profile.role==="staff"){
+
+document.querySelectorAll(".viewBtn").forEach(b=>b.style.display="inline-block");
+
+}
+
+}
+
+
+/* LOGOUT */
+
+document.getElementById("logoutBtn").onclick=async()=>{
+
+await client.auth.signOut();
+
+location="login.html";
+
+}
+
+
+/* INIT */
+
+init();
+
+</script>
+
+</body>
+</html>

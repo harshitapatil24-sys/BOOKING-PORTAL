@@ -1,0 +1,462 @@
+/* RESET */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+/* DEFAULT BODY */
+
+body{
+background:#f4f6fb;
+}
+
+
+/* ================= LOGIN PAGE ================= */
+
+.login-page{
+height:100vh;
+background:linear-gradient(135deg,#1e3c72,#2a5298);
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.login-container{
+width:100%;
+max-width:400px;
+}
+
+.login-box{
+background:white;
+padding:40px;
+border-radius:8px;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+text-align:center;
+}
+
+.login-box h2{
+margin-bottom:10px;
+color:#1e3c72;
+}
+
+.subtitle{
+font-size:14px;
+color:gray;
+margin-bottom:25px;
+}
+
+.login-box input{
+width:100%;
+padding:12px;
+margin-bottom:15px;
+border:1px solid #ccc;
+border-radius:5px;
+font-size:14px;
+}
+
+.login-box input:focus{
+border-color:#2a5298;
+outline:none;
+}
+
+.login-box button{
+width:100%;
+padding:12px;
+background:#2a5298;
+border:none;
+color:white;
+font-size:15px;
+border-radius:5px;
+cursor:pointer;
+}
+
+.login-box button:hover{
+background:#1e3c72;
+}
+
+.login-image{
+width:90px;
+margin-bottom:15px;
+}
+
+.footer-text{
+margin-top:20px;
+font-size:12px;
+color:gray;
+}
+
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background:#f4f6fb;
+  color:#1b1b1b;
+  line-height:1.5;
+}
+
+/* ===== NAVBAR ===== */
+.navbar{
+  background:linear-gradient(90deg,#0b3d91,#0f52ba);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 60px;
+  box-shadow:0 4px 14px rgba(0,0,0,0.15);
+}
+
+.logo{
+  height:58px;
+  object-fit:contain;
+}
+
+.nav-links{
+  list-style:none;
+  display:flex;
+  gap:34px;
+}
+
+.nav-links a{
+  text-decoration:none;
+  color:#ffffff;
+  font-weight:600;
+  font-size:15px;
+  letter-spacing:.4px;
+  padding:8px 14px;
+  border-radius:6px;
+  transition:.25s ease;
+}
+
+.nav-links a:hover{
+  background:#ffffff;
+  color:#0b3d91;
+}
+
+/* ===== PROFILE ===== */
+.profile{
+  position:relative;
+}
+
+#profileBtn{
+  background:#ffffff;
+  border:none;
+  padding:9px 12px;
+  border-radius:50%;
+  font-size:18px;
+  cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.25);
+  transition:.2s;
+}
+
+#profileBtn:hover{
+  transform:scale(1.05);
+}
+
+.dropdown{
+  position:absolute;
+  right:0;
+  top:48px;
+  width:210px;
+  background:#ffffff;
+  border-radius:10px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.18);
+  overflow:hidden;
+  display:none;
+  z-index:100;
+}
+
+.dropdown a{
+  display:block;
+  padding:13px 18px;
+  color:#333;
+  text-decoration:none;
+  font-size:14px;
+  border-bottom:1px solid #eee;
+  transition:.2s;
+}
+
+.dropdown a:hover{
+  background:#eef3ff;
+  color:#0b3d91;
+}
+
+.dropdown.show{ display:block; }
+
+/* ===== USER INFO BAR ===== */
+.userbar{
+  background:#e9f0ff;
+  padding:12px 60px;
+  color:#0b3d91;
+  font-weight:600;
+  border-bottom:1px solid #ccd9ff;
+}
+
+/* ================= HERO SECTION ================= */
+
+.hero{
+height:420px;
+background:url("pccoe-campus.jpg") center/cover no-repeat;
+position:relative;
+}
+
+.hero-overlay{
+position:absolute;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:rgba(0,0,0,0.45);
+display:flex;
+align-items:center;
+padding-left:100px;
+}
+
+.hero-content h1{
+color:white;
+font-size:60px;
+margin-bottom:10px;
+}
+
+.hero-content p{
+color:white;
+font-size:20px;
+}
+
+
+/* ================= FILTER BUTTONS ================= */
+
+.filter-buttons{
+text-align:center;
+margin:40px 0;
+}
+
+.filter-buttons button{
+padding:10px 20px;
+margin:6px;
+border:none;
+border-radius:6px;
+background:#0b3d91;
+color:white;
+cursor:pointer;
+}
+
+.filter-buttons button:hover{
+background:#0940a0;
+}
+
+
+/* ================= VENUE CARDS ================= */
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+padding:40px 60px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+text-align:center;
+}
+
+.card h3{
+margin-bottom:10px;
+color:#0b3d91;
+}
+
+
+/* ================= BUTTONS ================= */
+
+.actionBtn{
+border:none;
+padding:9px 18px;
+border-radius:7px;
+font-weight:600;
+cursor:pointer;
+margin:6px;
+}
+
+.bookBtn{
+background:#0b3d91;
+color:white;
+}
+
+.bookBtn:hover{
+background:#082c6c;
+}
+
+.viewBtn{
+background:#e9eefc;
+color:#0b3d91;
+border:1px solid #0b3d91;
+}
+
+.viewBtn:hover{
+background:#dbe4ff;
+}
+
+
+/* ================= BOOKING FORM ================= */
+
+.booking-wrapper{
+max-width:900px;
+margin:auto;
+padding:40px 20px;
+}
+
+.booking-title{
+text-align:center;
+color:#02020f;
+font-size:32px;
+margin-bottom:30px;
+}
+
+.booking-card{
+background:#36c4c4;
+padding:35px;
+border-radius:14px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+.booking-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:22px;
+}
+
+.field{
+display:flex;
+flex-direction:column;
+}
+
+.field label{
+font-weight:600;
+margin-bottom:6px;
+}
+
+.field input,
+.field select,
+.field textarea{
+padding:10px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+.full{
+grid-column:span 2;
+}
+
+.slots-area{
+display:grid;
+grid-template-columns:3fr 1fr;
+gap:20px;
+margin-top:10px;
+}
+
+#slotsContainer{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+}
+
+.slot{
+border:1px solid #0b3d91;
+padding:10px 16px;
+border-radius:8px;
+cursor:pointer;
+background:white;
+}
+
+.hours-box{
+background:#eef2ff;
+border-radius:8px;
+padding:20px;
+text-align:center;
+}
+
+.submitBtn{
+margin-top:25px;
+width:100%;
+padding:12px;
+background:#0b3d91;
+color:white;
+border:none;
+border-radius:8px;
+font-size:16px;
+cursor:pointer;
+}
+
+.submitBtn:hover{
+background:#082c6c;
+}
+
+
+/* ================= FOOTER ================= */
+
+footer{
+text-align:center;
+padding:20px;
+background:#0b3d91;
+color:white;
+margin-top:40px;
+}
+
+
+/* ================= MOBILE ================= */
+
+@media(max-width:700px){
+
+.booking-grid{
+grid-template-columns:1fr;
+}
+
+.full{
+grid-column:span 1;
+}
+
+.slots-area{
+grid-template-columns:1fr;
+}
+
+.cards{
+grid-template-columns:1fr;
+padding:20px;
+}
+
+}
+
+/* accept form */
+/* ADMIN TITLE CENTER */
+
+.admin-title{
+text-align:center;
+margin-top:40px;
+margin-bottom:30px;
+}
+
+.admin-title h1{
+font-size:42px;
+color:#1a1a1a;
+margin-bottom:6px;
+}
+
+.admin-title p{
+font-size:18px;
+color:#444;
+}
+
+.requestsContainer{
+max-width:900px;
+margin:auto;
+padding:20px;
+}

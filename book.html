@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Book Venue</title>
+<link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+
+<div class="booking-wrapper">
+
+<h2 class="booking-title">Venue Booking Form</h2>
+
+<div class="booking-card">
+
+<div class="booking-grid">
+
+<div class="field">
+<label>Faculty Name</label>
+<input id="facultyName" readonly>
+</div>
+
+<div class="field">
+<label>Employee ID</label>
+<input id="empId" readonly>
+</div>
+
+<div class="field">
+<label>Department</label>
+<input id="dept" readonly>
+</div>
+
+<div class="field">
+<label>Event Name *</label>
+<input id="eventName" placeholder="Enter event name">
+</div>
+
+<div class="field full">
+<label>Event Description</label>
+<textarea id="eventDesc" placeholder="Describe your event"></textarea>
+</div>
+
+<div class="field">
+<label>Venue *</label>
+<select id="venue">
+<option value="">Select Venue</option>
+<option>Auditorium</option>
+<option>Seminar Hall 1</option>
+<option>Seminar Hall 2</option>
+<option>Sports Hall</option>
+<option>Reading Hall</option>
+</select>
+</div>
+
+<div class="field">
+<label>Date *</label>
+<input type="date" id="date">
+</div>
+
+<div class="field">
+<label>Day</label>
+<input id="day" readonly>
+</div>
+
+</div>
+
+
+<h3 class="slot-title">Select Slots *</h3>
+
+<div class="slots-area">
+
+<div id="slotsContainer"></div>
+
+<div class="hours-box">
+<p>Total Hours</p>
+<h2 id="totalHours">0</h2>
+</div>
+
+</div>
+
+<button class="submitBtn" onclick="submitBooking()">Submit Booking</button>
+
+</div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const client = supabase.createClient(
+"https://xgrzymhgssxjjkogvuvw.supabase.co",
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhncnp5bWhnc3N4amprb2d2dXZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNzAyNTYsImV4cCI6MjA4Nzg0NjI1Nn0.A6tbTA6D2mmGdNTrm2oS5HSTJzgkMFbGARQQi5dL-TQ"
+)
+
+let selectedSlots = []
+
+/* DISABLE PAST DATES */
+
+const today = new Date().toISOString().split("T")[0]
+document.getElementById("date").setAttribute("min", today)
+
+
+
+/* LOAD PROFILE */
+
+async function loadProfile(){
+
+const { data:{ session } } = await client.auth.getSession()
+
+if(!session){
+location="login.html"
+return
+}
+
+const { data } = await client
+.from("profiles")
+.select("*")
+.eq("id",session.user.id)
+.single()
+
+document.getElementById("facultyName").value = data.name
+document.getElementById("empId").value = data.employee_id
+document.getElementById("dept").value = data.department
+
+}
+
+loadProfile()
+
+
+
+/* AUTO FILL VENUE */
+
+function autoFillVenue(){
+
+const params = new URLSearchParams(window.location.search)
+const venue = params.get("venue")
+
+if(venue){
+
+const venueSelect = document.getElementById("venue")
+venueSelect.value = venue
+venueSelect.disabled = true
+
+}
+
+}
+
+autoFillVenue()
+
+
+
+/* SHOW DAY */
+
+function showDay(){
+
+const value = document.getElementById("date").value
+if(!value) return
+
+const date = new Date(value)
+
+const days = [
+"Sunday","Monday","Tuesday",
+"Wednesday","Thursday","Friday","Saturday"
+]
+
+document.getElementById("day").value = days[date.getDay()]
+
+}
+
+
+
+/* LOAD SLOTS */
+
+async function loadSlots(){
+
+selectedSlots=[]
+document.getElementById("totalHours").innerText="0"
+
+const venue = document.getElementById("venue").value
+const date = document.getElementById("date").value
+
+if(!venue || !date){
+
+document.getElementById("slotsContainer").innerHTML =
+"<p>Select venue and date to see slots</p>"
+
+return
+}
+
+try{
+
+/* GET VENUE ID */
+
+const { data: venueData } = await client
+.from("venues")
+.select("id")
+.eq("name", venue)
+
+if(!venueData || venueData.length===0){
+throw new Error("Venue not found")
+}
+
+const venueId = venueData[0].id
+
+
+
+/* GET ALL SLOTS */
+
+const { data: slots } = await client
+.from("slots")
+.select("*")
+.order("start_time")
+
+
+
+/* GET BOOKED SLOTS */
+
+const { data: booked } = await client
+.from("booking_requests")
+.select("slot_id")
+.eq("venue_id", venueId)
+.eq("booking_date", date)
+.eq("status","Accepted")
+
+const bookedIds = booked ? booked.map(b=>b.slot_id) : []
+
+
+
+const container = document.getElementById("slotsContainer")
+container.innerHTML=""
+
+
+
+slots.forEach(slot=>{
+
+const label = document.createElement("label")
+label.className="slot"
+
+const input = document.createElement("input")
+input.type="checkbox"
+input.value=slot.id
+
+
+if(bookedIds.includes(slot.id)){
+input.disabled=true
+}
+
+input.addEventListener("change",()=>{
+
+if(input.checked){
+selectedSlots.push(slot.id)
+}else{
+selectedSlots = selectedSlots.filter(id=>id!==slot.id)
+}
+
+document.getElementById("totalHours").innerText =
+selectedSlots.length
+
+})
+
+label.appendChild(input)
+
+label.appendChild(
+document.createTextNode(
+`${slot.start_time.slice(0,5)} - ${slot.end_time.slice(0,5)}`
+)
+)
+
+container.appendChild(label)
+
+})
+
+}catch(err){
+
+console.error(err)
+
+document.getElementById("slotsContainer").innerHTML =
+"<p>Error loading slots</p>"
+
+}
+
+}
+
+
+
+/* SUBMIT BOOKING */
+
+async function submitBooking(){
+
+const eventName = document.getElementById("eventName").value
+const venue = document.getElementById("venue").value
+const date = document.getElementById("date").value
+const description = document.getElementById("eventDesc").value
+
+if(!eventName || !venue || !date || selectedSlots.length===0){
+
+alert("Please fill required fields and select slots")
+return
+
+}
+
+const { data:{ session } } = await client.auth.getSession()
+
+
+
+/* GET VENUE ID */
+
+const { data: venueData } = await client
+.from("venues")
+.select("id")
+.eq("name", venue)
+.single()
+
+const venueId = venueData.id
+
+
+
+for(let slot of selectedSlots){
+
+await client.from("booking_requests").insert({
+
+user_id:session.user.id,
+venue_id:venueId,
+slot_id:slot,
+booking_date:date,
+event_name:eventName,
+description:description,
+status:"Pending"
+
+})
+
+}
+
+
+
+alert("Booking request submitted")
+
+
+
+/* CLEAR FORM */
+
+document.getElementById("eventName").value=""
+document.getElementById("eventDesc").value=""
+document.getElementById("date").value=""
+document.getElementById("day").value=""
+
+selectedSlots=[]
+
+document.getElementById("totalHours").innerText="0"
+
+document.getElementById("slotsContainer").innerHTML=""
+
+}
+
+
+
+/* EVENT LISTENERS */
+
+document.getElementById("venue").addEventListener("change", loadSlots)
+
+document.getElementById("date").addEventListener("change", ()=>{
+
+showDay()
+loadSlots()
+
+})
+
+</script>
+
+</body>
+</html>
