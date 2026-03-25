@@ -10,8 +10,37 @@
 
 <body>
 
-<div class="booking-wrapper">
+<!-- NAVBAR -->
+<nav class="navbar">
+<img src="pccoe.jpg" class="logo">
 
+<ul class="nav-links">
+<li><a href="dashboard.html">Home</a></li>
+<li><a href="#">Halls</a></li>
+<li><a href="#">Blog</a></li>
+<li><a href="#">Q/A</a></li>
+<li><a href="#">Contact</a></li>
+</ul>
+
+<div class="profile">
+<button id="profileBtn">👤</button>
+
+<div class="dropdown" id="profileMenu">
+<a href="#">View Profile</a>
+<a href="book.html">Book Venue</a>
+<a href="youtbooking.html">Your Bookings</a>
+<a href="accept.html">Accept Booking</a>
+<a href="index.html" id="logoutBtn">Logout</a>
+</div>
+</div>
+</nav>
+
+<!-- USER BAR -->
+<div class="userbar">
+<span id="facultyInfo">Loading user...</span>
+</div>
+
+<div class="booking-wrapper">
 <h2 class="booking-title">Venue Booking Form</h2>
 
 <div class="booking-card">
@@ -35,23 +64,28 @@
 
 <div class="field">
 <label>Event Name *</label>
-<input id="eventName" placeholder="Enter event name">
+<input id="eventName">
+</div>
+
+<div class="field">
+<label>Total Students *</label>
+<input type="number" id="totalStudents">
 </div>
 
 <div class="field full">
-<label>Event Description</label>
-<textarea id="eventDesc" placeholder="Describe your event"></textarea>
+<label>Description</label>
+<textarea id="eventDesc"></textarea>
 </div>
 
 <div class="field">
 <label>Venue *</label>
 <select id="venue">
 <option value="">Select Venue</option>
-<option>Auditorium</option>
-<option>Seminar Hall 1</option>
-<option>Seminar Hall 2</option>
-<option>Sports Hall</option>
-<option>Reading Hall</option>
+<option value="47bf6743-3845-4cc9-b4ee-8f01e42b6efd">Auditorium</option>
+<option value="f037d0c8-74da-45a2-a977-a3ceb7cb42e5">Seminar Hall 1</option>
+<option value="f1088a0c-4890-41b5-80ef-62bcae6e7024">Seminar Hall 2</option>
+<option value="5df13a70-fecb-4ab1-a326-0c7d32279ab6">Sports Hall</option>
+<option value="7d54aa73-b381-4d59-bdeb-7bf04c44ebe9">Reading Hall</option>
 </select>
 </div>
 
@@ -66,26 +100,26 @@
 </div>
 
 </div>
-
-
-<h3 class="slot-title">Select Slots *</h3>
+<div class="legend">
+    <span><span class="box available"></span> Available</span>
+    <span><span class="box pending"></span> Pending</span>
+    <span><span class="box booked"></span> Booked</span>
+</div>
+<h3>Select Slots *</h3>
 
 <div class="slots-area">
-
 <div id="slotsContainer"></div>
 
 <div class="hours-box">
 <p>Total Hours</p>
 <h2 id="totalHours">0</h2>
 </div>
-
 </div>
 
 <button class="submitBtn" onclick="submitBooking()">Submit Booking</button>
 
 </div>
 </div>
-
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -95,20 +129,23 @@ const client = supabase.createClient(
 "https://xgrzymhgssxjjkogvuvw.supabase.co",
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhncnp5bWhnc3N4amprb2d2dXZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNzAyNTYsImV4cCI6MjA4Nzg0NjI1Nn0.A6tbTA6D2mmGdNTrm2oS5HSTJzgkMFbGARQQi5dL-TQ"
 )
+/* DROPDOWN FIX */
+const profileBtn = document.getElementById("profileBtn");
+const profileMenu = document.getElementById("profileMenu");
+
+profileBtn.addEventListener("click", (e)=>{
+    e.stopPropagation();
+    profileMenu.classList.toggle("show");
+});
+
+document.addEventListener("click", ()=>{
+    profileMenu.classList.remove("show");
+});
 
 let selectedSlots = []
 
-/* DISABLE PAST DATES */
-
-const today = new Date().toISOString().split("T")[0]
-document.getElementById("date").setAttribute("min", today)
-
-
-
-/* LOAD PROFILE */
-
-async function loadProfile(){
-
+/* PROFILE + AUTH */
+async function init(){
 const { data:{ session } } = await client.auth.getSession()
 
 if(!session){
@@ -116,260 +153,167 @@ location="login.html"
 return
 }
 
-const { data } = await client
+const { data: profile } = await client
 .from("profiles")
 .select("*")
-.eq("id",session.user.id)
+.eq("id", session.user.id)
 .single()
 
-document.getElementById("facultyName").value = data.name
-document.getElementById("empId").value = data.employee_id
-document.getElementById("dept").value = data.department
+facultyName.value = profile?.name || ""
+empId.value = profile?.employee_id || ""
+dept.value = profile?.department || ""
 
+facultyInfo.innerText =
+`${profile?.name} | ${profile?.employee_id} | ${profile?.department}`
+}
+init()
+
+/* DATE */
+date.min = new Date().toISOString().split("T")[0]
+
+date.onchange = ()=>{
+const d = new Date(date.value)
+const days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+day.value = days[d.getDay()]
+loadSlots()
 }
 
-loadProfile()
-
-
-
-/* AUTO FILL VENUE */
-
-function autoFillVenue(){
-
-const params = new URLSearchParams(window.location.search)
-const venue = params.get("venue")
-
-if(venue){
-
-const venueSelect = document.getElementById("venue")
-venueSelect.value = venue
-venueSelect.disabled = true
-
-}
-
-}
-
-autoFillVenue()
-
-
-
-/* SHOW DAY */
-
-function showDay(){
-
-const value = document.getElementById("date").value
-if(!value) return
-
-const date = new Date(value)
-
-const days = [
-"Sunday","Monday","Tuesday",
-"Wednesday","Thursday","Friday","Saturday"
-]
-
-document.getElementById("day").value = days[date.getDay()]
-
-}
-
-
+venue.onchange = loadSlots
 
 /* LOAD SLOTS */
-
 async function loadSlots(){
 
+if(!venue.value || !date.value) return
+
 selectedSlots=[]
-document.getElementById("totalHours").innerText="0"
+totalHours.innerText=0
 
-const venue = document.getElementById("venue").value
-const date = document.getElementById("date").value
+const { data: slots } = await client.from("slots").select("*")
 
-if(!venue || !date){
-
-document.getElementById("slotsContainer").innerHTML =
-"<p>Select venue and date to see slots</p>"
-
-return
-}
-
-try{
-
-/* GET VENUE ID */
-
-const { data: venueData } = await client
-.from("venues")
-.select("id")
-.eq("name", venue)
-
-if(!venueData || venueData.length===0){
-throw new Error("Venue not found")
-}
-
-const venueId = venueData[0].id
-
-
-
-/* GET ALL SLOTS */
-
-const { data: slots } = await client
-.from("slots")
-.select("*")
-.order("start_time")
-
-
-
-/* GET BOOKED SLOTS */
-
-const { data: booked } = await client
+const { data: bookings } = await client
 .from("booking_requests")
-.select("slot_id")
-.eq("venue_id", venueId)
-.eq("booking_date", date)
-.eq("status","Accepted")
+.select("id, status")
+.eq("venue_id", venue.value)
+.eq("booking_date", date.value)
 
-const bookedIds = booked ? booked.map(b=>b.slot_id) : []
+let bookedMap = {}
 
+if(bookings && bookings.length > 0){
 
+const { data: slotData } = await client
+.from("booking_slots")
+.select("booking_id, slot_id")
+.in("booking_id", bookings.map(b => b.id))
 
-const container = document.getElementById("slotsContainer")
-container.innerHTML=""
+slotData?.forEach(s=>{
+const booking = bookings.find(b => b.id === s.booking_id)
+if(booking){
+bookedMap[s.slot_id] = booking.status
+}
+})
+}
 
+slotsContainer.innerHTML=""
 
+slots?.forEach(slot=>{
 
-slots.forEach(slot=>{
+const label=document.createElement("label")
+const input=document.createElement("input")
 
-const label = document.createElement("label")
-label.className="slot"
-
-const input = document.createElement("input")
 input.type="checkbox"
 input.value=slot.id
 
+label.className = "slot";
 
-if(bookedIds.includes(slot.id)){
-input.disabled=true
+if(bookedMap[slot.id]){
+    if(bookedMap[slot.id] === "pending"){
+        label.classList.add("pending");
+        input.disabled = true;
+    }
+    else if(bookedMap[slot.id] === "accepted"){
+        label.classList.add("booked");
+        input.disabled = true;
+    }
+} else {
+    label.classList.add("available");
 }
 
-input.addEventListener("change",()=>{
-
-if(input.checked){
-selectedSlots.push(slot.id)
-}else{
-selectedSlots = selectedSlots.filter(id=>id!==slot.id)
+input.onchange=()=>{
+if(input.checked) selectedSlots.push(slot.id)
+else selectedSlots=selectedSlots.filter(x=>x!==slot.id)
+totalHours.innerText=selectedSlots.length
 }
-
-document.getElementById("totalHours").innerText =
-selectedSlots.length
-
-})
 
 label.appendChild(input)
-
-label.appendChild(
-document.createTextNode(
-`${slot.start_time.slice(0,5)} - ${slot.end_time.slice(0,5)}`
-)
-)
-
-container.appendChild(label)
+label.append(` ${slot.start_time} - ${slot.end_time}`)
+slotsContainer.appendChild(label)
 
 })
-
-}catch(err){
-
-console.error(err)
-
-document.getElementById("slotsContainer").innerHTML =
-"<p>Error loading slots</p>"
-
 }
 
-}
-
-
-
-/* SUBMIT BOOKING */
-
+/* SUBMIT */
 async function submitBooking(){
 
+try{
+
 const eventName = document.getElementById("eventName").value
-const venue = document.getElementById("venue").value
-const date = document.getElementById("date").value
+const totalStudentsVal = document.getElementById("totalStudents").value
+const venueVal = document.getElementById("venue").value
+const dateVal = document.getElementById("date").value
 const description = document.getElementById("eventDesc").value
 
-if(!eventName || !venue || !date || selectedSlots.length===0){
-
-alert("Please fill required fields and select slots")
+if(!eventName || !totalStudentsVal || !venueVal || !dateVal || selectedSlots.length===0){
+alert("Fill all required fields")
 return
-
 }
 
 const { data:{ session } } = await client.auth.getSession()
 
-
-
-/* GET VENUE ID */
-
-const { data: venueData } = await client
-.from("venues")
-.select("id")
-.eq("name", venue)
+const { data: booking, error } = await client
+.from("booking_requests")
+.insert({
+user_id: session.user.id,
+venue_id: venueVal,   // ✅ UUID FIX
+booking_date: dateVal,
+event_name: eventName,
+description: description,
+total_students: parseInt(totalStudentsVal),
+status: "pending"
+})
+.select()
 .single()
 
-const venueId = venueData.id
-
-
-
-for(let slot of selectedSlots){
-
-await client.from("booking_requests").insert({
-
-user_id:session.user.id,
-venue_id:venueId,
-slot_id:slot,
-booking_date:date,
-event_name:eventName,
-description:description,
-status:"Pending"
-
-})
-
+if(error){
+console.error(error)
+alert(error.message)
+return
 }
 
+const { error: slotError } = await client
+.from("booking_slots")
+.insert(
+selectedSlots.map(s => ({
+booking_id: booking.id,
+slot_id: s   // ✅ UUID FIX
+}))
+)
 
-
-alert("Booking request submitted")
-
-
-
-/* CLEAR FORM */
-
-document.getElementById("eventName").value=""
-document.getElementById("eventDesc").value=""
-document.getElementById("date").value=""
-document.getElementById("day").value=""
-
-selectedSlots=[]
-
-document.getElementById("totalHours").innerText="0"
-
-document.getElementById("slotsContainer").innerHTML=""
-
+if(slotError){
+console.error(slotError)
+alert("Slot insert failed")
+return
 }
 
+alert("Booking Submitted Successfully")
+location.reload()
 
-
-/* EVENT LISTENERS */
-
-document.getElementById("venue").addEventListener("change", loadSlots)
-
-document.getElementById("date").addEventListener("change", ()=>{
-
-showDay()
-loadSlots()
-
-})
-
+}catch(err){
+console.error(err)
+alert("Something went wrong")
+}
+}
 </script>
 
 </body>
 </html>
+
