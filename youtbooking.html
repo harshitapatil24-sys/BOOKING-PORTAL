@@ -1,227 +1,903 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<title>My Bookings</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Bookings - PCCOE</title>
 <link rel="stylesheet" href="style.css">
 
-<script type="module">
+<style>
+/* ================================================
+   YOUR BOOKINGS PAGE SPECIFIC STYLES
+   ================================================ */
 
+.bookings-page {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf3 100%);
+  min-height: 100vh;
+}
+
+/* Page Header */
+.page-header {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  padding: 40px 60px;
+  color: white;
+}
+
+.page-header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.page-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.page-header p {
+  margin: 8px 0 0 0;
+  opacity: 0.8;
+  font-size: 15px;
+}
+
+.header-action {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-action:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
+
+/* Stats Summary */
+.stats-summary {
+  display: flex;
+  gap: 20px;
+  max-width: 1200px;
+  margin: -30px auto 30px;
+  padding: 0 60px;
+  position: relative;
+  z-index: 10;
+  flex-wrap: wrap;
+}
+
+.summary-card {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+  min-width: 200px;
+  transition: transform 0.3s;
+}
+
+.summary-card:hover {
+  transform: translateY(-5px);
+}
+
+.summary-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.summary-icon.total { background: linear-gradient(135deg, #667eea, #764ba2); }
+.summary-icon.pending { background: linear-gradient(135deg, #ffecd2, #fcb69f); }
+.summary-icon.accepted { background: linear-gradient(135deg, #a8edea, #fed6e3); }
+.summary-icon.rejected { background: linear-gradient(135deg, #ff9a9e, #fecfef); }
+
+.summary-info h3 {
+  font-size: 24px;
+  margin: 0;
+  color: #1a1a2e;
+}
+
+.summary-info p {
+  font-size: 13px;
+  color: #666;
+  margin: 4px 0 0 0;
+}
+
+/* Filter Tabs */
+.filter-tabs {
+  max-width: 1200px;
+  margin: 0 auto 30px;
+  padding: 0 60px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter-tab {
+  padding: 10px 20px;
+  background: white;
+  border: 2px solid #e0e8f5;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+  color: #666;
+}
+
+.filter-tab:hover {
+  border-color: #0b3d91;
+  color: #0b3d91;
+}
+
+.filter-tab.active {
+  background: linear-gradient(135deg, #0b3d91, #1a6bff);
+  color: white;
+  border-color: transparent;
+}
+
+/* Bookings Container */
+.bookings-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 60px 60px;
+}
+
+/* Booking Card */
+.booking-card {
+  background: white;
+  border-radius: 20px;
+  padding: 0;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+  overflow: hidden;
+  transition: all 0.3s;
+  border: 1px solid #e8ecf3;
+}
+
+.booking-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+}
+
+/* Card Header */
+.card-header {
+  padding: 20px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f0f4f8;
+}
+
+.card-header.pending {
+  background: linear-gradient(135deg, #fff8e1, #fffde7);
+  border-left: 5px solid #ffc107;
+}
+
+.card-header.accepted {
+  background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+  border-left: 5px solid #4caf50;
+}
+
+.card-header.rejected {
+  background: linear-gradient(135deg, #ffebee, #fce4ec);
+  border-left: 5px solid #f44336;
+}
+
+.event-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.status-badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.pending {
+  background: linear-gradient(135deg, #fff3cd, #ffeeba);
+  color: #856404;
+}
+
+.status-badge.accepted {
+  background: linear-gradient(135deg, #d4edda, #c3e6cb);
+  color: #155724;
+}
+
+.status-badge.rejected {
+  background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+  color: #721c24;
+}
+
+/* Card Body */
+.card-body {
+  padding: 25px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.info-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.info-content label {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-content p {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin: 4px 0 0 0;
+}
+
+/* Description Section */
+.description-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f4f8;
+}
+
+.description-section label {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.description-text {
+  background: linear-gradient(135deg, #f5f8ff, #eef3ff);
+  padding: 15px 18px;
+  border-radius: 12px;
+  font-style: italic;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.6;
+  border: 1px solid #e0e8f5;
+}
+
+/* Rejection Reason */
+.rejection-section {
+  margin-top: 20px;
+  padding: 15px 18px;
+  background: linear-gradient(135deg, #ffebee, #fce4ec);
+  border-radius: 12px;
+  border-left: 4px solid #f44336;
+}
+
+.rejection-section label {
+  font-size: 12px;
+  color: #c62828;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.rejection-section p {
+  margin: 8px 0 0 0;
+  color: #b71c1c;
+  font-size: 14px;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 80px 40px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  font-size: 22px;
+  color: #333;
+  margin: 0 0 10px 0;
+}
+
+.empty-state p {
+  color: #666;
+  font-size: 15px;
+  margin: 0 0 25px 0;
+}
+
+.empty-action {
+  background: linear-gradient(135deg, #0b3d91, #1a6bff);
+  color: white;
+  padding: 14px 28px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s;
+}
+
+.empty-action:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(11, 61, 145, 0.4);
+}
+
+/* Loading State */
+.loading-state {
+  text-align: center;
+  padding: 60px 40px;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e0e0e0;
+  border-top-color: #0b3d91;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .page-header {
+    padding: 30px;
+  }
+
+  .stats-summary,
+  .filter-tabs,
+  .bookings-container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .page-header-content {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-header h1 {
+    font-size: 24px;
+  }
+
+  .stats-summary {
+    flex-direction: column;
+  }
+
+  .summary-card {
+    min-width: 100%;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+}
+</style>
+
+<script type="module">
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
 
+/* ================================================
+   SUPABASE INITIALIZATION
+   ================================================ */
+
 const supabase = createClient(
-"https://xgrzymhgssxjjkogvuvw.supabase.co",
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhncnp5bWhnc3N4amprb2d2dXZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNzAyNTYsImV4cCI6MjA4Nzg0NjI1Nn0.A6tbTA6D2mmGdNTrm2oS5HSTJzgkMFbGARQQi5dL-TQ"
+  "https://xgrzymhgssxjjkogvuvw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhncnp5bWhnc3N4amprb2d2dXZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNzAyNTYsImV4cCI6MjA4Nzg0NjI1Nn0.A6tbTA6D2mmGdNTrm2oS5HSTJzgkMFbGARQQi5dL-TQ"
 )
 
-/* LOAD BOOKINGS */
-async function loadMyBookings(){
 
-try{
+/* ================================================
+   GLOBAL VARIABLES
+   ================================================ */
 
-const { data:{ session }, error:sessionError } = await supabase.auth.getSession()
+let allBookings = []
+let currentFilter = "all"
 
-if(sessionError || !session){
-location="index.html"
-return
+
+/* ================================================
+   FORMAT DATE HELPER
+   ================================================ */
+
+function formatDate(dateStr) {
+  const options = { weekday: "short", day: "numeric", month: "short", year: "numeric" }
+  return new Date(dateStr).toLocaleDateString("en-GB", options)
 }
 
-const { data, error } = await supabase
-.from("booking_requests")
-.select(`
-  id,
-  event_name,
-  booking_date,
-  total_students,
-  description,
-  status,
-  venues(venue_name),
-  booking_slots(
-    slots(start_time, end_time)
-  )
-`)
-.eq("user_id", session.user.id)
-.order("id", { ascending:false })
 
-if(error){
-console.error("Fetch error:", error.message)
-document.getElementById("myBookings").innerHTML = "<p>Error loading bookings</p>"
-return
+/* ================================================
+   UPDATE STATS
+   ================================================ */
+
+function updateStats() {
+  const total = allBookings.length
+  const pending = allBookings.filter(b => b.status === "pending").length
+  const accepted = allBookings.filter(b => b.status === "accepted").length
+  const rejected = allBookings.filter(b => b.status === "rejected").length
+
+  document.getElementById("statTotal").textContent = total
+  document.getElementById("statPending").textContent = pending
+  document.getElementById("statAccepted").textContent = accepted
+  document.getElementById("statRejected").textContent = rejected
 }
 
-let container = document.getElementById("myBookings")
-container.innerHTML = ""
 
-if(!data || data.length === 0){
-container.innerHTML = "<p>No bookings yet</p>"
-return
+/* ================================================
+   RENDER BOOKINGS
+   ================================================ */
+
+function renderBookings() {
+  const container = document.getElementById("bookingsContainer")
+
+  // Filter bookings
+  let filtered = allBookings
+  if (currentFilter !== "all") {
+    filtered = allBookings.filter(b => b.status === currentFilter)
+  }
+
+  // Check empty
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📋</div>
+        <h3>No Bookings Found</h3>
+        <p>${currentFilter === "all" ? "You haven't made any bookings yet." : `No ${currentFilter} bookings found.`}</p>
+        <a href="book.html" class="empty-action">
+          📅 Book a Venue
+        </a>
+      </div>
+    `
+    return
+  }
+
+  // Render cards
+  container.innerHTML = filtered.map(b => {
+    // Build slots string
+    const slots = (b.booking_slots || [])
+      .map(bs => {
+        if (!bs.slots) return ""
+        return `${bs.slots.start_time} - ${bs.slots.end_time}`
+      })
+      .filter(Boolean)
+      .join(", ") || "N/A"
+
+    const totalHours = (b.booking_slots || []).length
+
+    // Rejection section
+    let rejectionHtml = ""
+    if (b.status === "rejected" && b.rejection_reason) {
+      rejectionHtml = `
+        <div class="rejection-section">
+          <label>Rejection Reason</label>
+          <p>${b.rejection_reason}</p>
+        </div>
+      `
+    }
+
+    return `
+      <div class="booking-card">
+        <div class="card-header ${b.status}">
+          <h3 class="event-title">${b.event_name || "Untitled Event"}</h3>
+          <span class="status-badge ${b.status}">
+            ${b.status === "pending" ? "⏳" : b.status === "accepted" ? "✅" : "❌"}
+            ${b.status.toUpperCase()}
+          </span>
+        </div>
+
+        <div class="card-body">
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-icon">📍</div>
+              <div class="info-content">
+                <label>Venue</label>
+                <p>${b.venues?.venue_name || "N/A"}</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-icon">📅</div>
+              <div class="info-content">
+                <label>Date</label>
+                <p>${formatDate(b.booking_date)}</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-icon">🕐</div>
+              <div class="info-content">
+                <label>Time Slots</label>
+                <p>${slots}</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-icon">⏱️</div>
+              <div class="info-content">
+                <label>Duration</label>
+                <p>${totalHours} Hour(s)</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-icon">👥</div>
+              <div class="info-content">
+                <label>Attendees</label>
+                <p>${b.total_students || "-"}</p>
+              </div>
+            </div>
+          </div>
+
+          ${b.description ? `
+            <div class="description-section">
+              <label>Description</label>
+              <div class="description-text">${b.description}</div>
+            </div>
+          ` : ""}
+
+          ${rejectionHtml}
+        </div>
+      </div>
+    `
+  }).join("")
 }
 
-/* render cards */
-data.forEach(b => {
 
-let color = "#3498db"
+/* ================================================
+   LOAD BOOKINGS
+   ================================================ */
 
-/* FIXED COLORS (better visibility) */
-if(b.status === "pending") color = "#fff3cd"       // light yellow
-if(b.status === "accepted") color = "#d4edda"      // light green
-if(b.status === "rejected") color = "#f8d7da"      // light red
+async function loadMyBookings() {
+  const container = document.getElementById("bookingsContainer")
 
-/* SAFE SLOT HANDLING */
-const slots = (b.booking_slots || []).map(s => {
-if(!s.slots) return ""
-return `${s.slots.start_time} - ${s.slots.end_time}`
-}).filter(Boolean).join(", ") || "N/A"
+  // Show loading
+  container.innerHTML = `
+    <div class="loading-state">
+      <div class="loading-spinner"></div>
+      <p>Loading your bookings...</p>
+    </div>
+  `
 
-const totalHours = (b.booking_slots || []).length
+  try {
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession()
 
-/* create element instead of innerHTML += (safer) */
-const card = document.createElement("div")
-card.className = "request-card"
-card.style.background = color
+    if (sessionError || !session) {
+      location = "index.html"
+      return
+    }
 
+    const { data, error } = await supabase
+      .from("booking_requests")
+      .select(`
+        id,
+        event_name,
+        booking_date,
+        total_students,
+        description,
+        status,
+        rejection_reason,
+        venues(venue_name),
+        booking_slots(
+          slots(start_time, end_time)
+        )
+      `)
+      .eq("user_id", session.user.id)
+      .order("id", { ascending: false })
 
+    if (error) {
+      console.error("Fetch error:", error.message)
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">❌</div>
+          <h3>Error Loading Bookings</h3>
+          <p>${error.message}</p>
+        </div>
+      `
+      return
+    }
 
-card.innerHTML = `
+    allBookings = data || []
+    updateStats()
+    renderBookings()
 
-<p class="title-label">Title</p>
-<h2 class="main-title">${b.event_name || "No Title"}</h2>
-
-<p><b>Venue:</b> ${b.venues?.venue_name || "N/A"}</p>
-<p><b>Date:</b> ${b.booking_date || "-"}</p>
-
-<p><b>Slots:</b> ${slots}</p>
-<p><b>Total Hours:</b> ${totalHours}</p>
-
-<p><b>Total Students:</b> ${b.total_students || "-"}</p>
-
-<p><b>Status:</b> ${(b.status || "").toUpperCase()}</p>
-
-<p class="desc-label">Description</p>
-<div class="desc-box">
-  ${b.description || "No description"}
-</div>
-
-`
-
-container.appendChild(card)
-
-})
-
-}catch(err){
-console.error("Unexpected error:", err)
-document.getElementById("myBookings").innerHTML = "<p>Something went wrong</p>"
+  } catch (err) {
+    console.error("Unexpected error:", err)
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">❌</div>
+        <h3>Something Went Wrong</h3>
+        <p>Please try again later.</p>
+      </div>
+    `
+  }
 }
 
+
+/* ================================================
+   FILTER TAB HANDLERS
+   ================================================ */
+
+function setupFilterTabs() {
+  document.querySelectorAll(".filter-tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".filter-tab").forEach(t => t.classList.remove("active"))
+      tab.classList.add("active")
+      currentFilter = tab.dataset.filter
+      renderBookings()
+    })
+  })
 }
 
-/* PROFILE + NAVBAR */
-async function init(){
 
-try{
+/* ================================================
+   PROFILE & NAVBAR
+   ================================================ */
 
-const { data:{ session }, error } = await supabase.auth.getSession()
+async function init() {
+  try {
+    const { data: { session }, error } = await supabase.auth.getSession()
 
-if(error || !session){
-location="login.html"
-return
+    if (error || !session) {
+      location = "login.html"
+      return
+    }
+
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", session.user.id)
+      .single()
+
+    if (profileError) {
+      console.error("Profile error:", profileError.message)
+      return
+    }
+
+    // Update user info
+    document.getElementById("facultyInfo").innerText =
+      `${profile.name} | ${profile.employee_id} | ${profile.department}`
+
+    // Role-based menu visibility
+    document.getElementById("bookVenue").style.display = "none"
+    document.getElementById("myBookingsLink").style.display = "none"
+    document.getElementById("acceptBooking").style.display = "none"
+
+    if (profile.role === "faculty") {
+      document.getElementById("bookVenue").style.display = "block"
+      document.getElementById("myBookingsLink").style.display = "block"
+    } else if (profile.role === "admin") {
+      document.getElementById("acceptBooking").style.display = "block"
+    }
+
+    // Load bookings
+    await loadMyBookings()
+
+  } catch (err) {
+    console.error("Init error:", err)
+  }
 }
 
-const { data: profile, error:profileError } = await supabase
-.from("profiles")
-.select("*")
-.eq("id", session.user.id)
-.single()
 
-if(profileError){
-console.error("Profile error:", profileError.message)
-return
-}
+/* ================================================
+   DROPDOWN & LOGOUT
+   ================================================ */
 
-/* hide all */
-document.getElementById("bookVenue").style.display="none";
-document.getElementById("myBookingsLink").style.display="none";
-document.getElementById("acceptBooking").style.display="none";
-
-/* role-based UI */
-if(profile.role === "faculty"){
-document.getElementById("bookVenue").style.display="block";
-document.getElementById("myBookingsLink").style.display="block";
-}
-else if(profile.role === "admin"){
-document.getElementById("acceptBooking").style.display="block";
-}
-
-/* load bookings */
-await loadMyBookings()
-
-}catch(err){
-console.error("Init error:", err)
-}
-
-}
-
-/* DROPDOWN + LOGOUT */
 window.addEventListener("DOMContentLoaded", () => {
+  const profileBtn = document.getElementById("profileBtn")
+  const profileMenu = document.getElementById("profileMenu")
 
-const profileBtn = document.getElementById("profileBtn");
-const profileMenu = document.getElementById("profileMenu");
+  profileBtn.addEventListener("click", (e) => {
+    e.stopPropagation()
+    profileMenu.classList.toggle("show")
+  })
 
-profileBtn.addEventListener("click", (e)=>{
-e.stopPropagation();
-profileMenu.classList.toggle("show");
-});
+  document.addEventListener("click", () => {
+    profileMenu.classList.remove("show")
+  })
 
-document.addEventListener("click", ()=>{
-profileMenu.classList.remove("show");
-});
+  // Logout
+  document.getElementById("logoutBtn").onclick = async (e) => {
+    e.preventDefault()
+    await supabase.auth.signOut()
+    location = "login.html"
+  }
 
-/* logout */
-document.getElementById("logoutBtn").onclick = async (e)=>{
-e.preventDefault()
-await supabase.auth.signOut()
-location="login.html"
-}
-
+  // Setup filter tabs
+  setupFilterTabs()
 })
+
+
+/* ================================================
+   START APP
+   ================================================ */
 
 init()
 
 </script>
-
 </head>
 
-<body>
+<body class="bookings-page">
 
-<!-- NAVBAR -->
+<!-- ================================================
+     NAVBAR
+     ================================================ -->
 <nav class="navbar">
-<img src="pccoe.jpg" class="logo">
+  <img src="pccoe.jpg" class="logo" alt="PCCOE Logo">
 
-<ul class="nav-links">
-<li><a href="dashboard.html">Home</a></li>
-<li><a href="#">Halls</a></li>
-<li><a href="#">Blog</a></li>
-<li><a href="#">Q/A</a></li>
-<li><a href="#">Contact</a></li>
-</ul>
+  <ul class="nav-links">
+    <li><a href="dashboard.html">Home</a></li>
+    <li><a href="#">Halls</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#">Q/A</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
 
-<div class="profile">
-<button id="profileBtn">👤</button>
+  <div class="profile">
+    <button id="profileBtn">👤</button>
 
-<div class="dropdown" id="profileMenu">
-<a href="#">View Profile</a>
-<a href="book.html" id="bookVenue" style="display:none;">Book Venue</a>
-<a href="youtbooking.html" id="myBookingsLink" style="display:none;">Your Bookings</a>
-<a href="accept.html" id="acceptBooking" style="display:none;">Accept Booking</a>
-<a href="index.html" id="logoutBtn">Logout</a>
-</div>
-
-</div>
+    <div class="dropdown" id="profileMenu">
+      <a href="book.html" id="bookVenue" style="display:none;">📅 Book Venue</a>
+      <a href="youtbooking.html" id="myBookingsLink" style="display:none; background:#eef3ff; color:#0b3d91;">📋 Your Bookings</a>
+      <a href="accept.html" id="acceptBooking" style="display:none;">✅ Accept Booking</a>
+      <a href="index.html" id="logoutBtn">🚪 Logout</a>
+    </div>
+  </div>
 </nav>
 
-<h1 style="text-align:center">Your Bookings</h1>
 
-<section id="myBookings" class="requestsContainer"></section>
+<!-- ================================================
+     USER BAR
+     ================================================ -->
+<div class="userbar">
+  <span id="facultyInfo">Loading user...</span>
+</div>
+
+
+<!-- ================================================
+     PAGE HEADER
+     ================================================ -->
+<div class="page-header">
+  <div class="page-header-content">
+    <div>
+      <h1>📋 Your Bookings</h1>
+      <p>View and track all your venue booking requests</p>
+    </div>
+    <a href="book.html" class="header-action">
+      ➕ New Booking
+    </a>
+  </div>
+</div>
+
+
+<!-- ================================================
+     STATS SUMMARY
+     ================================================ -->
+<div class="stats-summary">
+  <div class="summary-card">
+    <div class="summary-icon total">📊</div>
+    <div class="summary-info">
+      <h3 id="statTotal">0</h3>
+      <p>Total Bookings</p>
+    </div>
+  </div>
+
+  <div class="summary-card">
+    <div class="summary-icon pending">⏳</div>
+    <div class="summary-info">
+      <h3 id="statPending">0</h3>
+      <p>Pending</p>
+    </div>
+  </div>
+
+  <div class="summary-card">
+    <div class="summary-icon accepted">✅</div>
+    <div class="summary-info">
+      <h3 id="statAccepted">0</h3>
+      <p>Accepted</p>
+    </div>
+  </div>
+
+  <div class="summary-card">
+    <div class="summary-icon rejected">❌</div>
+    <div class="summary-info">
+      <h3 id="statRejected">0</h3>
+      <p>Rejected</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ================================================
+     FILTER TABS
+     ================================================ -->
+<div class="filter-tabs">
+  <button class="filter-tab active" data-filter="all">All Bookings</button>
+  <button class="filter-tab" data-filter="pending">⏳ Pending</button>
+  <button class="filter-tab" data-filter="accepted">✅ Accepted</button>
+  <button class="filter-tab" data-filter="rejected">❌ Rejected</button>
+</div>
+
+
+<!-- ================================================
+     BOOKINGS CONTAINER
+     ================================================ -->
+<div class="bookings-container" id="bookingsContainer">
+  <div class="loading-state">
+    <div class="loading-spinner"></div>
+    <p>Loading your bookings...</p>
+  </div>
+</div>
+
+
+<!-- ================================================
+     FOOTER
+     ================================================ -->
+<footer>
+  <p>© PCCOE Venue Booking Portal</p>
+</footer>
 
 </body>
 </html>

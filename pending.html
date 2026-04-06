@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>All Requests - Admin Panel</title>
+<title>Pending Requests - Admin Panel</title>
 <link rel="stylesheet" href="style.css">
 
 <style>
 /* ================================================
-   ADMIN PAGE ENHANCED STYLING
+   ADMIN PAGE ENHANCED STYLING - MATCHING accept.html
    ================================================ */
 
 /* Page Background */
@@ -47,9 +47,9 @@ body {
 }
 
 .admin-nav a.active {
-  background: linear-gradient(135deg, #0b3d91, #1a6bff);
+  background: linear-gradient(135deg, #f39c12, #e67e22);
   color: white;
-  box-shadow: 0 4px 15px rgba(11, 61, 145, 0.4);
+  box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
 }
 
 /* Admin Title Section */
@@ -88,7 +88,7 @@ body {
   margin-bottom: 28px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   transition: all 0.35s ease;
-  border-left: 6px solid #0b3d91;
+  border-left: 6px solid #f39c12;
   position: relative;
 }
 
@@ -163,7 +163,9 @@ body {
   border: 1px solid #e8ecf3;
 }
 
-/* Status Badge - ENHANCED COLORS */
+/* ================================================
+   STATUS BADGE - ENHANCED COLORS (TASK 2)
+   ================================================ */
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -177,8 +179,7 @@ body {
 }
 
 /* Pending - Yellow/Orange Bold */
-.status-badge.pending,
-.status-badge[style*="fff3cd"] {
+.status-badge.pending {
   background: linear-gradient(135deg, #fff3cd, #ffe69c);
   color: #856404;
   border: 2px solid #ffc107;
@@ -198,17 +199,20 @@ body {
   border: 2px solid #dc3545;
 }
 
-/* Buttons Container */
+/* ================================================
+   BUTTONS CONTAINER (TASK 1 - Accept/Reject/Edit)
+   ================================================ */
 .buttons {
   margin-top: 20px;
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
-/* Accept Button - GREEN */
+/* Accept Button - GREEN (TASK 1) */
 .acceptBtn {
-  background: linear-gradient(135deg, #28a745, #20c997);
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
   color: white;
   border: none;
   padding: 12px 24px;
@@ -224,12 +228,19 @@ body {
 
 .acceptBtn:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+  box-shadow: 0 8px 25px rgba(46, 204, 113, 0.4);
+  background: linear-gradient(135deg, #27ae60, #1e8449);
 }
 
-/* Reject Button - RED */
+.acceptBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Reject Button - RED (TASK 1) */
 .rejectBtn {
-  background: linear-gradient(135deg, #dc3545, #c82333);
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
   color: white;
   border: none;
   padding: 12px 24px;
@@ -245,7 +256,14 @@ body {
 
 .rejectBtn:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+  background: linear-gradient(135deg, #c0392b, #a93226);
+}
+
+.rejectBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* Edit Button - BLUE */
@@ -275,6 +293,111 @@ body {
   transform: none;
 }
 
+/* ================================================
+   REJECTION MODAL OVERLAY
+   ================================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+.modal-box {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-box h3 {
+  margin: 0 0 20px 0;
+  color: #721c24;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-box textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 2px solid #f5c6cb;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 14px;
+  min-height: 100px;
+  transition: all 0.3s;
+  background: #fff8f8;
+}
+
+.modal-box textarea:focus {
+  border-color: #dc3545;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  justify-content: flex-end;
+}
+
+.modal-cancel {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.modal-cancel:hover {
+  background: #5a6268;
+}
+
+.modal-confirm {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.modal-confirm:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+}
+
 /* Edit Form Panel */
 .editForm {
   background: linear-gradient(135deg, #f8fafc, #eef3ff);
@@ -295,6 +418,11 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .editForm > label {
@@ -481,11 +609,6 @@ body {
   animation: fadeIn 0.3s ease;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
 .rejection-reason-box label {
   font-weight: 700;
   color: #721c24;
@@ -600,7 +723,9 @@ body {
   opacity: 0.5;
 }
 
-/* Responsive Design */
+/* ================================================
+   RESPONSIVE DESIGN
+   ================================================ */
 @media (max-width: 900px) {
   .slotContainer {
     grid-template-columns: repeat(2, 1fr);
@@ -612,6 +737,10 @@ body {
 
   .requestsContainer {
     padding: 0 20px 40px;
+  }
+
+  .buttons {
+    justify-content: center;
   }
 }
 
@@ -650,6 +779,19 @@ body {
     width: 100%;
     justify-content: center;
   }
+
+  .buttons {
+    flex-direction: column;
+  }
+
+  .buttons button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .modal-box {
+    margin: 20px;
+  }
 }
 </style>
 </head>
@@ -657,7 +799,22 @@ body {
 <body>
 
 <!-- ================================================
-     NAVBAR (UNCHANGED)
+     REJECTION MODAL (TASK 1)
+     ================================================ -->
+<div class="modal-overlay" id="rejectModal">
+  <div class="modal-box">
+    <h3>Reject Booking</h3>
+    <label style="font-weight:600; color:#721c24; display:block; margin-bottom:10px;">Rejection Reason:</label>
+    <textarea id="modalRejectReason" placeholder="Enter reason for rejection..." rows="4"></textarea>
+    <div class="modal-buttons">
+      <button class="modal-cancel" onclick="closeRejectModal()">Cancel</button>
+      <button class="modal-confirm" id="modalConfirmReject">Confirm Reject</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================
+     NAVBAR (CONSISTENT PROFILE UI - TASK 4)
      ================================================ -->
 <nav class="navbar">
   <img src="pccoe.jpg" class="logo" alt="PCCOE Logo" onerror="this.style.display='none'">
@@ -672,8 +829,8 @@ body {
     <button id="profileBtn">&#128100;</button>
     <div class="dropdown" id="profileMenu">
       <a href="dashboard.html">Home</a>
-      <a href="accept.html" style="background:#eef3ff; color:#0b3d91;">All Requests</a>
-      <a href="pending.html">Pending Requests</a>
+      <a href="accept.html">All Requests</a>
+      <a href="pending.html" style="background:#eef3ff; color:#0b3d91;">Pending Requests</a>
       <a href="accepted.html">Accepted Bookings</a>
       <a href="rejected.html">Rejected Bookings</a>
       <a href="#" id="logoutBtn">Logout</a>
@@ -682,45 +839,45 @@ body {
 </nav>
 
 <!-- ================================================
-     USER BAR (UNCHANGED)
+     USER BAR (CONSISTENT - TASK 4)
      ================================================ -->
 <div class="userbar">
   <span id="facultyInfo">Loading user...</span>
 </div>
 
 <!-- ================================================
-     ADMIN NAV (UNCHANGED STRUCTURE)
+     ADMIN NAV (MATCHING accept.html STYLE - TASK 5)
      ================================================ -->
 <div class="admin-nav">
-  <a href="dashboard.html">🏠 Home</a>
-  <a href="accept.html" class="active">📋 All Requests</a>
-  <a href="pending.html">⏳ Pending</a>
-  <a href="accepted.html">✅ Accepted</a>
-  <a href="rejected.html">❌ Rejected</a>
+  <a href="dashboard.html">Home</a>
+  <a href="accept.html">All Requests</a>
+  <a href="pending.html" class="active">Pending Requests</a>
+  <a href="accepted.html">Accepted Bookings</a>
+  <a href="rejected.html">Rejected Bookings</a>
 </div>
 
 <!-- ================================================
-     ADMIN TITLE (UNCHANGED STRUCTURE)
+     ADMIN TITLE
      ================================================ -->
 <div class="admin-title">
-  <h1>📋 All Booking Requests</h1>
-  <p>Review, edit and manage all venue booking requests</p>
+  <h1>Pending Requests</h1>
+  <p>Review and process pending booking requests</p>
 </div>
 
 <!-- ================================================
-     REQUESTS CONTAINER (UNCHANGED)
+     REQUESTS CONTAINER
      ================================================ -->
 <div class="requestsContainer" id="requests"></div>
 
 <!-- ================================================
-     FOOTER (UNCHANGED)
+     FOOTER
      ================================================ -->
 <footer>
-  <p>© PCCOE Venue Booking Portal - Admin Panel</p>
+  <p>PCCOE Venue Booking Portal - Admin Panel</p>
 </footer>
 
 <!-- ================================================
-     SCRIPTS (COMPLETELY UNCHANGED)
+     SCRIPTS (LOGIC UNCHANGED)
      ================================================ -->
 <script type="module">
 
@@ -730,6 +887,10 @@ const supabase = createClient(
   "https://xgrzymhgssxjjkogvuvw.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhncnp5bWhnc3N4amprb2d2dXZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNzAyNTYsImV4cCI6MjA4Nzg0NjI1Nn0.A6tbTA6D2mmGdNTrm2oS5HSTJzgkMFbGARQQi5dL-TQ"
 )
+
+// Global variables for modal
+let currentRejectBookingId = null
+let currentProfile = null
 
 const profileBtn = document.getElementById("profileBtn")
 const profileMenu = document.getElementById("profileMenu")
@@ -749,9 +910,116 @@ document.getElementById("logoutBtn").onclick = async (e) => {
   window.location.href = "index.html"
 }
 
+// Modal functions
+window.closeRejectModal = function() {
+  document.getElementById("rejectModal").classList.remove("show")
+  document.getElementById("modalRejectReason").value = ""
+  currentRejectBookingId = null
+}
+
+window.openRejectModal = function(bookingId) {
+  currentRejectBookingId = bookingId
+  document.getElementById("rejectModal").classList.add("show")
+  document.getElementById("modalRejectReason").focus()
+}
+
+// Handle modal confirm
+document.getElementById("modalConfirmReject").onclick = async function() {
+  const reason = document.getElementById("modalRejectReason").value.trim()
+
+  if (!reason) {
+    alert("Please enter a rejection reason!")
+    return
+  }
+
+  const btn = this
+  btn.disabled = true
+  btn.textContent = "Rejecting..."
+
+  try {
+    const result = await supabase.rpc("update_booking_safe_v2", {
+      p_booking_id: currentRejectBookingId,
+      p_new_date: null,
+      p_new_slot_ids: [],
+      p_new_status: "rejected",
+      p_new_reason: reason
+    })
+
+    if (result.error) {
+      alert("Rejection failed: " + result.error.message)
+      btn.disabled = false
+      btn.textContent = "Confirm Reject"
+      return
+    }
+
+    const data = result.data
+    if (data && data.success === false) {
+      alert("Rejection failed: " + (data.error || "Unknown error"))
+      btn.disabled = false
+      btn.textContent = "Confirm Reject"
+      return
+    }
+
+    alert("Booking rejected successfully!")
+    closeRejectModal()
+    btn.disabled = false
+    btn.textContent = "Confirm Reject"
+    loadRequests()
+  } catch (e) {
+    alert("Error: " + e.message)
+    btn.disabled = false
+    btn.textContent = "Confirm Reject"
+  }
+}
+
+// Close modal on overlay click
+document.getElementById("rejectModal").onclick = function(e) {
+  if (e.target === this) {
+    closeRejectModal()
+  }
+}
+
 function formatDate(dateStr) {
   const options = { weekday: "short", day: "numeric", month: "short", year: "numeric" }
   return new Date(dateStr).toLocaleDateString("en-GB", options)
+}
+
+// Quick Accept function (TASK 1)
+async function quickAccept(bookingId, btn) {
+  btn.disabled = true
+  btn.textContent = "Accepting..."
+
+  try {
+    const result = await supabase.rpc("update_booking_safe_v2", {
+      p_booking_id: bookingId,
+      p_new_date: null,
+      p_new_slot_ids: [],
+      p_new_status: "accepted",
+      p_new_reason: null
+    })
+
+    if (result.error) {
+      alert("Accept failed: " + result.error.message)
+      btn.disabled = false
+      btn.textContent = "Accept"
+      return
+    }
+
+    const data = result.data
+    if (data && data.success === false) {
+      alert("Accept failed: " + (data.error || "Unknown error"))
+      btn.disabled = false
+      btn.textContent = "Accept"
+      return
+    }
+
+    alert("Booking accepted successfully!")
+    loadRequests()
+  } catch (e) {
+    alert("Error: " + e.message)
+    btn.disabled = false
+    btn.textContent = "Accept"
+  }
 }
 
 async function loadSlots(container, selectedDate, currentBookingId, selectedSlots = []) {
@@ -775,6 +1043,7 @@ async function loadSlots(container, selectedDate, currentBookingId, selectedSlot
 
     let bookedIds = []
 
+    // NULL SAFETY - Explicit array check
     if (booked && Array.isArray(booked)) {
       for (let i = 0; i < booked.length; i++) {
         const b = booked[i]
@@ -833,9 +1102,10 @@ async function loadRequests() {
       venues(venue_name),
       booking_slots(slot_id, slots(id, slot_label, start_time, end_time))
     `)
+    .eq("status", "pending")
     .order("id", { ascending: false })
 
-  console.log("All requests:", data)
+  console.log("Pending requests:", data)
 
   const container = document.getElementById("requests")
   container.innerHTML = ""
@@ -845,9 +1115,9 @@ async function loadRequests() {
   if (!data || data.length === 0) {
     container.innerHTML = `
       <div class="empty-state">
-        <div class="empty-state-icon">📋</div>
-        <h3>No Booking Requests Found</h3>
-        <p style="color:#888;">There are no booking requests in the system yet.</p>
+        <div class="empty-state-icon">&#9203;</div>
+        <h3>No Pending Requests</h3>
+        <p style="color:#888;">There are no pending booking requests at the moment.</p>
       </div>
     `
     return
@@ -860,64 +1130,45 @@ async function loadRequests() {
       return s.slot_label ? `${s.slot_label} (${s.start_time} - ${s.end_time})` : `${s.start_time} - ${s.end_time}`
     }).filter(Boolean).join(", ")
 
-    // Determine status badge class and border color
-    let statusBadgeClass = "status-badge"
-    let borderColor = "#0b3d91"
-    let statusText = req.status.toUpperCase()
-
-    if (req.status === "pending") {
-      statusBadgeClass += " pending"
-      borderColor = "#f39c12"
-    } else if (req.status === "accepted") {
-      statusBadgeClass += " accepted"
-      borderColor = "#28a745"
-    } else if (req.status === "rejected") {
-      statusBadgeClass += " rejected"
-      borderColor = "#dc3545"
-    }
-
     const card = document.createElement("div")
     card.className = "request-card"
-    card.style.borderLeftColor = borderColor
+    card.style.borderLeftColor = "#f39c12"
 
-    // Build rejection reason display if rejected
-    let rejectionDisplay = ""
-    if (req.status === "rejected" && req.rejection_reason) {
-      rejectionDisplay = `
-        <div style="margin-top:15px; padding:12px 16px; background:linear-gradient(135deg,#f8d7da,#fce4ec); border-radius:10px; border-left:4px solid #dc3545;">
-          <span style="font-weight:700; color:#721c24; font-size:12px; text-transform:uppercase; letter-spacing:1px;">Rejection Reason</span>
-          <p style="margin:8px 0 0 0; color:#721c24; font-size:14px;">${req.rejection_reason}</p>
-        </div>
-      `
-    }
+    // Check if admin to show Accept/Reject buttons (TASK 1)
+    const isAdmin = currentProfile && currentProfile.role === "admin"
+    const isPending = req.status === "pending"
+    const showQuickActions = isAdmin && isPending
 
     card.innerHTML = `
       <div class="title">
         <span class="label">EVENT NAME</span>
         <h2>${(req.event_name || "Untitled Event").toUpperCase()}</h2>
       </div>
-      <p><b>👤 Faculty:</b> ${req.profiles?.name || 'N/A'} (${req.profiles?.employee_id || 'N/A'})</p>
-      <p><b>📍 Venue:</b> ${req.venues?.venue_name || 'N/A'}</p>
-      <p><b>📅 Date:</b> ${formatDate(req.booking_date)}</p>
-      <p><b>🕐 Slots:</b> ${slotsDisplay || 'None'}</p>
-      <p><b>👥 Attendees:</b> ${req.total_students || 'N/A'}</p>
+      <p><b>Faculty:</b> ${req.profiles?.name || 'N/A'} (${req.profiles?.employee_id || 'N/A'})</p>
+      <p><b>Venue:</b> ${req.venues?.venue_name || 'N/A'}</p>
+      <p><b>Date:</b> ${formatDate(req.booking_date)}</p>
+      <p><b>Slots:</b> ${slotsDisplay || 'None'}</p>
+      <p><b>Attendees:</b> ${req.total_students || 'N/A'}</p>
       <div class="description">
         <span class="label">DESCRIPTION</span>
         <p>${req.description || 'No description provided'}</p>
       </div>
       <p style="margin-top:18px;">
         <b>Status:</b>
-        <span class="${statusBadgeClass}">${statusText}</span>
+        <span class="status-badge pending">PENDING</span>
       </p>
-      ${rejectionDisplay}
       <div class="buttons">
-        <button class="editBtn">✏️ Edit</button>
+        ${showQuickActions ? `
+          <button class="acceptBtn" data-id="${req.id}">Accept</button>
+          <button class="rejectBtn" data-id="${req.id}">Reject</button>
+        ` : ''}
+        <button class="editBtn">Edit</button>
       </div>
       <div class="editForm">
-        <label>📅 Select New Date:</label>
+        <label>Select New Date:</label>
         <input type="date" class="editDate" value="${req.booking_date}" min="${today}">
         <div class="slot-section">
-          <div class="slot-section-title">🕐 Select Time Slots:</div>
+          <div class="slot-section-title">Select Time Slots:</div>
           <div class="slotContainer"></div>
         </div>
         <div class="status-selection">
@@ -925,27 +1176,43 @@ async function loadRequests() {
           <div class="status-options">
             <label class="opt-accept">
               <input type="radio" name="status_${req.id}" value="accepted">
-              ✅ Accept
+              Accept
             </label>
             <label class="opt-reject">
               <input type="radio" name="status_${req.id}" value="rejected">
-              ❌ Reject
+              Reject
             </label>
           </div>
         </div>
         <div class="rejection-reason-box">
-          <label>📝 Rejection Reason:</label>
+          <label>Rejection Reason:</label>
           <textarea class="rejectionReason" rows="3" placeholder="Enter reason for rejection..."></textarea>
         </div>
         <div class="selected-status"></div>
         <div class="action-buttons">
-          <button class="updateBtn">💾 Update Booking</button>
-          <button class="cancelBtn">✖️ Cancel</button>
+          <button class="updateBtn">Update Booking</button>
+          <button class="cancelBtn">Cancel</button>
         </div>
       </div>
     `
 
     container.appendChild(card)
+
+    // Quick Accept button handler (TASK 1)
+    const acceptBtn = card.querySelector(".acceptBtn")
+    if (acceptBtn) {
+      acceptBtn.onclick = function() {
+        quickAccept(req.id, this)
+      }
+    }
+
+    // Quick Reject button handler (TASK 1)
+    const rejectBtnQuick = card.querySelector(".rejectBtn")
+    if (rejectBtnQuick) {
+      rejectBtnQuick.onclick = function() {
+        openRejectModal(req.id)
+      }
+    }
 
     const editBtn = card.querySelector(".editBtn")
     const form = card.querySelector(".editForm")
@@ -966,7 +1233,7 @@ async function loadRequests() {
       await loadSlots(slotContainer, dateInput.value, req.id, selected)
       editBtn.style.display = "none"
       editBtn.disabled = false
-      editBtn.textContent = "✏️ Edit"
+      editBtn.textContent = "Edit"
     }
 
     dateInput.onchange = async () => {
@@ -979,12 +1246,12 @@ async function loadRequests() {
         if (radio.value === "rejected") {
           rejectionBox.style.display = "block"
           selectedStatusDiv.className = "selected-status reject"
-          selectedStatusDiv.textContent = "⚠️ Status will be: REJECTED"
+          selectedStatusDiv.textContent = "Status will be: REJECTED"
         } else {
           rejectionBox.style.display = "none"
           rejectionInput.value = ""
           selectedStatusDiv.className = "selected-status accept"
-          selectedStatusDiv.textContent = "✅ Status will be: ACCEPTED"
+          selectedStatusDiv.textContent = "Status will be: ACCEPTED"
         }
       }
     })
@@ -999,16 +1266,21 @@ async function loadRequests() {
     updateBtn.onclick = async () => {
       const newDate = dateInput.value
 
+      // Get status first
       const selectedRadio = card.querySelector(`input[name="status_${req.id}"]:checked`)
       const newStatus = selectedRadio ? selectedRadio.value : req.status
 
+      // Get selected slots from checkboxes
       let selectedSlots = [...slotContainer.querySelectorAll(".slot-item input:checked")]
         .map(cb => cb.value)
 
+      // REJECT: Pass empty array (SQL will NOT touch slots)
+      // ACCEPT: Pass selected slots (SQL will delete all old, insert only selected)
       if (newStatus === "rejected") {
-        selectedSlots = []
+        selectedSlots = []  // Ignore slots when rejecting
       }
 
+      // Get reason
       let newReason = null
       if (newStatus === "rejected") {
         newReason = rejectionInput.value.trim()
@@ -1042,7 +1314,7 @@ async function loadRequests() {
         if (result.error) {
           alert("Update failed: " + result.error.message)
           updateBtn.disabled = false
-          updateBtn.textContent = "💾 Update Booking"
+          updateBtn.textContent = "Update Booking"
           return
         }
 
@@ -1050,7 +1322,7 @@ async function loadRequests() {
         if (data && data.success === false) {
           alert("Update failed: " + (data.error || "Unknown error"))
           updateBtn.disabled = false
-          updateBtn.textContent = "💾 Update Booking"
+          updateBtn.textContent = "Update Booking"
           return
         }
 
@@ -1068,7 +1340,7 @@ async function loadRequests() {
       } catch (e) {
         alert("Error: " + e.message)
         updateBtn.disabled = false
-        updateBtn.textContent = "💾 Update Booking"
+        updateBtn.textContent = "Update Booking"
       }
     }
   })
@@ -1082,6 +1354,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
 
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", session.user.id).single()
+  currentProfile = profile
   document.getElementById("facultyInfo").innerText = `${profile.name} | ${profile.employee_id} | ${profile.department || 'Admin'}`
 
   if (profile.role !== "admin") {

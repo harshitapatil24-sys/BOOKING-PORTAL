@@ -1,319 +1,963 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<title>Book Venue</title>
-<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Venue - PCCOE</title>
+<link rel="stylesheet" href="style.css">
 
+<style>
+/* ================================================
+   BOOKING PAGE SPECIFIC STYLES
+   ================================================ */
+
+.booking-page {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf3 100%);
+  min-height: 100vh;
+}
+
+.page-header {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  padding: 40px 60px;
+  color: white;
+  text-align: center;
+}
+
+.page-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.page-header p {
+  margin: 10px 0 0 0;
+  opacity: 0.8;
+  font-size: 15px;
+}
+
+/* Form Card Enhancement */
+.booking-card {
+  background: #ffffff;
+  border: none;
+}
+
+/* Section Headers */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 30px 0 20px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #eef3ff;
+}
+
+.section-header h3 {
+  font-size: 18px;
+  color: #1a1a2e;
+  margin: 0;
+  font-weight: 600;
+}
+
+.section-header .icon {
+  font-size: 20px;
+}
+
+/* Slot Grid */
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+/* Enhanced Slot Styling */
+.slot-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+  background: #f8fafc;
+}
+
+.slot-item:hover:not(.is-booked):not(.is-pending) {
+  background: #eef3ff;
+  border-color: #0b3d91;
+  transform: translateY(-2px);
+}
+
+.slot-item.is-available {
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  border-color: #2196f3;
+}
+
+.slot-item.is-pending {
+  background: linear-gradient(135deg, #fff8e1, #ffecb3);
+  border-color: #ffc107;
+  cursor: not-allowed;
+  opacity: 0.9;
+}
+
+.slot-item.is-booked {
+  background: linear-gradient(135deg, #ffebee, #ffcdd2);
+  border-color: #f44336;
+  cursor: not-allowed;
+  opacity: 0.9;
+  text-decoration: line-through;
+}
+
+.slot-item.is-selected {
+  background: linear-gradient(135deg, #0b3d91, #1a6bff);
+  color: white;
+  border-color: #0b3d91;
+}
+
+.slot-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: inherit;
+}
+
+.slot-item .slot-time {
+  flex: 1;
+}
+
+.slot-item .slot-status {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.1);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Loading Indicator */
+.slots-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  gap: 15px;
+  color: #666;
+}
+
+.slots-loading .spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #e0e0e0;
+  border-top-color: #0b3d91;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0;
+}
+
+/* Empty Slots Message */
+.slots-empty {
+  text-align: center;
+  padding: 40px;
+  color: #888;
+  background: #f9f9f9;
+  border-radius: 12px;
+}
+
+.slots-empty .icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+  opacity: 0.5;
+}
+
+/* Hours Summary Box */
+.summary-box {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 16px;
+  padding: 25px;
+  text-align: center;
+  color: white;
+  border: none;
+}
+
+.summary-box p {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.summary-box h2 {
+  font-size: 48px;
+  margin: 0;
+  font-weight: 700;
+}
+
+.summary-box span {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* Submit Button Enhancement */
+.submit-section {
+  margin-top: 35px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.submit-section .submitBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.submit-section .submitBtn .spinner {
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+  margin: 0;
+}
+
+/* Error/Success Messages */
+.form-message {
+  padding: 14px 18px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+
+.form-message.error {
+  background: linear-gradient(135deg, #ffebee, #ffcdd2);
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+  display: flex;
+}
+
+.form-message.success {
+  background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+  display: flex;
+}
+
+/* Venue Info Card */
+.venue-info-card {
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border: 2px solid #64b5f6;
+}
+
+.venue-info-card .icon {
+  font-size: 32px;
+}
+
+.venue-info-card .info h4 {
+  margin: 0;
+  color: #1565c0;
+  font-size: 18px;
+}
+
+.venue-info-card .info p {
+  margin: 4px 0 0 0;
+  color: #1976d2;
+  font-size: 13px;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .page-header {
+    padding: 30px 20px;
+  }
+
+  .page-header h1 {
+    font-size: 24px;
+  }
+
+  .slot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .submit-section {
+    flex-direction: column;
+  }
+
+  .venue-info-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+</style>
 </head>
 
-<body>
+<body class="booking-page">
 
-<!-- NAVBAR -->
+<!-- ================================================
+     NAVBAR
+     ================================================ -->
 <nav class="navbar">
-<img src="pccoe.jpg" class="logo">
+  <img src="pccoe.jpg" class="logo" alt="PCCOE Logo">
 
-<ul class="nav-links">
-<li><a href="dashboard.html">Home</a></li>
-<li><a href="#">Halls</a></li>
-<li><a href="#">Blog</a></li>
-<li><a href="#">Q/A</a></li>
-<li><a href="#">Contact</a></li>
-</ul>
+  <ul class="nav-links">
+    <li><a href="dashboard.html">Home</a></li>
+    <li><a href="#">Halls</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#">Q/A</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
 
-<div class="profile">
-<button id="profileBtn">👤</button>
+  <div class="profile">
+    <button id="profileBtn">👤</button>
 
-<div class="dropdown" id="profileMenu">
-<a href="#">View Profile</a>
-<a href="book.html">Book Venue</a>
-<a href="youtbooking.html">Your Bookings</a>
-<a href="accept.html">Accept Booking</a>
-<a href="index.html" id="logoutBtn">Logout</a>
-</div>
-</div>
+    <div class="dropdown" id="profileMenu">
+      <a href="book.html" id="bookVenueLink" style="background:#eef3ff; color:#0b3d91;">Book Venue</a>
+      <a href="youtbooking.html" id="myBookingsLink">Your Bookings</a>
+      <a href="accept.html" id="acceptBookingLink" style="display:none;">Accept Booking</a>
+      <a href="index.html" id="logoutBtn">Logout</a>
+    </div>
+  </div>
 </nav>
 
-<!-- USER BAR -->
+
+<!-- ================================================
+     USER BAR
+     ================================================ -->
 <div class="userbar">
-<span id="facultyInfo">Loading user...</span>
+  <span id="facultyInfo">Loading user...</span>
 </div>
 
+
+<!-- ================================================
+     PAGE HEADER
+     ================================================ -->
+<div class="page-header">
+  <h1>📅 Book a Venue</h1>
+  <p>Select your venue, date, and time slots to make a booking request</p>
+</div>
+
+
+<!-- ================================================
+     BOOKING FORM
+     ================================================ -->
 <div class="booking-wrapper">
-<h2 class="booking-title">Venue Booking Form</h2>
 
-<div class="booking-card">
+  <!-- Form Message -->
+  <div class="form-message" id="formMessage">
+    <span class="icon"></span>
+    <span class="text"></span>
+  </div>
 
-<div class="booking-grid">
+  <div class="booking-card">
 
-<div class="field">
-<label>Faculty Name</label>
-<input id="facultyName" readonly>
+    <!-- Venue Info (if pre-selected) -->
+    <div class="venue-info-card" id="venueInfoCard" style="display: none;">
+      <span class="icon">🏛️</span>
+      <div class="info">
+        <h4 id="selectedVenueName">Venue Name</h4>
+        <p>You are booking this venue</p>
+      </div>
+    </div>
+
+    <!-- Faculty Information Section -->
+    <div class="section-header">
+      <span class="icon">👤</span>
+      <h3>Faculty Information</h3>
+    </div>
+
+    <div class="booking-grid">
+      <div class="field">
+        <label>Faculty Name</label>
+        <input id="facultyName" readonly placeholder="Loading...">
+      </div>
+
+      <div class="field">
+        <label>Employee ID</label>
+        <input id="empId" readonly placeholder="Loading...">
+      </div>
+
+      <div class="field">
+        <label>Department</label>
+        <input id="dept" readonly placeholder="Loading...">
+      </div>
+    </div>
+
+    <!-- Event Details Section -->
+    <div class="section-header">
+      <span class="icon">📝</span>
+      <h3>Event Details</h3>
+    </div>
+
+    <div class="booking-grid">
+      <div class="field">
+        <label>Event Name <span style="color:#e74c3c;">*</span></label>
+        <input id="eventName" placeholder="Enter event name">
+      </div>
+
+      <div class="field">
+        <label>Number of Attendees <span style="color:#e74c3c;">*</span></label>
+        <input type="number" id="totalStudents" placeholder="Expected attendees" min="1">
+      </div>
+
+      <div class="field full">
+        <label>Event Description</label>
+        <textarea id="eventDesc" rows="3" placeholder="Brief description of the event (optional)"></textarea>
+      </div>
+    </div>
+
+    <!-- Venue & Date Section -->
+    <div class="section-header">
+      <span class="icon">📍</span>
+      <h3>Venue & Date Selection</h3>
+    </div>
+
+    <div class="booking-grid">
+      <div class="field">
+        <label>Select Venue <span style="color:#e74c3c;">*</span></label>
+        <select id="venue">
+          <option value="">-- Choose a Venue --</option>
+          <option value="47bf6743-3845-4cc9-b4ee-8f01e42b6efd">Auditorium (Capacity: 500)</option>
+          <option value="f037d0c8-74da-45a2-a977-a3ceb7cb42e5">Seminar Hall 1 (Capacity: 200)</option>
+          <option value="f1088a0c-4890-41b5-80ef-62bcae6e7024">Seminar Hall 2 (Capacity: 180)</option>
+          <option value="5df13a70-fecb-4ab1-a326-0c7d32279ab6">Sports Hall (Indoor Events)</option>
+          <option value="7d54aa73-b381-4d59-bdeb-7bf04c44ebe9">Reading Hall (Study Area)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Select Date <span style="color:#e74c3c;">*</span></label>
+        <input type="date" id="date">
+      </div>
+
+      <div class="field">
+        <label>Day of Week</label>
+        <input id="day" readonly placeholder="Select a date first">
+      </div>
+    </div>
+
+    <!-- Time Slots Section -->
+    <div class="section-header">
+      <span class="icon">🕐</span>
+      <h3>Select Time Slots <span style="color:#e74c3c;">*</span></h3>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend">
+      <span><span class="box available"></span> Available</span>
+      <span><span class="box pending"></span> Pending Approval</span>
+      <span><span class="box booked"></span> Already Booked</span>
+    </div>
+
+    <div class="slots-area">
+      <div id="slotsContainer">
+        <div class="slots-empty">
+          <div class="icon">📅</div>
+          <p>Select a venue and date to view available time slots</p>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <p>Selected Hours</p>
+        <h2 id="totalHours">0</h2>
+        <span>hour(s)</span>
+      </div>
+    </div>
+
+    <!-- Submit Section -->
+    <div class="submit-section">
+      <button class="submitBtn" id="submitBtn" onclick="submitBooking()">
+        <span class="btn-text">Submit Booking Request</span>
+      </button>
+    </div>
+
+  </div>
 </div>
 
-<div class="field">
-<label>Employee ID</label>
-<input id="empId" readonly>
-</div>
 
-<div class="field">
-<label>Department</label>
-<input id="dept" readonly>
-</div>
+<!-- ================================================
+     FOOTER
+     ================================================ -->
+<footer>
+  <p>© PCCOE Venue Booking Portal</p>
+</footer>
 
-<div class="field">
-<label>Event Name *</label>
-<input id="eventName">
-</div>
 
-<div class="field">
-<label>Total Students *</label>
-<input type="number" id="totalStudents">
-</div>
-
-<div class="field full">
-<label>Description</label>
-<textarea id="eventDesc"></textarea>
-</div>
-
-<div class="field">
-<label>Venue *</label>
-<select id="venue">
-<option value="">Select Venue</option>
-<option value="47bf6743-3845-4cc9-b4ee-8f01e42b6efd">Auditorium</option>
-<option value="f037d0c8-74da-45a2-a977-a3ceb7cb42e5">Seminar Hall 1</option>
-<option value="f1088a0c-4890-41b5-80ef-62bcae6e7024">Seminar Hall 2</option>
-<option value="5df13a70-fecb-4ab1-a326-0c7d32279ab6">Sports Hall</option>
-<option value="7d54aa73-b381-4d59-bdeb-7bf04c44ebe9">Reading Hall</option>
-</select>
-</div>
-
-<div class="field">
-<label>Date *</label>
-<input type="date" id="date">
-</div>
-
-<div class="field">
-<label>Day</label>
-<input id="day" readonly>
-</div>
-
-</div>
-<div class="legend">
-    <span><span class="box available"></span> Available</span>
-    <span><span class="box pending"></span> Pending</span>
-    <span><span class="box booked"></span> Booked</span>
-</div>
-<h3>Select Slots *</h3>
-
-<div class="slots-area">
-<div id="slotsContainer"></div>
-
-<div class="hours-box">
-<p>Total Hours</p>
-<h2 id="totalHours">0</h2>
-</div>
-</div>
-
-<button class="submitBtn" onclick="submitBooking()">Submit Booking</button>
-
-</div>
-</div>
-
+<!-- ================================================
+     SCRIPTS
+     ================================================ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+/* ================================================
+   SUPABASE INITIALIZATION
+   ================================================ */
 
 const client = supabase.createClient(
-"https://xgrzymhgssxjjkogvuvw.supabase.co",
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhncnp5bWhnc3N4amprb2d2dXZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNzAyNTYsImV4cCI6MjA4Nzg0NjI1Nn0.A6tbTA6D2mmGdNTrm2oS5HSTJzgkMFbGARQQi5dL-TQ"
+  "https://xgrzymhgssxjjkogvuvw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhncnp5bWhnc3N4amprb2d2dXZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNzAyNTYsImV4cCI6MjA4Nzg0NjI1Nn0.A6tbTA6D2mmGdNTrm2oS5HSTJzgkMFbGARQQi5dL-TQ"
 )
-/* DROPDOWN FIX */
-const profileBtn = document.getElementById("profileBtn");
-const profileMenu = document.getElementById("profileMenu");
 
-profileBtn.addEventListener("click", (e)=>{
-    e.stopPropagation();
-    profileMenu.classList.toggle("show");
-});
 
-document.addEventListener("click", ()=>{
-    profileMenu.classList.remove("show");
-});
+/* ================================================
+   GLOBAL VARIABLES
+   ================================================ */
 
 let selectedSlots = []
+let currentProfile = null
 
-/* PROFILE + AUTH */
-async function init(){
-const { data:{ session } } = await client.auth.getSession()
 
-if(!session){
-location="login.html"
-return
+/* ================================================
+   PROFILE DROPDOWN
+   ================================================ */
+
+const profileBtn = document.getElementById("profileBtn")
+const profileMenu = document.getElementById("profileMenu")
+
+profileBtn.addEventListener("click", (e) => {
+  e.stopPropagation()
+  profileMenu.classList.toggle("show")
+})
+
+document.addEventListener("click", () => {
+  profileMenu.classList.remove("show")
+})
+
+
+/* ================================================
+   FORM MESSAGE HELPER
+   ================================================ */
+
+function showMessage(text, type = "error") {
+  const msgBox = document.getElementById("formMessage")
+  msgBox.className = `form-message ${type}`
+  msgBox.querySelector(".icon").textContent = type === "error" ? "❌" : "✅"
+  msgBox.querySelector(".text").textContent = text
+  msgBox.style.display = "flex"
+
+  // Auto-hide after 6 seconds
+  setTimeout(() => {
+    msgBox.style.display = "none"
+  }, 6000)
+
+  // Scroll to message
+  msgBox.scrollIntoView({ behavior: "smooth", block: "center" })
 }
 
-const { data: profile } = await client
-.from("profiles")
-.select("*")
-.eq("id", session.user.id)
-.single()
-
-facultyName.value = profile?.name || ""
-empId.value = profile?.employee_id || ""
-dept.value = profile?.department || ""
-
-facultyInfo.innerText =
-`${profile?.name} | ${profile?.employee_id} | ${profile?.department}`
+function hideMessage() {
+  document.getElementById("formMessage").style.display = "none"
 }
+
+
+/* ================================================
+   INITIALIZATION
+   ================================================ */
+
+async function init() {
+  const { data: { session } } = await client.auth.getSession()
+
+  if (!session) {
+    location = "login.html"
+    return
+  }
+
+  const { data: profile } = await client
+    .from("profiles")
+    .select("*")
+    .eq("id", session.user.id)
+    .single()
+
+  if (!profile) {
+    showMessage("Profile not found. Please contact admin.")
+    return
+  }
+
+  currentProfile = profile
+
+  // Fill faculty info
+  document.getElementById("facultyName").value = profile?.name || ""
+  document.getElementById("empId").value = profile?.employee_id || ""
+  document.getElementById("dept").value = profile?.department || ""
+
+  // Update user bar
+  document.getElementById("facultyInfo").innerText =
+    `${profile?.name} | ${profile?.employee_id} | ${profile?.department}`
+
+  // Role-based menu visibility
+  if (profile.role === "admin") {
+    document.getElementById("acceptBookingLink").style.display = "block"
+  }
+
+  // Check for pre-selected venue from URL
+  const params = new URLSearchParams(window.location.search)
+  const preselectedVenue = params.get("venue")
+
+  if (preselectedVenue) {
+    const venueSelect = document.getElementById("venue")
+    const options = venueSelect.options
+
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].text.toLowerCase().includes(preselectedVenue.toLowerCase())) {
+        venueSelect.selectedIndex = i
+        showVenueInfo(options[i].text)
+        break
+      }
+    }
+  }
+}
+
 init()
 
-/* DATE */
-date.min = new Date().toISOString().split("T")[0]
 
-date.onchange = ()=>{
-const d = new Date(date.value)
-const days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-day.value = days[d.getDay()]
-loadSlots()
+/* ================================================
+   VENUE INFO DISPLAY
+   ================================================ */
+
+function showVenueInfo(venueName) {
+  const card = document.getElementById("venueInfoCard")
+  document.getElementById("selectedVenueName").textContent = venueName.split(" (")[0]
+  card.style.display = "flex"
 }
 
-venue.onchange = loadSlots
 
-/* LOAD SLOTS */
-async function loadSlots(){
+/* ================================================
+   DATE HANDLING
+   ================================================ */
 
-if(!venue.value || !date.value) return
+const dateInput = document.getElementById("date")
+const dayInput = document.getElementById("day")
+const venueSelect = document.getElementById("venue")
 
-selectedSlots=[]
-totalHours.innerText=0
+// Set minimum date to today
+dateInput.min = new Date().toISOString().split("T")[0]
 
-const { data: slots } = await client.from("slots").select("*")
-
-const { data: bookings } = await client
-.from("booking_requests")
-.select("id, status")
-.eq("venue_id", venue.value)
-.eq("booking_date", date.value)
-
-let bookedMap = {}
-
-if(bookings && bookings.length > 0){
-
-const { data: slotData } = await client
-.from("booking_slots")
-.select("booking_id, slot_id")
-.in("booking_id", bookings.map(b => b.id))
-
-slotData?.forEach(s=>{
-const booking = bookings.find(b => b.id === s.booking_id)
-if(booking){
-bookedMap[s.slot_id] = booking.status
-}
-})
+dateInput.onchange = () => {
+  const d = new Date(dateInput.value)
+  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+  dayInput.value = days[d.getDay()]
+  loadSlots()
 }
 
-slotsContainer.innerHTML=""
+venueSelect.onchange = () => {
+  if (venueSelect.value) {
+    showVenueInfo(venueSelect.options[venueSelect.selectedIndex].text)
+  } else {
+    document.getElementById("venueInfoCard").style.display = "none"
+  }
+  loadSlots()
+}
 
-slots?.forEach(slot=>{
 
-const label=document.createElement("label")
-const input=document.createElement("input")
+/* ================================================
+   LOAD SLOTS
+   ================================================ */
 
-input.type="checkbox"
-input.value=slot.id
+async function loadSlots() {
+  const container = document.getElementById("slotsContainer")
 
-label.className = "slot";
+  // Reset selection
+  selectedSlots = []
+  document.getElementById("totalHours").innerText = 0
 
-if(bookedMap[slot.id]){
-    if(bookedMap[slot.id] === "pending"){
-        label.classList.add("pending");
-        input.disabled = true;
+  // Validate inputs
+  if (!venueSelect.value || !dateInput.value) {
+    container.innerHTML = `
+      <div class="slots-empty">
+        <div class="icon">📅</div>
+        <p>Select a venue and date to view available time slots</p>
+      </div>
+    `
+    return
+  }
+
+  // Show loading
+  container.innerHTML = `
+    <div class="slots-loading">
+      <div class="spinner"></div>
+      <span>Loading available slots...</span>
+    </div>
+  `
+
+  try {
+    // Fetch all slots
+    const { data: slots, error: slotsError } = await client
+      .from("slots")
+      .select("*")
+      .order("start_time")
+
+    if (slotsError) throw slotsError
+
+    // Fetch bookings for this venue and date
+    const { data: bookings, error: bookingsError } = await client
+      .from("booking_requests")
+      .select("id, status")
+      .eq("venue_id", venueSelect.value)
+      .eq("booking_date", dateInput.value)
+
+    if (bookingsError) throw bookingsError
+
+    // Build map of booked/pending slots
+    let slotStatusMap = {}
+
+    if (bookings && bookings.length > 0) {
+      const { data: slotData } = await client
+        .from("booking_slots")
+        .select("booking_id, slot_id")
+        .in("booking_id", bookings.map(b => b.id))
+
+      if (slotData) {
+        slotData.forEach(s => {
+          const booking = bookings.find(b => b.id === s.booking_id)
+          if (booking) {
+            // Accepted takes priority over pending
+            if (booking.status === "accepted") {
+              slotStatusMap[s.slot_id] = "booked"
+            } else if (booking.status === "pending" && slotStatusMap[s.slot_id] !== "booked") {
+              slotStatusMap[s.slot_id] = "pending"
+            }
+          }
+        })
+      }
     }
-    else if(bookedMap[slot.id] === "accepted"){
-        label.classList.add("booked");
-        input.disabled = true;
+
+    // Render slots
+    if (!slots || slots.length === 0) {
+      container.innerHTML = `
+        <div class="slots-empty">
+          <div class="icon">⚠️</div>
+          <p>No time slots configured in the system</p>
+        </div>
+      `
+      return
     }
-} else {
-    label.classList.add("available");
+
+    container.innerHTML = '<div class="slot-grid" id="slotGrid"></div>'
+    const grid = document.getElementById("slotGrid")
+
+    slots.forEach(slot => {
+      const status = slotStatusMap[slot.id] || "available"
+      const isDisabled = status === "booked" || status === "pending"
+
+      const div = document.createElement("div")
+      div.className = `slot-item is-${status}`
+      div.dataset.slotId = slot.id
+
+      const checkbox = document.createElement("input")
+      checkbox.type = "checkbox"
+      checkbox.value = slot.id
+      checkbox.disabled = isDisabled
+
+      const timeSpan = document.createElement("span")
+      timeSpan.className = "slot-time"
+      timeSpan.textContent = `${slot.start_time} - ${slot.end_time}`
+
+      const statusSpan = document.createElement("span")
+      statusSpan.className = "slot-status"
+
+      if (status === "booked") {
+        statusSpan.textContent = "Booked"
+      } else if (status === "pending") {
+        statusSpan.textContent = "Pending"
+      } else {
+        statusSpan.textContent = "Available"
+      }
+
+      div.appendChild(checkbox)
+      div.appendChild(timeSpan)
+      div.appendChild(statusSpan)
+
+      // Click handler for available slots
+      if (!isDisabled) {
+        div.onclick = (e) => {
+          if (e.target.tagName !== "INPUT") {
+            checkbox.checked = !checkbox.checked
+          }
+
+          if (checkbox.checked) {
+            if (!selectedSlots.includes(slot.id)) {
+              selectedSlots.push(slot.id)
+            }
+            div.classList.add("is-selected")
+          } else {
+            selectedSlots = selectedSlots.filter(x => x !== slot.id)
+            div.classList.remove("is-selected")
+          }
+
+          document.getElementById("totalHours").innerText = selectedSlots.length
+        }
+      }
+
+      grid.appendChild(div)
+    })
+
+  } catch (err) {
+    console.error("Load slots error:", err)
+    container.innerHTML = `
+      <div class="slots-empty">
+        <div class="icon">❌</div>
+        <p>Error loading slots: ${err.message}</p>
+      </div>
+    `
+  }
 }
 
-input.onchange=()=>{
-if(input.checked) selectedSlots.push(slot.id)
-else selectedSlots=selectedSlots.filter(x=>x!==slot.id)
-totalHours.innerText=selectedSlots.length
+
+/* ================================================
+   SUBMIT BOOKING
+   ================================================ */
+
+async function submitBooking() {
+  hideMessage()
+
+  const eventName = document.getElementById("eventName").value.trim()
+  const totalStudentsVal = document.getElementById("totalStudents").value
+  const venueVal = document.getElementById("venue").value
+  const dateVal = document.getElementById("date").value
+  const description = document.getElementById("eventDesc").value.trim()
+
+  // Validation
+  if (!eventName) {
+    showMessage("Please enter an event name")
+    document.getElementById("eventName").focus()
+    return
+  }
+
+  if (!totalStudentsVal || parseInt(totalStudentsVal) < 1) {
+    showMessage("Please enter a valid number of attendees")
+    document.getElementById("totalStudents").focus()
+    return
+  }
+
+  if (!venueVal) {
+    showMessage("Please select a venue")
+    document.getElementById("venue").focus()
+    return
+  }
+
+  if (!dateVal) {
+    showMessage("Please select a date")
+    document.getElementById("date").focus()
+    return
+  }
+
+  if (selectedSlots.length === 0) {
+    showMessage("Please select at least one time slot")
+    return
+  }
+
+  // Check for slot conflicts (double-check before submitting)
+  const { data: existingBookings } = await client
+    .from("booking_requests")
+    .select("id, status, booking_slots(slot_id)")
+    .eq("venue_id", venueVal)
+    .eq("booking_date", dateVal)
+    .in("status", ["accepted", "pending"])
+
+  if (existingBookings) {
+    let conflictSlots = []
+
+    existingBookings.forEach(booking => {
+      if (booking.booking_slots) {
+        booking.booking_slots.forEach(bs => {
+          if (selectedSlots.includes(bs.slot_id)) {
+            conflictSlots.push(bs.slot_id)
+          }
+        })
+      }
+    })
+
+    if (conflictSlots.length > 0) {
+      showMessage("Some selected slots are no longer available. Please refresh and try again.")
+      loadSlots() // Refresh slots
+      return
+    }
+  }
+
+  // Disable submit button
+  const submitBtn = document.getElementById("submitBtn")
+  const btnText = submitBtn.querySelector(".btn-text")
+  submitBtn.disabled = true
+  btnText.innerHTML = '<div class="spinner" style="width:20px;height:20px;border-width:2px;margin:0 10px 0 0;display:inline-block;vertical-align:middle;"></div> Submitting...'
+
+  try {
+    const { data: { session } } = await client.auth.getSession()
+
+    if (!session) {
+      showMessage("Session expired. Please login again.")
+      setTimeout(() => location = "login.html", 2000)
+      return
+    }
+
+    // Insert booking request
+    const { data: booking, error: bookingError } = await client
+      .from("booking_requests")
+      .insert({
+        user_id: session.user.id,
+        venue_id: venueVal,
+        booking_date: dateVal,
+        event_name: eventName,
+        description: description,
+        total_students: parseInt(totalStudentsVal),
+        status: "pending"
+      })
+      .select()
+      .single()
+
+    if (bookingError) throw bookingError
+
+    // Insert slot associations
+    const { error: slotError } = await client
+      .from("booking_slots")
+      .insert(
+        selectedSlots.map(slotId => ({
+          booking_id: booking.id,
+          slot_id: slotId
+        }))
+      )
+
+    if (slotError) throw slotError
+
+    // Success!
+    showMessage("Booking submitted successfully! Your request is pending approval.", "success")
+
+    // Reset form
+    document.getElementById("eventName").value = ""
+    document.getElementById("totalStudents").value = ""
+    document.getElementById("eventDesc").value = ""
+    selectedSlots = []
+    document.getElementById("totalHours").innerText = 0
+
+    // Reload slots to show new pending status
+    setTimeout(() => loadSlots(), 1000)
+
+  } catch (err) {
+    console.error("Submit error:", err)
+    showMessage("Booking failed: " + err.message)
+  } finally {
+    submitBtn.disabled = false
+    btnText.textContent = "Submit Booking Request"
+  }
 }
 
-label.appendChild(input)
-label.append(` ${slot.start_time} - ${slot.end_time}`)
-slotsContainer.appendChild(label)
 
-})
+/* ================================================
+   LOGOUT
+   ================================================ */
+
+document.getElementById("logoutBtn").onclick = async (e) => {
+  e.preventDefault()
+  await client.auth.signOut()
+  location = "login.html"
 }
 
-/* SUBMIT */
-async function submitBooking(){
-
-try{
-
-const eventName = document.getElementById("eventName").value
-const totalStudentsVal = document.getElementById("totalStudents").value
-const venueVal = document.getElementById("venue").value
-const dateVal = document.getElementById("date").value
-const description = document.getElementById("eventDesc").value
-
-if(!eventName || !totalStudentsVal || !venueVal || !dateVal || selectedSlots.length===0){
-alert("Fill all required fields")
-return
-}
-
-const { data:{ session } } = await client.auth.getSession()
-
-const { data: booking, error } = await client
-.from("booking_requests")
-.insert({
-user_id: session.user.id,
-venue_id: venueVal,   // ✅ UUID FIX
-booking_date: dateVal,
-event_name: eventName,
-description: description,
-total_students: parseInt(totalStudentsVal),
-status: "pending"
-})
-.select()
-.single()
-
-if(error){
-console.error(error)
-alert(error.message)
-return
-}
-
-const { error: slotError } = await client
-.from("booking_slots")
-.insert(
-selectedSlots.map(s => ({
-booking_id: booking.id,
-slot_id: s   // ✅ UUID FIX
-}))
-)
-
-if(slotError){
-console.error(slotError)
-alert("Slot insert failed")
-return
-}
-
-alert("Booking Submitted Successfully")
-location.reload()
-
-}catch(err){
-console.error(err)
-alert("Something went wrong")
-}
-}
 </script>
 
 </body>
 </html>
-

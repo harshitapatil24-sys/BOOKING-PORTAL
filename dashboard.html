@@ -1,266 +1,719 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Venue Booking Portal</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Venue Booking Portal - PCCOE</title>
 <link rel="stylesheet" href="style.css">
+
+<style>
+/* ================================================
+   DASHBOARD PAGE SPECIFIC STYLES
+   ================================================ */
+
+/* Welcome Banner */
+.welcome-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px 60px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.welcome-banner h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.welcome-banner p {
+  margin: 5px 0 0 0;
+  opacity: 0.9;
+  font-size: 14px;
+}
+
+.welcome-banner .quick-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.welcome-banner .quick-btn {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border: 2px solid rgba(255,255,255,0.3);
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.welcome-banner .quick-btn:hover {
+  background: rgba(255,255,255,0.3);
+  border-color: rgba(255,255,255,0.5);
+  transform: translateY(-2px);
+}
+
+/* Stats Row */
+.stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 35px 60px;
+  background: #f8fafc;
+  flex-wrap: wrap;
+}
+
+.stat-box {
+  background: white;
+  padding: 25px 40px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+  min-width: 180px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.stat-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+.stat-box .number {
+  font-size: 36px;
+  font-weight: 700;
+  color: #0b3d91;
+  display: block;
+}
+
+.stat-box .label {
+  font-size: 14px;
+  color: #666;
+  margin-top: 5px;
+}
+
+/* Section Titles */
+.section-title {
+  text-align: center;
+  margin: 40px 0 30px 0;
+}
+
+.section-title h2 {
+  font-size: 28px;
+  color: #1a1a2e;
+  margin: 0;
+  font-weight: 700;
+}
+
+.section-title p {
+  color: #666;
+  margin-top: 8px;
+  font-size: 15px;
+}
+
+/* Enhanced Filter Buttons */
+.filter-buttons {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  padding: 25px 20px;
+  border-bottom: 1px solid #e0e8f5;
+}
+
+.filter-buttons button {
+  position: relative;
+  overflow: hidden;
+}
+
+.filter-buttons button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.2);
+  transform: translateX(-100%);
+  transition: transform 0.3s;
+}
+
+.filter-buttons button:hover::after {
+  transform: translateX(0);
+}
+
+/* Card Grid Enhancement */
+.cards {
+  padding: 40px 60px 60px;
+  background: linear-gradient(180deg, #f8fafc 0%, #f4f6fb 100%);
+}
+
+/* Card Enhancements */
+.card {
+  position: relative;
+  overflow: hidden;
+}
+
+.card .venue-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.card .capacity-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(135deg, #0b3d91, #1a6bff);
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.card .card-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+/* Loading Overlay */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.loading-overlay .spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e0e0e0;
+  border-top-color: #0b3d91;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.loading-overlay p {
+  margin-top: 20px;
+  color: #666;
+  font-size: 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .welcome-banner {
+    padding: 20px 30px;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .stats-row {
+    padding: 25px 20px;
+    gap: 15px;
+  }
+
+  .stat-box {
+    padding: 20px 30px;
+    min-width: 140px;
+  }
+
+  .stat-box .number {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 600px) {
+  .welcome-banner .quick-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .welcome-banner .quick-btn {
+    justify-content: center;
+  }
+
+  .stats-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stat-box {
+    width: 100%;
+    max-width: 280px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
+<!-- ================================================
+     LOADING OVERLAY
+     ================================================ -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <p>Loading portal...</p>
+</div>
+
+
+<!-- ================================================
+     NAVBAR
+     ================================================ -->
 <nav class="navbar">
-<img src="pccoe.jpg" class="logo">
+  <img src="pccoe.jpg" class="logo" alt="PCCOE Logo">
 
-<ul class="nav-links">
-<li><a href="dashboard.html">Home</a></li>
-<li><a href="#">Halls</a></li>
-<li><a href="#">Blog</a></li>
-<li><a href="#">Q/A</a></li>
-<li><a href="#">Contact</a></li>
-</ul>
+  <ul class="nav-links">
+    <li><a href="dashboard.html" class="active">Home</a></li>
+    <li><a href="#">Halls</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#">Q/A</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
 
-<div class="profile">
-<button id="profileBtn">👤</button>
+  <div class="profile">
+    <button id="profileBtn">👤</button>
 
-<div class="dropdown" id="profileMenu">
-<a href="#">View Profile</a>
-<a href="book.html" id="bookVenue" style="display:none;">Book Venue</a>
-<a href="youtbooking.html" id="myBookings" style="display:none;">Your Bookings</a>
-<a href="accept.html" id="acceptBooking" style="display:none;">Accept Booking</a>
-<a href="index.html" id="logoutBtn">Logout</a>
-</div>
-
-</div>
+    <div class="dropdown" id="profileMenu">
+      <a href="book.html" id="bookVenue" style="display:none;">📅 Book Venue</a>
+      <a href="youtbooking.html" id="myBookings" style="display:none;">📋 Your Bookings</a>
+      <a href="accept.html" id="acceptBooking" style="display:none;">✅ Manage Bookings</a>
+      <a href="index.html" id="logoutBtn">🚪 Logout</a>
+    </div>
+  </div>
 </nav>
 
 
-<!-- USER BAR -->
+<!-- ================================================
+     USER BAR
+     ================================================ -->
 <div class="userbar">
-<span id="facultyInfo">Loading user...</span>
+  <span id="facultyInfo">Loading user...</span>
 </div>
 
 
-<!-- HERO -->
+<!-- ================================================
+     WELCOME BANNER
+     ================================================ -->
+<div class="welcome-banner" id="welcomeBanner" style="display: none;">
+  <div>
+    <h2 id="welcomeText">Welcome back!</h2>
+    <p id="roleText">You are logged in as Faculty</p>
+  </div>
+  <div class="quick-actions" id="quickActions">
+    <!-- Quick action buttons will be added based on role -->
+  </div>
+</div>
+
+
+<!-- ================================================
+     HERO SECTION
+     ================================================ -->
 <section class="hero">
-<div class="hero-overlay">
-<div class="hero-content">
-<h1>Venue Booking Portal</h1>
-<p>PCCOE Campus Booking Management System</p>
-</div>
-</div>
+  <div class="hero-overlay">
+    <div class="hero-content">
+      <h1>Venue Booking Portal</h1>
+      <p>PCCOE Campus Booking Management System</p>
+    </div>
+  </div>
 </section>
 
 
-<!-- FILTER BUTTONS -->
+<!-- ================================================
+     STATS ROW (Optional - for showing venue availability)
+     ================================================ -->
+<div class="stats-row" id="statsRow" style="display: none;">
+  <div class="stat-box">
+    <span class="number" id="statVenues">5</span>
+    <span class="label">Available Venues</span>
+  </div>
+  <div class="stat-box">
+    <span class="number" id="statMyBookings">0</span>
+    <span class="label">Your Bookings</span>
+  </div>
+  <div class="stat-box">
+    <span class="number" id="statPendingBookings">0</span>
+    <span class="label">Pending</span>
+  </div>
+</div>
+
+
+<!-- ================================================
+     SECTION TITLE
+     ================================================ -->
+<div class="section-title">
+  <h2>Browse Venues</h2>
+  <p>Select a venue to view details or make a booking</p>
+</div>
+
+
+<!-- ================================================
+     FILTER BUTTONS
+     ================================================ -->
 <section class="filter-buttons">
-<button onclick="filterVenues('all')">All</button>
-<button onclick="filterVenues('auditorium')">Auditorium</button>
-<button onclick="filterVenues('seminar1')">Seminar Hall 1</button>
-<button onclick="filterVenues('seminar2')">Seminar Hall 2</button>
-<button onclick="filterVenues('sports')">Sports Hall</button>
-<button onclick="filterVenues('reading')">Reading Hall</button>
+  <button onclick="filterVenues('all')" class="active" id="filterAll">All</button>
+  <button onclick="filterVenues('auditorium')" id="filterAuditorium">Auditorium</button>
+  <button onclick="filterVenues('seminar1')" id="filterSeminar1">Seminar Hall 1</button>
+  <button onclick="filterVenues('seminar2')" id="filterSeminar2">Seminar Hall 2</button>
+  <button onclick="filterVenues('sports')" id="filterSports">Sports Hall</button>
+  <button onclick="filterVenues('reading')" id="filterReading">Reading Hall</button>
 </section>
 
 
-
-<!-- CARDS -->
+<!-- ================================================
+     VENUE CARDS
+     ================================================ -->
 <section class="cards">
 
-<div class="card auditorium">
-<h3>Auditorium</h3>
-<p>Capacity : 500</p>
-<button class="actionBtn bookBtn" onclick="bookVenue('Auditorium')">Book</button>
-<button class="actionBtn viewBtn" onclick="viewVenue('Auditorium')">View</button>
-</div>
+  <div class="card auditorium">
+    <span class="capacity-badge">500 Seats</span>
+    <span class="venue-icon">🎭</span>
+    <h3>Auditorium</h3>
+    <p>Large events, seminars & cultural programs</p>
+    <div class="card-actions">
+      <button class="actionBtn bookBtn" onclick="bookVenue('Auditorium')">📅 Book</button>
+      <button class="actionBtn viewBtn" onclick="viewVenue('Auditorium')">👁️ View</button>
+    </div>
+  </div>
 
-<div class="card seminar1">
-<h3>Seminar Hall 1</h3>
-<p>Capacity : 200</p>
-<button class="actionBtn bookBtn" onclick="bookVenue('Seminar Hall 1')">Book</button>
-<button class="actionBtn viewBtn" onclick="viewVenue('Seminar Hall 1')">View</button>
-</div>
+  <div class="card seminar1">
+    <span class="capacity-badge">200 Seats</span>
+    <span class="venue-icon">🎓</span>
+    <h3>Seminar Hall 1</h3>
+    <p>Workshops, presentations & meetings</p>
+    <div class="card-actions">
+      <button class="actionBtn bookBtn" onclick="bookVenue('Seminar Hall 1')">📅 Book</button>
+      <button class="actionBtn viewBtn" onclick="viewVenue('Seminar Hall 1')">👁️ View</button>
+    </div>
+  </div>
 
-<div class="card seminar2">
-<h3>Seminar Hall 2</h3>
-<p>Capacity : 180</p>
-<button class="actionBtn bookBtn" onclick="bookVenue('Seminar Hall 2')">Book</button>
-<button class="actionBtn viewBtn" onclick="viewVenue('Seminar Hall 2')">View</button>
-</div>
+  <div class="card seminar2">
+    <span class="capacity-badge">180 Seats</span>
+    <span class="venue-icon">📊</span>
+    <h3>Seminar Hall 2</h3>
+    <p>Conferences & academic sessions</p>
+    <div class="card-actions">
+      <button class="actionBtn bookBtn" onclick="bookVenue('Seminar Hall 2')">📅 Book</button>
+      <button class="actionBtn viewBtn" onclick="viewVenue('Seminar Hall 2')">👁️ View</button>
+    </div>
+  </div>
 
-<div class="card sports">
-<h3>Sports Hall</h3>
-<p>Indoor Events</p>
-<button class="actionBtn bookBtn" onclick="bookVenue('Sports Hall')">Book</button>
-<button class="actionBtn viewBtn" onclick="viewVenue('Sports Hall')">View</button>
-</div>
+  <div class="card sports">
+    <span class="capacity-badge">Indoor</span>
+    <span class="venue-icon">🏀</span>
+    <h3>Sports Hall</h3>
+    <p>Indoor sports events & competitions</p>
+    <div class="card-actions">
+      <button class="actionBtn bookBtn" onclick="bookVenue('Sports Hall')">📅 Book</button>
+      <button class="actionBtn viewBtn" onclick="viewVenue('Sports Hall')">👁️ View</button>
+    </div>
+  </div>
 
-<div class="card reading">
-<h3>Reading Hall</h3>
-<p>Study Area</p>
-<button class="actionBtn bookBtn" onclick="bookVenue('Reading Hall')">Book</button>
-<button class="actionBtn viewBtn" onclick="viewVenue('Reading Hall')">View</button>
-</div>
+  <div class="card reading">
+    <span class="capacity-badge">Quiet Zone</span>
+    <span class="venue-icon">📚</span>
+    <h3>Reading Hall</h3>
+    <p>Study sessions & focused activities</p>
+    <div class="card-actions">
+      <button class="actionBtn bookBtn" onclick="bookVenue('Reading Hall')">📅 Book</button>
+      <button class="actionBtn viewBtn" onclick="viewVenue('Reading Hall')">👁️ View</button>
+    </div>
+  </div>
 
 </section>
 
 
+<!-- ================================================
+     FOOTER
+     ================================================ -->
 <footer>
-<p>© PCCOE Venue Booking Portal</p>
+  <p>© PCCOE Venue Booking Portal</p>
 </footer>
 
 
+<!-- ================================================
+     SCRIPTS
+     ================================================ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+/* ================================================
+   SUPABASE INITIALIZATION
+   ================================================ */
 
-/* SUPABASE */
 const client = supabase.createClient(
-"https://xgrzymhgssxjjkogvuvw.supabase.co",
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhncnp5bWhnc3N4amprb2d2dXZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNzAyNTYsImV4cCI6MjA4Nzg0NjI1Nn0.A6tbTA6D2mmGdNTrm2oS5HSTJzgkMFbGARQQi5dL-TQ"
-);
+  "https://xgrzymhgssxjjkogvuvw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhncnp5bWhnc3N4amprb2d2dXZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNzAyNTYsImV4cCI6MjA4Nzg0NjI1Nn0.A6tbTA6D2mmGdNTrm2oS5HSTJzgkMFbGARQQi5dL-TQ"
+)
 
 
-/* PROFILE DROPDOWN */
+/* ================================================
+   GLOBAL VARIABLES
+   ================================================ */
 
-const profileBtn = document.getElementById("profileBtn");
-const profileMenu = document.getElementById("profileMenu");
-
-profileBtn.addEventListener("click", (e)=>{
-e.stopPropagation();
-profileMenu.classList.toggle("show");
-});
-
-document.addEventListener("click", ()=>{
-profileMenu.classList.remove("show");
-});
+let currentProfile = null
+let activeFilter = "all"
 
 
-/* FILTER */
+/* ================================================
+   PROFILE DROPDOWN
+   ================================================ */
 
-function filterVenues(type){
+const profileBtn = document.getElementById("profileBtn")
+const profileMenu = document.getElementById("profileMenu")
 
-const cards = document.querySelectorAll(".card");
+profileBtn.addEventListener("click", (e) => {
+  e.stopPropagation()
+  profileMenu.classList.toggle("show")
+})
 
-cards.forEach(card=>{
-card.style.display = (type==="all" || card.classList.contains(type)) ? "block":"none";
-});
+document.addEventListener("click", () => {
+  profileMenu.classList.remove("show")
+})
 
+
+/* ================================================
+   FILTER VENUES
+   ================================================ */
+
+function filterVenues(type) {
+  activeFilter = type
+  const cards = document.querySelectorAll(".card")
+  const buttons = document.querySelectorAll(".filter-buttons button")
+
+  // Update active button
+  buttons.forEach(btn => btn.classList.remove("active"))
+  document.getElementById(`filter${type.charAt(0).toUpperCase() + type.slice(1)}`).classList.add("active")
+
+  // Filter cards
+  cards.forEach(card => {
+    if (type === "all" || card.classList.contains(type)) {
+      card.style.display = "block"
+      card.style.animation = "fadeIn 0.3s ease"
+    } else {
+      card.style.display = "none"
+    }
+  })
+}
+
+// Add fadeIn animation
+const style = document.createElement("style")
+style.textContent = `
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+`
+document.head.appendChild(style)
+
+
+/* ================================================
+   BOOK VENUE
+   ================================================ */
+
+function bookVenue(venue) {
+  window.location.href = `book.html?venue=${encodeURIComponent(venue)}`
 }
 
 
-/* BOOK VENUE */
+/* ================================================
+   VIEW VENUE (Placeholder)
+   ================================================ */
 
-function bookVenue(venue){
-
-window.location.href =
-`book.html?venue=${encodeURIComponent(venue)}`;
-
+function viewVenue(venue) {
+  alert(`Viewing details for: ${venue}\n\nThis feature is coming soon!`)
 }
 
 
-/* VIEW VENUE */
+/* ================================================
+   LOAD USER STATS
+   ================================================ */
 
-function viewVenue(venue){
+async function loadUserStats(userId) {
+  try {
+    // Fetch user's bookings count
+    const { data: myBookings, error } = await client
+      .from("booking_requests")
+      .select("id, status")
+      .eq("user_id", userId)
 
-alert("Viewing details for " + venue);
+    if (!error && myBookings) {
+      const total = myBookings.length
+      const pending = myBookings.filter(b => b.status === "pending").length
 
+      document.getElementById("statMyBookings").textContent = total
+      document.getElementById("statPendingBookings").textContent = pending
+      document.getElementById("statsRow").style.display = "flex"
+    }
+  } catch (err) {
+    console.error("Stats error:", err)
+  }
 }
 
 
-/* ROLE SYSTEM */
+/* ================================================
+   SETUP QUICK ACTIONS
+   ================================================ */
 
-async function init(){
+function setupQuickActions(role) {
+  const container = document.getElementById("quickActions")
+  container.innerHTML = ""
 
-const { data:{ session } } = await client.auth.getSession();
-
-if(!session){
-location="login.html";
-return;
-}
-
-console.log("Logged user:",session.user.id);
-
-/* FETCH PROFILE */
-
-const { data: profile, error } = await client
-.from("profiles")
-.select("*")
-.eq("id", session.user.id)
-.single();
-
-console.log("Profile:",profile);
-
-if(error){
-console.error(error);
-alert("Profile not found in database");
-return;
+  if (role === "faculty") {
+    container.innerHTML = `
+      <a href="book.html" class="quick-btn">📅 Book a Venue</a>
+      <a href="youtbooking.html" class="quick-btn">📋 My Bookings</a>
+    `
+  } else if (role === "admin") {
+    container.innerHTML = `
+      <a href="accept.html" class="quick-btn">✅ Manage Bookings</a>
+    `
+  } else if (role === "staff") {
+    container.innerHTML = `
+      <span class="quick-btn" style="cursor: default;">👁️ View Only Access</span>
+    `
+  }
 }
 
 
-/* SHOW USER INFO */
+/* ================================================
+   ROLE-BASED UI SETUP
+   ================================================ */
 
-document.getElementById("facultyInfo").innerText =
-`${profile.name} | ${profile.employee_id} | ${profile.department}`;
+function setupRoleUI(profile) {
+  currentProfile = profile
 
+  // Update welcome banner
+  document.getElementById("welcomeText").textContent = `Welcome back, ${profile.name}!`
 
-/* HIDE ALL */
+  let roleLabel = "Faculty"
+  if (profile.role === "admin") roleLabel = "Administrator"
+  else if (profile.role === "staff") roleLabel = "Staff Member"
 
-document.getElementById("bookVenue").style.display="none";
-document.getElementById("myBookings").style.display="none";
-document.getElementById("acceptBooking").style.display="none";
+  document.getElementById("roleText").textContent = `You are logged in as ${roleLabel}`
+  document.getElementById("welcomeBanner").style.display = "flex"
 
-document.querySelectorAll(".bookBtn").forEach(b=>b.style.display="none");
-document.querySelectorAll(".viewBtn").forEach(b=>b.style.display="none");
+  // Setup quick actions
+  setupQuickActions(profile.role)
 
+  // Hide all role-specific elements first
+  document.getElementById("bookVenue").style.display = "none"
+  document.getElementById("myBookings").style.display = "none"
+  document.getElementById("acceptBooking").style.display = "none"
 
-/* FACULTY */
+  document.querySelectorAll(".bookBtn").forEach(b => b.style.display = "none")
+  document.querySelectorAll(".viewBtn").forEach(b => b.style.display = "none")
 
-if(profile.role==="faculty"){
+  // Faculty permissions
+  if (profile.role === "faculty") {
+    document.getElementById("bookVenue").style.display = "block"
+    document.getElementById("myBookings").style.display = "block"
+    document.querySelectorAll(".bookBtn").forEach(b => b.style.display = "inline-flex")
+    loadUserStats(profile.id)
+  }
 
-document.getElementById("bookVenue").style.display="block";
-document.getElementById("myBookings").style.display="block";
+  // Admin permissions
+  else if (profile.role === "admin") {
+    document.getElementById("acceptBooking").style.display = "block"
+    document.querySelectorAll(".viewBtn").forEach(b => b.style.display = "inline-flex")
+  }
 
-document.querySelectorAll(".bookBtn").forEach(b=>b.style.display="inline-block");
-
+  // Staff permissions
+  else if (profile.role === "staff") {
+    document.querySelectorAll(".viewBtn").forEach(b => b.style.display = "inline-flex")
+  }
 }
 
 
-/* ADMIN */
+/* ================================================
+   INITIALIZATION
+   ================================================ */
 
-else if(profile.role==="admin"){
+async function init() {
+  const loadingOverlay = document.getElementById("loadingOverlay")
 
-document.getElementById("acceptBooking").style.display="block";
+  try {
+    const { data: { session } } = await client.auth.getSession()
 
-document.querySelectorAll(".viewBtn").forEach(b=>b.style.display="inline-block");
+    if (!session) {
+      location = "login.html"
+      return
+    }
 
+    console.log("Logged user:", session.user.id)
+
+    // Fetch profile
+    const { data: profile, error } = await client
+      .from("profiles")
+      .select("*")
+      .eq("id", session.user.id)
+      .single()
+
+    console.log("Profile:", profile)
+
+    if (error) {
+      console.error(error)
+      alert("Profile not found in database")
+      location = "login.html"
+      return
+    }
+
+    // Update user bar
+    document.getElementById("facultyInfo").innerText =
+      `${profile.name} | ${profile.employee_id} | ${profile.department}`
+
+    // Setup role-based UI
+    setupRoleUI(profile)
+
+    // Hide loading overlay
+    loadingOverlay.style.opacity = "0"
+    setTimeout(() => {
+      loadingOverlay.style.display = "none"
+    }, 300)
+
+  } catch (err) {
+    console.error("Init error:", err)
+    loadingOverlay.innerHTML = `
+      <div style="text-align: center; color: #c62828;">
+        <p style="font-size: 48px;">❌</p>
+        <p>Failed to load portal</p>
+        <button onclick="location.reload()" style="margin-top: 20px; padding: 12px 24px; background: #0b3d91; color: white; border: none; border-radius: 8px; cursor: pointer;">
+          Retry
+        </button>
+      </div>
+    `
+  }
 }
 
 
-/* STAFF */
+/* ================================================
+   LOGOUT
+   ================================================ */
 
-else if(profile.role==="staff"){
-
-document.querySelectorAll(".viewBtn").forEach(b=>b.style.display="inline-block");
-
-}
-
-}
-
-
-/* LOGOUT */
-
-document.getElementById("logoutBtn").onclick=async()=>{
-
-await client.auth.signOut();
-
-location="login.html";
-
+document.getElementById("logoutBtn").onclick = async (e) => {
+  e.preventDefault()
+  await client.auth.signOut()
+  location = "login.html"
 }
 
 
-/* INIT */
+/* ================================================
+   START APP
+   ================================================ */
 
-init();
+init()
 
 </script>
 
