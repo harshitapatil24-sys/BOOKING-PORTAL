@@ -80,21 +80,112 @@ body {
   padding: 0 30px 60px;
 }
 
-/* Request Card - Enhanced */
+/* Request Card - Enhanced to Match Faculty UI */
 .request-card {
   background: #ffffff;
-  border-radius: 18px;
-  padding: 28px 32px;
-  margin-bottom: 28px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  padding: 0;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
   transition: all 0.35s ease;
-  border-left: 6px solid #f39c12;
-  position: relative;
+  border: 1px solid #e8ecf3;
+  overflow: hidden;
 }
 
 .request-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Header - Matching Faculty UI */
+.request-card .card-top {
+  padding: 20px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f0f4f8;
+  background: linear-gradient(135deg, #fff8e1, #fffde7);
+  border-left: 5px solid #ffc107;
+}
+
+/* Card Body */
+.request-card .card-content {
+  padding: 25px;
+}
+
+/* Event Title */
+.event-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+/* Info Grid - Matching Faculty UI */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.info-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.info-text label {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+}
+
+.info-text p {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin: 4px 0 0 0;
+}
+
+/* Description Section - Matching Faculty UI */
+.description-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f4f8;
+}
+
+.description-section label {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.description-text {
+  background: linear-gradient(135deg, #f5f8ff, #eef3ff);
+  padding: 15px 18px;
+  border-radius: 12px;
+  font-style: italic;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.6;
+  border: 1px solid #e0e8f5;
 }
 
 /* Card Title */
@@ -208,6 +299,31 @@ body {
   gap: 12px;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-end;
+}
+
+/* Card Footer with Buttons - Matching Faculty UI */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 2px solid #f0f4f8;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.card-footer .status-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-footer .action-buttons-right {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 /* Accept Button - GREEN (TASK 1) */
@@ -1132,7 +1248,6 @@ async function loadRequests() {
 
     const card = document.createElement("div")
     card.className = "request-card"
-    card.style.borderLeftColor = "#f39c12"
 
     // Check if admin to show Accept/Reject buttons (TASK 1)
     const isAdmin = currentProfile && currentProfile.role === "admin"
@@ -1140,31 +1255,66 @@ async function loadRequests() {
     const showQuickActions = isAdmin && isPending
 
     card.innerHTML = `
-      <div class="title">
-        <span class="label">EVENT NAME</span>
-        <h2>${(req.event_name || "Untitled Event").toUpperCase()}</h2>
-      </div>
-      <p><b>Faculty:</b> ${req.profiles?.name || 'N/A'} (${req.profiles?.employee_id || 'N/A'})</p>
-      <p><b>Venue:</b> ${req.venues?.venue_name || 'N/A'}</p>
-      <p><b>Date:</b> ${formatDate(req.booking_date)}</p>
-      <p><b>Slots:</b> ${slotsDisplay || 'None'}</p>
-      <p><b>Attendees:</b> ${req.total_students || 'N/A'}</p>
-      <div class="description">
-        <span class="label">DESCRIPTION</span>
-        <p>${req.description || 'No description provided'}</p>
-      </div>
-      <p style="margin-top:18px;">
-        <b>Status:</b>
+      <div class="card-top">
+        <h2 class="event-title">${(req.event_name || "Untitled Event").toUpperCase()}</h2>
         <span class="status-badge pending">PENDING</span>
-      </p>
-      <div class="buttons">
-        ${showQuickActions ? `
-          <button class="acceptBtn" data-id="${req.id}">Accept</button>
-          <button class="rejectBtn" data-id="${req.id}">Reject</button>
-        ` : ''}
-        <button class="editBtn">Edit</button>
       </div>
-      <div class="editForm">
+      <div class="card-content">
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-icon">👤</div>
+            <div class="info-text">
+              <label>Faculty</label>
+              <p>${req.profiles?.name || 'N/A'} (${req.profiles?.employee_id || 'N/A'})</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">📍</div>
+            <div class="info-text">
+              <label>Venue</label>
+              <p>${req.venues?.venue_name || 'N/A'}</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">📅</div>
+            <div class="info-text">
+              <label>Date</label>
+              <p>${formatDate(req.booking_date)}</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">🕐</div>
+            <div class="info-text">
+              <label>Slots</label>
+              <p>${slotsDisplay || 'None'}</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">👥</div>
+            <div class="info-text">
+              <label>Attendees</label>
+              <p>${req.total_students || 'N/A'}</p>
+            </div>
+          </div>
+        </div>
+        ${req.description ? `
+          <div class="description-section">
+            <label>Description</label>
+            <div class="description-text">${req.description}</div>
+          </div>
+        ` : ''}
+        <div class="card-footer">
+          <div class="status-section">
+          </div>
+          <div class="action-buttons-right">
+            <button class="editBtn">Edit</button>
+            ${showQuickActions ? `
+              <button class="acceptBtn" data-id="${req.id}">Accept</button>
+              <button class="rejectBtn" data-id="${req.id}">Reject</button>
+            ` : ''}
+          </div>
+        </div>
+        <div class="editForm">
         <label>Select New Date:</label>
         <input type="date" class="editDate" value="${req.booking_date}" min="${today}">
         <div class="slot-section">
@@ -1193,6 +1343,7 @@ async function loadRequests() {
           <button class="updateBtn">Update Booking</button>
           <button class="cancelBtn">Cancel</button>
         </div>
+      </div>
       </div>
     `
 

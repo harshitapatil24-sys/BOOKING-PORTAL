@@ -20,7 +20,16 @@
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   padding: 40px 60px;
   color: white;
-  text-align: center;
+}
+
+.page-header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .page-header h1 {
@@ -33,6 +42,26 @@
   margin: 10px 0 0 0;
   opacity: 0.8;
   font-size: 15px;
+}
+
+/* View Bookings Button */
+.view-bookings-btn {
+  background: linear-gradient(135deg, #0b3d91, #1a6bff);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.view-bookings-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(11, 61, 145, 0.4);
 }
 
 /* Form Card Enhancement */
@@ -279,8 +308,18 @@
     padding: 30px 20px;
   }
 
+  .page-header-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
   .page-header h1 {
     font-size: 24px;
+  }
+
+  .view-bookings-btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .slot-grid {
@@ -340,8 +379,15 @@
      PAGE HEADER
      ================================================ -->
 <div class="page-header">
-  <h1>📅 Book a Venue</h1>
-  <p>Select your venue, date, and time slots to make a booking request</p>
+  <div class="page-header-content">
+    <div>
+      <h1>📅 Book a Venue</h1>
+      <p>Select your venue, date, and time slots to make a booking request</p>
+    </div>
+    <a href="youtbooking.html" class="view-bookings-btn">
+      📋 View Bookings
+    </a>
+  </div>
 </div>
 
 

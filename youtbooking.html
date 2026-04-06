@@ -67,6 +67,21 @@
   box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
 }
 
+/* Header Actions Container */
+.header-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.header-action.secondary {
+  background: linear-gradient(135deg, #0b3d91, #1a6bff);
+}
+
+.header-action.secondary:hover {
+  box-shadow: 0 10px 30px rgba(11, 61, 145, 0.4);
+}
+
 /* Stats Summary */
 .stats-summary {
   display: flex;
@@ -825,9 +840,14 @@ init()
       <h1>📋 Your Bookings</h1>
       <p>View and track all your venue booking requests</p>
     </div>
-    <a href="book.html" class="header-action">
-      ➕ New Booking
-    </a>
+    <div class="header-actions">
+      <a href="youtbooking.html" class="header-action secondary">
+        📋 View Bookings
+      </a>
+      <a href="book.html" class="header-action">
+        ➕ New Booking
+      </a>
+    </div>
   </div>
 </div>
 

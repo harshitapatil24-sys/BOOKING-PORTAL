@@ -80,21 +80,277 @@ body {
   padding: 0 30px 60px;
 }
 
-/* Request Card - Enhanced */
+/* Request Card - Enhanced to Match Faculty UI */
 .request-card {
   background: #ffffff;
-  border-radius: 18px;
-  padding: 28px 32px;
-  margin-bottom: 28px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  padding: 0;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
   transition: all 0.35s ease;
-  border-left: 6px solid #0b3d91;
-  position: relative;
+  border: 1px solid #e8ecf3;
+  overflow: hidden;
 }
 
 .request-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Header - Matching Faculty UI */
+.request-card .card-top {
+  padding: 20px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f0f4f8;
+}
+
+.request-card .card-top.pending {
+  background: linear-gradient(135deg, #fff8e1, #fffde7);
+  border-left: 5px solid #ffc107;
+}
+
+.request-card .card-top.accepted {
+  background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+  border-left: 5px solid #4caf50;
+}
+
+.request-card .card-top.rejected {
+  background: linear-gradient(135deg, #ffebee, #fce4ec);
+  border-left: 5px solid #f44336;
+}
+
+/* Card Body */
+.request-card .card-content {
+  padding: 25px;
+}
+
+/* Event Title */
+.event-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+/* Info Grid - Matching Faculty UI */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.info-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.info-text label {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+}
+
+.info-text p {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin: 4px 0 0 0;
+}
+
+/* Description Section - Matching Faculty UI */
+.description-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f4f8;
+}
+
+.description-section label {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.description-text {
+  background: linear-gradient(135deg, #f5f8ff, #eef3ff);
+  padding: 15px 18px;
+  border-radius: 12px;
+  font-style: italic;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.6;
+  border: 1px solid #e0e8f5;
+}
+
+/* Rejection Reason Section */
+.rejection-display {
+  margin-top: 20px;
+  padding: 15px 18px;
+  background: linear-gradient(135deg, #ffebee, #fce4ec);
+  border-radius: 12px;
+  border-left: 4px solid #f44336;
+}
+
+.rejection-display label {
+  font-size: 12px;
+  color: #c62828;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.rejection-display p {
+  margin: 8px 0 0 0;
+  color: #b71c1c;
+  font-size: 14px;
+}
+
+/* Card Footer with Buttons */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 2px solid #f0f4f8;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.card-footer .status-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-footer .action-buttons-right {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ================================================
+   REJECTION MODAL OVERLAY
+   ================================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+.modal-box {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-box h3 {
+  margin: 0 0 20px 0;
+  color: #721c24;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-box textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 2px solid #f5c6cb;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 14px;
+  min-height: 100px;
+  transition: all 0.3s;
+  background: #fff8f8;
+}
+
+.modal-box textarea:focus {
+  border-color: #dc3545;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  justify-content: flex-end;
+}
+
+.modal-cancel {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.modal-cancel:hover {
+  background: #5a6268;
+}
+
+.modal-confirm {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.modal-confirm:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
 }
 
 /* Card Title */
@@ -657,6 +913,21 @@ body {
 <body>
 
 <!-- ================================================
+     REJECTION MODAL
+     ================================================ -->
+<div class="modal-overlay" id="rejectModal">
+  <div class="modal-box">
+    <h3>Reject Booking</h3>
+    <label style="font-weight:600; color:#721c24; display:block; margin-bottom:10px;">Rejection Reason:</label>
+    <textarea id="modalRejectReason" placeholder="Enter reason for rejection..." rows="4"></textarea>
+    <div class="modal-buttons">
+      <button class="modal-cancel" onclick="closeRejectModal()">Cancel</button>
+      <button class="modal-confirm" id="modalConfirmReject">Confirm Reject</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================
      NAVBAR (UNCHANGED)
      ================================================ -->
 <nav class="navbar">
@@ -731,6 +1002,10 @@ const supabase = createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhncnp5bWhnc3N4amprb2d2dXZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNzAyNTYsImV4cCI6MjA4Nzg0NjI1Nn0.A6tbTA6D2mmGdNTrm2oS5HSTJzgkMFbGARQQi5dL-TQ"
 )
 
+// Global variables for modal and profile
+let currentRejectBookingId = null
+let currentProfile = null
+
 const profileBtn = document.getElementById("profileBtn")
 const profileMenu = document.getElementById("profileMenu")
 
@@ -747,6 +1022,113 @@ document.getElementById("logoutBtn").onclick = async (e) => {
   e.preventDefault()
   await supabase.auth.signOut()
   window.location.href = "index.html"
+}
+
+// Modal functions
+window.closeRejectModal = function() {
+  document.getElementById("rejectModal").classList.remove("show")
+  document.getElementById("modalRejectReason").value = ""
+  currentRejectBookingId = null
+}
+
+window.openRejectModal = function(bookingId) {
+  currentRejectBookingId = bookingId
+  document.getElementById("rejectModal").classList.add("show")
+  document.getElementById("modalRejectReason").focus()
+}
+
+// Handle modal confirm
+document.getElementById("modalConfirmReject").onclick = async function() {
+  const reason = document.getElementById("modalRejectReason").value.trim()
+
+  if (!reason) {
+    alert("Please enter a rejection reason!")
+    return
+  }
+
+  const btn = this
+  btn.disabled = true
+  btn.textContent = "Rejecting..."
+
+  try {
+    const result = await supabase.rpc("update_booking_safe_v2", {
+      p_booking_id: currentRejectBookingId,
+      p_new_date: null,
+      p_new_slot_ids: [],
+      p_new_status: "rejected",
+      p_new_reason: reason
+    })
+
+    if (result.error) {
+      alert("Rejection failed: " + result.error.message)
+      btn.disabled = false
+      btn.textContent = "Confirm Reject"
+      return
+    }
+
+    const data = result.data
+    if (data && data.success === false) {
+      alert("Rejection failed: " + (data.error || "Unknown error"))
+      btn.disabled = false
+      btn.textContent = "Confirm Reject"
+      return
+    }
+
+    alert("Booking rejected successfully!")
+    closeRejectModal()
+    btn.disabled = false
+    btn.textContent = "Confirm Reject"
+    loadRequests()
+  } catch (e) {
+    alert("Error: " + e.message)
+    btn.disabled = false
+    btn.textContent = "Confirm Reject"
+  }
+}
+
+// Close modal on overlay click
+document.getElementById("rejectModal").onclick = function(e) {
+  if (e.target === this) {
+    closeRejectModal()
+  }
+}
+
+// Quick Accept function
+async function quickAccept(bookingId, btn) {
+  btn.disabled = true
+  btn.textContent = "Accepting..."
+
+  try {
+    const result = await supabase.rpc("update_booking_safe_v2", {
+      p_booking_id: bookingId,
+      p_new_date: null,
+      p_new_slot_ids: [],
+      p_new_status: "accepted",
+      p_new_reason: null
+    })
+
+    if (result.error) {
+      alert("Accept failed: " + result.error.message)
+      btn.disabled = false
+      btn.textContent = "Accept"
+      return
+    }
+
+    const data = result.data
+    if (data && data.success === false) {
+      alert("Accept failed: " + (data.error || "Unknown error"))
+      btn.disabled = false
+      btn.textContent = "Accept"
+      return
+    }
+
+    alert("Booking accepted successfully!")
+    loadRequests()
+  } catch (e) {
+    alert("Error: " + e.message)
+    btn.disabled = false
+    btn.textContent = "Accept"
+  }
 }
 
 function formatDate(dateStr) {
@@ -878,74 +1260,134 @@ async function loadRequests() {
 
     const card = document.createElement("div")
     card.className = "request-card"
-    card.style.borderLeftColor = borderColor
+
+    // Check if admin and booking is pending to show Accept/Reject buttons
+    const isAdmin = currentProfile && currentProfile.role === "admin"
+    const isPending = req.status === "pending"
+    const showQuickActions = isAdmin && isPending
 
     // Build rejection reason display if rejected
     let rejectionDisplay = ""
     if (req.status === "rejected" && req.rejection_reason) {
       rejectionDisplay = `
-        <div style="margin-top:15px; padding:12px 16px; background:linear-gradient(135deg,#f8d7da,#fce4ec); border-radius:10px; border-left:4px solid #dc3545;">
-          <span style="font-weight:700; color:#721c24; font-size:12px; text-transform:uppercase; letter-spacing:1px;">Rejection Reason</span>
-          <p style="margin:8px 0 0 0; color:#721c24; font-size:14px;">${req.rejection_reason}</p>
+        <div class="rejection-display">
+          <label>Rejection Reason</label>
+          <p>${req.rejection_reason}</p>
         </div>
       `
     }
 
     card.innerHTML = `
-      <div class="title">
-        <span class="label">EVENT NAME</span>
-        <h2>${(req.event_name || "Untitled Event").toUpperCase()}</h2>
-      </div>
-      <p><b>👤 Faculty:</b> ${req.profiles?.name || 'N/A'} (${req.profiles?.employee_id || 'N/A'})</p>
-      <p><b>📍 Venue:</b> ${req.venues?.venue_name || 'N/A'}</p>
-      <p><b>📅 Date:</b> ${formatDate(req.booking_date)}</p>
-      <p><b>🕐 Slots:</b> ${slotsDisplay || 'None'}</p>
-      <p><b>👥 Attendees:</b> ${req.total_students || 'N/A'}</p>
-      <div class="description">
-        <span class="label">DESCRIPTION</span>
-        <p>${req.description || 'No description provided'}</p>
-      </div>
-      <p style="margin-top:18px;">
-        <b>Status:</b>
+      <div class="card-top ${req.status}">
+        <h2 class="event-title">${(req.event_name || "Untitled Event").toUpperCase()}</h2>
         <span class="${statusBadgeClass}">${statusText}</span>
-      </p>
-      ${rejectionDisplay}
-      <div class="buttons">
-        <button class="editBtn">✏️ Edit</button>
       </div>
-      <div class="editForm">
-        <label>📅 Select New Date:</label>
-        <input type="date" class="editDate" value="${req.booking_date}" min="${today}">
-        <div class="slot-section">
-          <div class="slot-section-title">🕐 Select Time Slots:</div>
-          <div class="slotContainer"></div>
-        </div>
-        <div class="status-selection">
-          <label>Choose Action:</label>
-          <div class="status-options">
-            <label class="opt-accept">
-              <input type="radio" name="status_${req.id}" value="accepted">
-              ✅ Accept
-            </label>
-            <label class="opt-reject">
-              <input type="radio" name="status_${req.id}" value="rejected">
-              ❌ Reject
-            </label>
+      <div class="card-content">
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-icon">👤</div>
+            <div class="info-text">
+              <label>Faculty</label>
+              <p>${req.profiles?.name || 'N/A'} (${req.profiles?.employee_id || 'N/A'})</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">📍</div>
+            <div class="info-text">
+              <label>Venue</label>
+              <p>${req.venues?.venue_name || 'N/A'}</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">📅</div>
+            <div class="info-text">
+              <label>Date</label>
+              <p>${formatDate(req.booking_date)}</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">🕐</div>
+            <div class="info-text">
+              <label>Slots</label>
+              <p>${slotsDisplay || 'None'}</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">👥</div>
+            <div class="info-text">
+              <label>Attendees</label>
+              <p>${req.total_students || 'N/A'}</p>
+            </div>
           </div>
         </div>
-        <div class="rejection-reason-box">
-          <label>📝 Rejection Reason:</label>
-          <textarea class="rejectionReason" rows="3" placeholder="Enter reason for rejection..."></textarea>
+        ${req.description ? `
+          <div class="description-section">
+            <label>Description</label>
+            <div class="description-text">${req.description}</div>
+          </div>
+        ` : ''}
+        ${rejectionDisplay}
+        <div class="card-footer">
+          <div class="status-section">
+          </div>
+          <div class="action-buttons-right">
+            <button class="editBtn">Edit</button>
+            ${showQuickActions ? `
+              <button class="acceptBtn" data-id="${req.id}">Accept</button>
+              <button class="rejectBtn" data-id="${req.id}">Reject</button>
+            ` : ''}
+          </div>
         </div>
-        <div class="selected-status"></div>
-        <div class="action-buttons">
-          <button class="updateBtn">💾 Update Booking</button>
-          <button class="cancelBtn">✖️ Cancel</button>
+        <div class="editForm">
+          <label>Select New Date:</label>
+          <input type="date" class="editDate" value="${req.booking_date}" min="${today}">
+          <div class="slot-section">
+            <div class="slot-section-title">Select Time Slots:</div>
+            <div class="slotContainer"></div>
+          </div>
+          <div class="status-selection">
+            <label>Choose Action:</label>
+            <div class="status-options">
+              <label class="opt-accept">
+                <input type="radio" name="status_${req.id}" value="accepted">
+                Accept
+              </label>
+              <label class="opt-reject">
+                <input type="radio" name="status_${req.id}" value="rejected">
+                Reject
+              </label>
+            </div>
+          </div>
+          <div class="rejection-reason-box">
+            <label>Rejection Reason:</label>
+            <textarea class="rejectionReason" rows="3" placeholder="Enter reason for rejection..."></textarea>
+          </div>
+          <div class="selected-status"></div>
+          <div class="action-buttons">
+            <button class="updateBtn">Update Booking</button>
+            <button class="cancelBtn">Cancel</button>
+          </div>
         </div>
       </div>
     `
 
     container.appendChild(card)
+
+    // Quick Accept button handler
+    const acceptBtn = card.querySelector(".acceptBtn")
+    if (acceptBtn) {
+      acceptBtn.onclick = function() {
+        quickAccept(req.id, this)
+      }
+    }
+
+    // Quick Reject button handler
+    const rejectBtnQuick = card.querySelector(".rejectBtn")
+    if (rejectBtnQuick) {
+      rejectBtnQuick.onclick = function() {
+        openRejectModal(req.id)
+      }
+    }
 
     const editBtn = card.querySelector(".editBtn")
     const form = card.querySelector(".editForm")
@@ -1042,7 +1484,7 @@ async function loadRequests() {
         if (result.error) {
           alert("Update failed: " + result.error.message)
           updateBtn.disabled = false
-          updateBtn.textContent = "💾 Update Booking"
+          updateBtn.textContent = "Update Booking"
           return
         }
 
@@ -1050,7 +1492,7 @@ async function loadRequests() {
         if (data && data.success === false) {
           alert("Update failed: " + (data.error || "Unknown error"))
           updateBtn.disabled = false
-          updateBtn.textContent = "💾 Update Booking"
+          updateBtn.textContent = "Update Booking"
           return
         }
 
@@ -1068,7 +1510,7 @@ async function loadRequests() {
       } catch (e) {
         alert("Error: " + e.message)
         updateBtn.disabled = false
-        updateBtn.textContent = "💾 Update Booking"
+        updateBtn.textContent = "Update Booking"
       }
     }
   })
@@ -1082,6 +1524,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
 
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", session.user.id).single()
+  currentProfile = profile
   document.getElementById("facultyInfo").innerText = `${profile.name} | ${profile.employee_id} | ${profile.department || 'Admin'}`
 
   if (profile.role !== "admin") {
