@@ -688,6 +688,21 @@ body {
   accent-color: currentColor;
 }
 
+.opt-pending {
+  background: linear-gradient(135deg, #fff3cd, #ffe69c);
+  color: #856404;
+}
+
+.opt-pending:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+}
+
+.opt-pending:has(input:checked) {
+  border-color: #ffc107;
+  box-shadow: 0 4px 20px rgba(255, 193, 7, 0.4);
+}
+
 .opt-accept {
   background: linear-gradient(135deg, #d4edda, #c3e6cb);
   color: #155724;
@@ -760,6 +775,13 @@ body {
   font-size: 14px;
   display: none;
   text-align: center;
+}
+
+.selected-status.pending {
+  background: linear-gradient(135deg, #fff3cd, #ffe69c);
+  color: #856404;
+  display: block;
+  border: 2px solid #ffc107;
 }
 
 .selected-status.accept {
@@ -977,7 +999,7 @@ body {
      ================================================ -->
 <div class="admin-title">
   <h1>Pending Requests</h1>
-  <p>Review and process pending booking requests</p>
+  <p>Review and process pending booking requests - Full Admin Control</p>
 </div>
 
 <!-- ================================================
@@ -1080,7 +1102,7 @@ document.getElementById("modalConfirmReject").onclick = async function() {
     closeRejectModal()
     btn.disabled = false
     btn.textContent = "Confirm Reject"
-    loadRequests()
+    loadBookings()
   } catch (e) {
     alert("Error: " + e.message)
     btn.disabled = false
@@ -1098,6 +1120,20 @@ document.getElementById("rejectModal").onclick = function(e) {
 function formatDate(dateStr) {
   const options = { weekday: "short", day: "numeric", month: "short", year: "numeric" }
   return new Date(dateStr).toLocaleDateString("en-GB", options)
+}
+
+function getVenueOptionsMarkup(selectedVenueId = "") {
+  const venues = [
+    { value: "47bf6743-3845-4cc9-b4ee-8f01e42b6efd", label: "Auditorium (Capacity: 500)" },
+    { value: "f037d0c8-74da-45a2-a977-a3ceb7cb42e5", label: "Seminar Hall 1 (Capacity: 200)" },
+    { value: "f1088a0c-4890-41b5-80ef-62bcae6e7024", label: "Seminar Hall 2 (Capacity: 180)" },
+    { value: "5df13a70-fecb-4ab1-a326-0c7d32279ab6", label: "Sports Hall (Indoor Events)" },
+    { value: "7d54aa73-b381-4d59-bdeb-7bf04c44ebe9", label: "Reading Hall (Study Area)" }
+  ]
+
+  return ["<option value=\"\">-- Choose a Venue --</option>"]
+    .concat(venues.map(venue => `<option value="${venue.value}" ${venue.value === selectedVenueId ? "selected" : ""}>${venue.label}</option>`))
+    .join("")
 }
 
 // Quick Accept function (TASK 1)
@@ -1130,7 +1166,7 @@ async function quickAccept(bookingId, btn) {
     }
 
     alert("Booking accepted successfully!")
-    loadRequests()
+    loadBookings()
   } catch (e) {
     alert("Error: " + e.message)
     btn.disabled = false
@@ -1209,11 +1245,42 @@ async function loadSlots(container, selectedDate, currentBookingId, selectedSlot
   }
 }
 
-async function loadRequests() {
+async function editBooking(booking, btn) {
+  const form = btn.closest(".request-card")?.querySelector(".editForm")
+  const slotContainer = btn.closest(".request-card")?.querySelector(".slotContainer")
+  const dateInput = btn.closest(".request-card")?.querySelector(".editDate")
+  const venueSelect = btn.closest(".request-card")?.querySelector(".editVenue")
+  const studentsInput = btn.closest(".request-card")?.querySelector(".editStudents")
+  const cancelBtn = btn.closest(".request-card")?.querySelector(".cancelBtn")
+
+  if (!form || !slotContainer || !dateInput || !venueSelect || !studentsInput) return
+
+  const selected = (booking.booking_slots || []).map(bs => bs.slot_id)
+
+  btn.disabled = true
+  btn.textContent = "Loading..."
+  form.style.display = "block"
+  btn.style.display = "none"
+  venueSelect.value = booking.venue_id || ""
+  studentsInput.value = booking.total_students ?? ""
+  dateInput.value = booking.booking_date || ""
+  await loadSlots(slotContainer, dateInput.value, booking.id, selected)
+  btn.disabled = false
+  btn.textContent = "Edit"
+
+  if (cancelBtn) {
+    cancelBtn.onclick = () => {
+      form.style.display = "none"
+      btn.style.display = "inline-flex"
+    }
+  }
+}
+
+async function loadBookings() {
   const { data, error } = await supabase
     .from("booking_requests")
     .select(`
-      id,event_name,booking_date,total_students,description,status,rejection_reason,
+      id,event_name,booking_date,venue_id,total_students,description,status,rejection_reason,
       profiles(name,employee_id),
       venues(venue_name),
       booking_slots(slot_id, slots(id, slot_label, start_time, end_time))
@@ -1317,13 +1384,23 @@ async function loadRequests() {
         <div class="editForm">
         <label>Select New Date:</label>
         <input type="date" class="editDate" value="${req.booking_date}" min="${today}">
+        <label>Select Venue:</label>
+        <select class="editVenue">
+          ${getVenueOptionsMarkup(req.venue_id || "")}
+        </select>
+        <label>Number of Students:</label>
+        <input type="number" class="editStudents" min="1" value="${req.total_students || ''}">
         <div class="slot-section">
           <div class="slot-section-title">Select Time Slots:</div>
           <div class="slotContainer"></div>
         </div>
         <div class="status-selection">
-          <label>Choose Action:</label>
+          <label>Choose Status (Full Admin Control):</label>
           <div class="status-options">
+            <label class="opt-pending">
+              <input type="radio" name="status_${req.id}" value="pending" checked>
+              Keep Pending
+            </label>
             <label class="opt-accept">
               <input type="radio" name="status_${req.id}" value="accepted">
               Accept
@@ -1376,15 +1453,8 @@ async function loadRequests() {
     const rejectionInput = card.querySelector(".rejectionReason")
     const selectedStatusDiv = card.querySelector(".selected-status")
 
-    editBtn.onclick = async () => {
-      editBtn.disabled = true
-      editBtn.textContent = "Loading..."
-      form.style.display = "block"
-      const selected = (req.booking_slots || []).map(bs => bs.slot_id)
-      await loadSlots(slotContainer, dateInput.value, req.id, selected)
-      editBtn.style.display = "none"
-      editBtn.disabled = false
-      editBtn.textContent = "Edit"
+    editBtn.onclick = function() {
+      editBooking(req, this)
     }
 
     dateInput.onchange = async () => {
@@ -1398,6 +1468,11 @@ async function loadRequests() {
           rejectionBox.style.display = "block"
           selectedStatusDiv.className = "selected-status reject"
           selectedStatusDiv.textContent = "Status will be: REJECTED"
+        } else if (radio.value === "pending") {
+          rejectionBox.style.display = "none"
+          rejectionInput.value = ""
+          selectedStatusDiv.className = "selected-status pending"
+          selectedStatusDiv.textContent = "Status will remain: PENDING"
         } else {
           rejectionBox.style.display = "none"
           rejectionInput.value = ""
@@ -1416,22 +1491,18 @@ async function loadRequests() {
 
     updateBtn.onclick = async () => {
       const newDate = dateInput.value
+      const newVenueId = card.querySelector(".editVenue")?.value
+      const newStudents = card.querySelector(".editStudents")?.value
 
-      // Get status first
       const selectedRadio = card.querySelector(`input[name="status_${req.id}"]:checked`)
       const newStatus = selectedRadio ? selectedRadio.value : req.status
 
-      // Get selected slots from checkboxes
-      let selectedSlots = [...slotContainer.querySelectorAll(".slot-item input:checked")]
-        .map(cb => cb.value)
+      let selectedSlots = [...slotContainer.querySelectorAll(".slot-item input:checked")].map(cb => cb.value)
 
-      // REJECT: Pass empty array (SQL will NOT touch slots)
-      // ACCEPT: Pass selected slots (SQL will delete all old, insert only selected)
       if (newStatus === "rejected") {
-        selectedSlots = []  // Ignore slots when rejecting
+        selectedSlots = []
       }
 
-      // Get reason
       let newReason = null
       if (newStatus === "rejected") {
         newReason = rejectionInput.value.trim()
@@ -1446,48 +1517,56 @@ async function loadRequests() {
         return
       }
 
-      console.log("Update:", { p_booking_id: req.id, p_new_date: newDate, p_new_slot_ids: selectedSlots, p_new_status: newStatus })
+      if (!newVenueId) {
+        alert("Please select a venue!")
+        return
+      }
+
+      if (!newStudents || parseInt(newStudents) < 1) {
+        alert("Please enter a valid number of students!")
+        return
+      }
+
+      if (selectedSlots.length === 0 && newStatus !== "rejected") {
+        alert("Please select at least one time slot!")
+        return
+      }
 
       updateBtn.disabled = true
       updateBtn.textContent = "Updating..."
 
       try {
-        const result = await supabase.rpc("update_booking_safe_v2", {
-          p_booking_id: req.id,
-          p_new_date: newDate,
-          p_new_slot_ids: selectedSlots,
-          p_new_status: newStatus,
-          p_new_reason: newReason
-        })
+        const { error: bookingError } = await supabase
+          .from("booking_requests")
+          .update({
+            booking_date: newDate,
+            venue_id: newVenueId,
+            total_students: parseInt(newStudents),
+            status: newStatus,
+            rejection_reason: newReason
+          })
+          .eq("id", req.id)
 
-        console.log("RPC result:", result.data, result.error)
+        if (bookingError) throw bookingError
 
-        if (result.error) {
-          alert("Update failed: " + result.error.message)
-          updateBtn.disabled = false
-          updateBtn.textContent = "Update Booking"
-          return
+        const { error: deleteError } = await supabase
+          .from("booking_slots")
+          .delete()
+          .eq("booking_id", req.id)
+
+        if (deleteError) throw deleteError
+
+        if (selectedSlots.length > 0) {
+          const slotRows = selectedSlots.map(slotId => ({ booking_id: req.id, slot_id: slotId }))
+          const { error: insertError } = await supabase
+            .from("booking_slots")
+            .insert(slotRows)
+
+          if (insertError) throw insertError
         }
 
-        const data = result.data
-        if (data && data.success === false) {
-          alert("Update failed: " + (data.error || "Unknown error"))
-          updateBtn.disabled = false
-          updateBtn.textContent = "Update Booking"
-          return
-        }
-
-        if (data && data.success) {
-          if (newStatus === "rejected") {
-            alert("Booking rejected!\n\nSlots unchanged: " + data.total_slots)
-          } else {
-            alert(`Booking updated!\n\nSlots removed: ${data.slots_removed}\nSlots added: ${data.slots_added}\nTotal slots: ${data.total_slots}`)
-          }
-        } else {
-          alert("Booking updated successfully!")
-        }
-
-        loadRequests()
+        alert("Booking updated successfully!")
+        loadBookings()
       } catch (e) {
         alert("Error: " + e.message)
         updateBtn.disabled = false
@@ -1514,7 +1593,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     return
   }
 
-  loadRequests()
+  loadBookings()
 })
 
 </script>

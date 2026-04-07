@@ -344,7 +344,7 @@
      NAVBAR
      ================================================ -->
 <nav class="navbar">
-  <img src="pccoe.jpg" class="logo" alt="PCCOE Logo">
+  <img src="pccoe.jpg" class="logo" alt="PCCOE Logo" onerror="this.style.display='none'">
 
   <ul class="nav-links">
     <li><a href="dashboard.html">Home</a></li>
@@ -355,13 +355,14 @@
   </ul>
 
   <div class="profile">
-    <button id="profileBtn">👤</button>
+    <button id="profileBtn">&#128100;</button>
 
     <div class="dropdown" id="profileMenu">
+      <a href="dashboard.html">Home</a>
       <a href="book.html" id="bookVenueLink" style="background:#eef3ff; color:#0b3d91;">Book Venue</a>
       <a href="youtbooking.html" id="myBookingsLink">Your Bookings</a>
-      <a href="accept.html" id="acceptBookingLink" style="display:none;">Accept Booking</a>
-      <a href="index.html" id="logoutBtn">Logout</a>
+      <a href="accept.html" id="acceptBookingLink" style="display:none;">Manage Bookings</a>
+      <a href="#" id="logoutBtn">Logout</a>
     </div>
   </div>
 </nav>
@@ -557,6 +558,7 @@ const client = supabase.createClient(
    ================================================ */
 
 let selectedSlots = []
+let slotTimesMap = {}  // Maps slot_id to {start_time, end_time}
 let currentProfile = null
 
 
@@ -610,7 +612,7 @@ async function init() {
   const { data: { session } } = await client.auth.getSession()
 
   if (!session) {
-    location = "login.html"
+    location = "index.html"
     return
   }
 
@@ -710,6 +712,7 @@ async function loadSlots() {
 
   // Reset selection
   selectedSlots = []
+  slotTimesMap = {}  // Reset slot times map
   document.getElementById("totalHours").innerText = 0
 
   // Validate inputs
@@ -790,6 +793,12 @@ async function loadSlots() {
     slots.forEach(slot => {
       const status = slotStatusMap[slot.id] || "available"
       const isDisabled = status === "booked" || status === "pending"
+
+      // Store slot times in map for later use
+      slotTimesMap[slot.id] = {
+        start_time: slot.start_time,
+        end_time: slot.end_time
+      }
 
       const div = document.createElement("div")
       div.className = `slot-item is-${status}`
@@ -937,11 +946,29 @@ async function submitBooking() {
 
     if (!session) {
       showMessage("Session expired. Please login again.")
-      setTimeout(() => location = "login.html", 2000)
+      setTimeout(() => location = "index.html", 2000)
       return
     }
 
-    // Insert booking request
+    // Calculate start_time and end_time from selected slots
+    let startTimes = []
+    let endTimes = []
+
+    selectedSlots.forEach(slotId => {
+      if (slotTimesMap[slotId]) {
+        startTimes.push(slotTimesMap[slotId].start_time)
+        endTimes.push(slotTimesMap[slotId].end_time)
+      }
+    })
+
+    // Sort to get earliest start and latest end
+    startTimes.sort()
+    endTimes.sort()
+
+    const bookingStartTime = startTimes.length > 0 ? startTimes[0] : null
+    const bookingEndTime = endTimes.length > 0 ? endTimes[endTimes.length - 1] : null
+
+    // Insert booking request with start_time, end_time, and status
     const { data: booking, error: bookingError } = await client
       .from("booking_requests")
       .insert({
@@ -951,7 +978,9 @@ async function submitBooking() {
         event_name: eventName,
         description: description,
         total_students: parseInt(totalStudentsVal),
-        status: "pending"
+        status: "pending",
+        start_time: bookingStartTime,
+        end_time: bookingEndTime
       })
       .select()
       .single()
@@ -978,6 +1007,7 @@ async function submitBooking() {
     document.getElementById("totalStudents").value = ""
     document.getElementById("eventDesc").value = ""
     selectedSlots = []
+    slotTimesMap = {}
     document.getElementById("totalHours").innerText = 0
 
     // Reload slots to show new pending status
@@ -1000,7 +1030,7 @@ async function submitBooking() {
 document.getElementById("logoutBtn").onclick = async (e) => {
   e.preventDefault()
   await client.auth.signOut()
-  location = "login.html"
+  location = "index.html"
 }
 
 </script>

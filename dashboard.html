@@ -270,10 +270,10 @@
 
 
 <!-- ================================================
-     NAVBAR
+     NAVBAR (CONSISTENT WITH OTHER ADMIN PAGES)
      ================================================ -->
 <nav class="navbar">
-  <img src="pccoe.jpg" class="logo" alt="PCCOE Logo">
+  <img src="pccoe.jpg" class="logo" alt="PCCOE Logo" onerror="this.style.display='none'">
 
   <ul class="nav-links">
     <li><a href="dashboard.html" class="active">Home</a></li>
@@ -284,20 +284,24 @@
   </ul>
 
   <div class="profile">
-    <button id="profileBtn">👤</button>
+    <button id="profileBtn">&#128100;</button>
 
     <div class="dropdown" id="profileMenu">
-      <a href="book.html" id="bookVenue" style="display:none;">📅 Book Venue</a>
-      <a href="youtbooking.html" id="myBookings" style="display:none;">📋 Your Bookings</a>
-      <a href="accept.html" id="acceptBooking" style="display:none;">✅ Manage Bookings</a>
-      <a href="index.html" id="logoutBtn">🚪 Logout</a>
+      <a href="dashboard.html" style="background:#eef3ff; color:#0b3d91;">Home</a>
+      <a href="book.html" id="bookVenue" style="display:none;">Book Venue</a>
+      <a href="youtbooking.html" id="myBookings" style="display:none;">Your Bookings</a>
+      <a href="accept.html" id="allRequests" style="display:none;">All Requests</a>
+      <a href="pending.html" id="pendingRequests" style="display:none;">Pending Requests</a>
+      <a href="accepted.html" id="acceptedBookings" style="display:none;">Accepted Bookings</a>
+      <a href="rejected.html" id="rejectedBookings" style="display:none;">Rejected Bookings</a>
+      <a href="#" id="logoutBtn">Logout</a>
     </div>
   </div>
 </nav>
 
 
 <!-- ================================================
-     USER BAR
+     USER BAR (CONSISTENT WITH OTHER ADMIN PAGES)
      ================================================ -->
 <div class="userbar">
   <span id="facultyInfo">Loading user...</span>
@@ -379,56 +383,56 @@
 
   <div class="card auditorium">
     <span class="capacity-badge">500 Seats</span>
-    <span class="venue-icon">🎭</span>
+    <span class="venue-icon">&#127917;</span>
     <h3>Auditorium</h3>
     <p>Large events, seminars & cultural programs</p>
     <div class="card-actions">
-      <button class="actionBtn bookBtn" onclick="bookVenue('Auditorium')">📅 Book</button>
-      <button class="actionBtn viewBtn" onclick="viewVenue('Auditorium')">👁️ View</button>
+      <button class="actionBtn bookBtn" onclick="bookVenue('Auditorium')">Book</button>
+      <button class="actionBtn viewBtn" onclick="viewVenue('Auditorium')">View</button>
     </div>
   </div>
 
   <div class="card seminar1">
     <span class="capacity-badge">200 Seats</span>
-    <span class="venue-icon">🎓</span>
+    <span class="venue-icon">&#127891;</span>
     <h3>Seminar Hall 1</h3>
     <p>Workshops, presentations & meetings</p>
     <div class="card-actions">
-      <button class="actionBtn bookBtn" onclick="bookVenue('Seminar Hall 1')">📅 Book</button>
-      <button class="actionBtn viewBtn" onclick="viewVenue('Seminar Hall 1')">👁️ View</button>
+      <button class="actionBtn bookBtn" onclick="bookVenue('Seminar Hall 1')">Book</button>
+      <button class="actionBtn viewBtn" onclick="viewVenue('Seminar Hall 1')">View</button>
     </div>
   </div>
 
   <div class="card seminar2">
     <span class="capacity-badge">180 Seats</span>
-    <span class="venue-icon">📊</span>
+    <span class="venue-icon">&#128202;</span>
     <h3>Seminar Hall 2</h3>
     <p>Conferences & academic sessions</p>
     <div class="card-actions">
-      <button class="actionBtn bookBtn" onclick="bookVenue('Seminar Hall 2')">📅 Book</button>
-      <button class="actionBtn viewBtn" onclick="viewVenue('Seminar Hall 2')">👁️ View</button>
+      <button class="actionBtn bookBtn" onclick="bookVenue('Seminar Hall 2')">Book</button>
+      <button class="actionBtn viewBtn" onclick="viewVenue('Seminar Hall 2')">View</button>
     </div>
   </div>
 
   <div class="card sports">
     <span class="capacity-badge">Indoor</span>
-    <span class="venue-icon">🏀</span>
+    <span class="venue-icon">&#127936;</span>
     <h3>Sports Hall</h3>
     <p>Indoor sports events & competitions</p>
     <div class="card-actions">
-      <button class="actionBtn bookBtn" onclick="bookVenue('Sports Hall')">📅 Book</button>
-      <button class="actionBtn viewBtn" onclick="viewVenue('Sports Hall')">👁️ View</button>
+      <button class="actionBtn bookBtn" onclick="bookVenue('Sports Hall')">Book</button>
+      <button class="actionBtn viewBtn" onclick="viewVenue('Sports Hall')">View</button>
     </div>
   </div>
 
   <div class="card reading">
     <span class="capacity-badge">Quiet Zone</span>
-    <span class="venue-icon">📚</span>
+    <span class="venue-icon">&#128218;</span>
     <h3>Reading Hall</h3>
     <p>Study sessions & focused activities</p>
     <div class="card-actions">
-      <button class="actionBtn bookBtn" onclick="bookVenue('Reading Hall')">📅 Book</button>
-      <button class="actionBtn viewBtn" onclick="viewVenue('Reading Hall')">👁️ View</button>
+      <button class="actionBtn bookBtn" onclick="bookVenue('Reading Hall')">Book</button>
+      <button class="actionBtn viewBtn" onclick="viewVenue('Reading Hall')">View</button>
     </div>
   </div>
 
@@ -439,7 +443,7 @@
      FOOTER
      ================================================ -->
 <footer>
-  <p>© PCCOE Venue Booking Portal</p>
+  <p>PCCOE Venue Booking Portal</p>
 </footer>
 
 
@@ -468,7 +472,7 @@ let activeFilter = "all"
 
 
 /* ================================================
-   PROFILE DROPDOWN
+   PROFILE DROPDOWN (CONSISTENT WITH OTHER PAGES)
    ================================================ */
 
 const profileBtn = document.getElementById("profileBtn")
@@ -573,16 +577,19 @@ function setupQuickActions(role) {
 
   if (role === "faculty") {
     container.innerHTML = `
-      <a href="book.html" class="quick-btn">📅 Book a Venue</a>
-      <a href="youtbooking.html" class="quick-btn">📋 My Bookings</a>
+      <a href="book.html" class="quick-btn">Book a Venue</a>
+      <a href="youtbooking.html" class="quick-btn">My Bookings</a>
     `
   } else if (role === "admin") {
     container.innerHTML = `
-      <a href="accept.html" class="quick-btn">✅ Manage Bookings</a>
+      <a href="accept.html" class="quick-btn">All Requests</a>
+      <a href="pending.html" class="quick-btn">Pending</a>
+      <a href="accepted.html" class="quick-btn">Accepted</a>
+      <a href="rejected.html" class="quick-btn">Rejected</a>
     `
   } else if (role === "staff") {
     container.innerHTML = `
-      <span class="quick-btn" style="cursor: default;">👁️ View Only Access</span>
+      <span class="quick-btn" style="cursor: default;">View Only Access</span>
     `
   }
 }
@@ -611,7 +618,10 @@ function setupRoleUI(profile) {
   // Hide all role-specific elements first
   document.getElementById("bookVenue").style.display = "none"
   document.getElementById("myBookings").style.display = "none"
-  document.getElementById("acceptBooking").style.display = "none"
+  document.getElementById("allRequests").style.display = "none"
+  document.getElementById("pendingRequests").style.display = "none"
+  document.getElementById("acceptedBookings").style.display = "none"
+  document.getElementById("rejectedBookings").style.display = "none"
 
   document.querySelectorAll(".bookBtn").forEach(b => b.style.display = "none")
   document.querySelectorAll(".viewBtn").forEach(b => b.style.display = "none")
@@ -624,10 +634,14 @@ function setupRoleUI(profile) {
     loadUserStats(profile.id)
   }
 
-  // Admin permissions
+  // Admin permissions - Show all admin links
   else if (profile.role === "admin") {
-    document.getElementById("acceptBooking").style.display = "block"
+    document.getElementById("allRequests").style.display = "block"
+    document.getElementById("pendingRequests").style.display = "block"
+    document.getElementById("acceptedBookings").style.display = "block"
+    document.getElementById("rejectedBookings").style.display = "block"
     document.querySelectorAll(".viewBtn").forEach(b => b.style.display = "inline-flex")
+    document.querySelectorAll(".bookBtn").forEach(b => b.style.display = "inline-flex")
   }
 
   // Staff permissions
@@ -648,7 +662,7 @@ async function init() {
     const { data: { session } } = await client.auth.getSession()
 
     if (!session) {
-      location = "login.html"
+      location = "index.html"
       return
     }
 
@@ -666,13 +680,13 @@ async function init() {
     if (error) {
       console.error(error)
       alert("Profile not found in database")
-      location = "login.html"
+      location = "index.html"
       return
     }
 
     // Update user bar
     document.getElementById("facultyInfo").innerText =
-      `${profile.name} | ${profile.employee_id} | ${profile.department}`
+      `${profile.name} | ${profile.employee_id} | ${profile.department || 'Admin'}`
 
     // Setup role-based UI
     setupRoleUI(profile)
@@ -687,7 +701,7 @@ async function init() {
     console.error("Init error:", err)
     loadingOverlay.innerHTML = `
       <div style="text-align: center; color: #c62828;">
-        <p style="font-size: 48px;">❌</p>
+        <p style="font-size: 48px;">&#10060;</p>
         <p>Failed to load portal</p>
         <button onclick="location.reload()" style="margin-top: 20px; padding: 12px 24px; background: #0b3d91; color: white; border: none; border-radius: 8px; cursor: pointer;">
           Retry
@@ -699,13 +713,13 @@ async function init() {
 
 
 /* ================================================
-   LOGOUT
+   LOGOUT (CONSISTENT WITH OTHER PAGES)
    ================================================ */
 
 document.getElementById("logoutBtn").onclick = async (e) => {
   e.preventDefault()
   await client.auth.signOut()
-  location = "login.html"
+  location = "index.html"
 }
 
 

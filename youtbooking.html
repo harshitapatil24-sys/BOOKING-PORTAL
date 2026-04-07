@@ -226,28 +226,45 @@
   margin: 0;
 }
 
+/* ================================================
+   STATUS BADGES - ENHANCED VISIBILITY
+   ================================================ */
 .status-badge {
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-weight: 700;
-  font-size: 12px;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: 800;
+  font-size: 13px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
+/* PENDING - Yellow Badge */
 .status-badge.pending {
-  background: linear-gradient(135deg, #fff3cd, #ffeeba);
+  background: linear-gradient(135deg, #fff3cd, #ffe69c);
   color: #856404;
+  border: 2px solid #ffc107;
+  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
 }
 
+/* ACCEPTED - Green Bold */
 .status-badge.accepted {
-  background: linear-gradient(135deg, #d4edda, #c3e6cb);
+  background: linear-gradient(135deg, #d4edda, #b7dfb9);
   color: #155724;
+  border: 2px solid #28a745;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+  font-weight: 900;
 }
 
+/* REJECTED - Red Bold */
 .status-badge.rejected {
-  background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+  background: linear-gradient(135deg, #f8d7da, #f1aeb5);
   color: #721c24;
+  border: 2px solid #dc3545;
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+  font-weight: 900;
 }
 
 /* Card Body */
@@ -291,6 +308,18 @@
   font-weight: 600;
   color: #333;
   margin: 4px 0 0 0;
+}
+
+/* Time Display - Highlighted */
+.time-display {
+  background: linear-gradient(135deg, #e8f4fd, #d4e9fc);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  color: #0b3d91;
+  display: inline-block;
+  margin-top: 4px;
+  border: 1px solid #b8daff;
 }
 
 /* Description Section */
@@ -341,6 +370,7 @@
   margin: 8px 0 0 0;
   color: #b71c1c;
   font-size: 14px;
+  font-weight: 600;
 }
 
 /* Empty State */
@@ -452,7 +482,135 @@
   }
 }
 </style>
+</head>
 
+<body class="bookings-page">
+
+<!-- ================================================
+     NAVBAR (CONSISTENT WITH OTHER PAGES)
+     ================================================ -->
+<nav class="navbar">
+  <img src="pccoe.jpg" class="logo" alt="PCCOE Logo" onerror="this.style.display='none'">
+
+  <ul class="nav-links">
+    <li><a href="dashboard.html">Home</a></li>
+    <li><a href="#">Halls</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#">Q/A</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+
+  <div class="profile">
+    <button id="profileBtn">&#128100;</button>
+
+    <div class="dropdown" id="profileMenu">
+      <a href="dashboard.html">Home</a>
+      <a href="book.html" id="bookVenue" style="display:none;">Book Venue</a>
+      <a href="youtbooking.html" id="myBookingsLink" style="background:#eef3ff; color:#0b3d91;">Your Bookings</a>
+      <a href="accept.html" id="acceptBooking" style="display:none;">Manage Bookings</a>
+      <a href="#" id="logoutBtn">Logout</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ================================================
+     USER BAR
+     ================================================ -->
+<div class="userbar">
+  <span id="facultyInfo">Loading user...</span>
+</div>
+
+
+<!-- ================================================
+     PAGE HEADER
+     ================================================ -->
+<div class="page-header">
+  <div class="page-header-content">
+    <div>
+      <h1>Your Bookings</h1>
+      <p>View and track all your venue booking requests</p>
+    </div>
+    <div class="header-actions">
+      <a href="book.html" class="header-action">
+        New Booking
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ================================================
+     STATS SUMMARY
+     ================================================ -->
+<div class="stats-summary">
+  <div class="summary-card">
+    <div class="summary-icon total">&#128202;</div>
+    <div class="summary-info">
+      <h3 id="statTotal">0</h3>
+      <p>Total Bookings</p>
+    </div>
+  </div>
+
+  <div class="summary-card">
+    <div class="summary-icon pending">&#9203;</div>
+    <div class="summary-info">
+      <h3 id="statPending">0</h3>
+      <p>Pending</p>
+    </div>
+  </div>
+
+  <div class="summary-card">
+    <div class="summary-icon accepted">&#9989;</div>
+    <div class="summary-info">
+      <h3 id="statAccepted">0</h3>
+      <p>Accepted</p>
+    </div>
+  </div>
+
+  <div class="summary-card">
+    <div class="summary-icon rejected">&#10060;</div>
+    <div class="summary-info">
+      <h3 id="statRejected">0</h3>
+      <p>Rejected</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ================================================
+     FILTER TABS
+     ================================================ -->
+<div class="filter-tabs">
+  <button class="filter-tab active" data-filter="all">All Bookings</button>
+  <button class="filter-tab" data-filter="pending">Pending</button>
+  <button class="filter-tab" data-filter="accepted">Accepted</button>
+  <button class="filter-tab" data-filter="rejected">Rejected</button>
+</div>
+
+
+<!-- ================================================
+     BOOKINGS CONTAINER
+     ================================================ -->
+<div class="bookings-container" id="bookingsContainer">
+  <div class="loading-state">
+    <div class="loading-spinner"></div>
+    <p>Loading your bookings...</p>
+  </div>
+</div>
+
+
+<!-- ================================================
+     FOOTER
+     ================================================ -->
+<footer>
+  <p>PCCOE Venue Booking Portal</p>
+</footer>
+
+
+<!-- ================================================
+     SCRIPTS
+     ================================================ -->
 <script type="module">
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
 
@@ -518,11 +676,11 @@ function renderBookings() {
   if (filtered.length === 0) {
     container.innerHTML = `
       <div class="empty-state">
-        <div class="empty-icon">📋</div>
+        <div class="empty-icon">&#128203;</div>
         <h3>No Bookings Found</h3>
         <p>${currentFilter === "all" ? "You haven't made any bookings yet." : `No ${currentFilter} bookings found.`}</p>
         <a href="book.html" class="empty-action">
-          📅 Book a Venue
+          Book a Venue
         </a>
       </div>
     `
@@ -531,16 +689,48 @@ function renderBookings() {
 
   // Render cards
   container.innerHTML = filtered.map(b => {
-    // Build slots string
-    const slots = (b.booking_slots || [])
-      .map(bs => {
-        if (!bs.slots) return ""
-        return `${bs.slots.start_time} - ${bs.slots.end_time}`
-      })
-      .filter(Boolean)
-      .join(", ") || "N/A"
+    // Build time slots string from booking_slots relation
+    let timeDisplay = ""
+    let startTime = ""
+    let endTime = ""
 
-    const totalHours = (b.booking_slots || []).length
+    // First check booking_slots relation
+    if (b.booking_slots && b.booking_slots.length > 0) {
+      const slotTimes = b.booking_slots
+        .map(bs => {
+          if (!bs.slots) return null
+          return {
+            start: bs.slots.start_time,
+            end: bs.slots.end_time
+          }
+        })
+        .filter(Boolean)
+
+      if (slotTimes.length > 0) {
+        // Get earliest start and latest end
+        startTime = slotTimes.map(s => s.start).sort()[0]
+        endTime = slotTimes.map(s => s.end).sort().reverse()[0]
+        timeDisplay = `${startTime} - ${endTime}`
+      }
+    }
+
+    // Fallback to direct start_time/end_time columns if available
+    if (!timeDisplay && b.start_time && b.end_time) {
+      startTime = b.start_time
+      endTime = b.end_time
+      timeDisplay = `${startTime} - ${endTime}`
+    }
+
+    if (!timeDisplay) {
+      timeDisplay = "Not specified"
+    }
+
+    const totalSlots = (b.booking_slots || []).length
+
+    // Status icon based on status
+    let statusIcon = "&#9203;" // pending
+    if (b.status === "accepted") statusIcon = "&#9989;"
+    if (b.status === "rejected") statusIcon = "&#10060;"
 
     // Rejection section
     let rejectionHtml = ""
@@ -556,17 +746,16 @@ function renderBookings() {
     return `
       <div class="booking-card">
         <div class="card-header ${b.status}">
-          <h3 class="event-title">${b.event_name || "Untitled Event"}</h3>
+          <h3 class="event-title">${(b.event_name || "Untitled Event").toUpperCase()}</h3>
           <span class="status-badge ${b.status}">
-            ${b.status === "pending" ? "⏳" : b.status === "accepted" ? "✅" : "❌"}
-            ${b.status.toUpperCase()}
+            ${statusIcon} ${b.status.toUpperCase()}
           </span>
         </div>
 
         <div class="card-body">
           <div class="info-grid">
             <div class="info-item">
-              <div class="info-icon">📍</div>
+              <div class="info-icon">&#128205;</div>
               <div class="info-content">
                 <label>Venue</label>
                 <p>${b.venues?.venue_name || "N/A"}</p>
@@ -574,7 +763,7 @@ function renderBookings() {
             </div>
 
             <div class="info-item">
-              <div class="info-icon">📅</div>
+              <div class="info-icon">&#128197;</div>
               <div class="info-content">
                 <label>Date</label>
                 <p>${formatDate(b.booking_date)}</p>
@@ -582,26 +771,34 @@ function renderBookings() {
             </div>
 
             <div class="info-item">
-              <div class="info-icon">🕐</div>
+              <div class="info-icon">&#128336;</div>
               <div class="info-content">
-                <label>Time Slots</label>
-                <p>${slots}</p>
+                <label>Start Time</label>
+                <div class="time-display">${startTime || "N/A"}</div>
               </div>
             </div>
 
             <div class="info-item">
-              <div class="info-icon">⏱️</div>
+              <div class="info-icon">&#128337;</div>
               <div class="info-content">
-                <label>Duration</label>
-                <p>${totalHours} Hour(s)</p>
+                <label>End Time</label>
+                <div class="time-display">${endTime || "N/A"}</div>
               </div>
             </div>
 
             <div class="info-item">
-              <div class="info-icon">👥</div>
+              <div class="info-icon">&#9201;</div>
+              <div class="info-content">
+                <label>Total Slots</label>
+                <p>${totalSlots} Slot(s)</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-icon">&#128101;</div>
               <div class="info-content">
                 <label>Attendees</label>
-                <p>${b.total_students || "-"}</p>
+                <p>${b.total_students || "N/A"}</p>
               </div>
             </div>
           </div>
@@ -622,10 +819,10 @@ function renderBookings() {
 
 
 /* ================================================
-   LOAD BOOKINGS
+   LOAD BOOKINGS FROM SUPABASE
    ================================================ */
 
-async function loadMyBookings() {
+async function loadBookings() {
   const container = document.getElementById("bookingsContainer")
 
   // Show loading
@@ -644,6 +841,7 @@ async function loadMyBookings() {
       return
     }
 
+    // Fetch bookings with all related data including start_time and end_time
     const { data, error } = await supabase
       .from("booking_requests")
       .select(`
@@ -654,9 +852,11 @@ async function loadMyBookings() {
         description,
         status,
         rejection_reason,
+        start_time,
+        end_time,
         venues(venue_name),
         booking_slots(
-          slots(start_time, end_time)
+          slots(id, slot_label, start_time, end_time)
         )
       `)
       .eq("user_id", session.user.id)
@@ -666,13 +866,15 @@ async function loadMyBookings() {
       console.error("Fetch error:", error.message)
       container.innerHTML = `
         <div class="empty-state">
-          <div class="empty-icon">❌</div>
+          <div class="empty-icon">&#10060;</div>
           <h3>Error Loading Bookings</h3>
           <p>${error.message}</p>
         </div>
       `
       return
     }
+
+    console.log("Loaded bookings:", data)
 
     allBookings = data || []
     updateStats()
@@ -682,7 +884,7 @@ async function loadMyBookings() {
     console.error("Unexpected error:", err)
     container.innerHTML = `
       <div class="empty-state">
-        <div class="empty-icon">❌</div>
+        <div class="empty-icon">&#10060;</div>
         <h3>Something Went Wrong</h3>
         <p>Please try again later.</p>
       </div>
@@ -716,7 +918,7 @@ async function init() {
     const { data: { session }, error } = await supabase.auth.getSession()
 
     if (error || !session) {
-      location = "login.html"
+      location = "index.html"
       return
     }
 
@@ -733,22 +935,21 @@ async function init() {
 
     // Update user info
     document.getElementById("facultyInfo").innerText =
-      `${profile.name} | ${profile.employee_id} | ${profile.department}`
+      `${profile.name} | ${profile.employee_id} | ${profile.department || ''}`
 
     // Role-based menu visibility
     document.getElementById("bookVenue").style.display = "none"
-    document.getElementById("myBookingsLink").style.display = "none"
     document.getElementById("acceptBooking").style.display = "none"
 
     if (profile.role === "faculty") {
       document.getElementById("bookVenue").style.display = "block"
-      document.getElementById("myBookingsLink").style.display = "block"
     } else if (profile.role === "admin") {
       document.getElementById("acceptBooking").style.display = "block"
+      document.getElementById("bookVenue").style.display = "block"
     }
 
     // Load bookings
-    await loadMyBookings()
+    await loadBookings()
 
   } catch (err) {
     console.error("Init error:", err)
@@ -777,7 +978,7 @@ window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("logoutBtn").onclick = async (e) => {
     e.preventDefault()
     await supabase.auth.signOut()
-    location = "login.html"
+    location = "index.html"
   }
 
   // Setup filter tabs
@@ -787,137 +988,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
 /* ================================================
    START APP
-   ================================================ */
+   =============================================== */
 
 init()
 
 </script>
-</head>
-
-<body class="bookings-page">
-
-<!-- ================================================
-     NAVBAR
-     ================================================ -->
-<nav class="navbar">
-  <img src="pccoe.jpg" class="logo" alt="PCCOE Logo">
-
-  <ul class="nav-links">
-    <li><a href="dashboard.html">Home</a></li>
-    <li><a href="#">Halls</a></li>
-    <li><a href="#">Blog</a></li>
-    <li><a href="#">Q/A</a></li>
-    <li><a href="#">Contact</a></li>
-  </ul>
-
-  <div class="profile">
-    <button id="profileBtn">👤</button>
-
-    <div class="dropdown" id="profileMenu">
-      <a href="book.html" id="bookVenue" style="display:none;">📅 Book Venue</a>
-      <a href="youtbooking.html" id="myBookingsLink" style="display:none; background:#eef3ff; color:#0b3d91;">📋 Your Bookings</a>
-      <a href="accept.html" id="acceptBooking" style="display:none;">✅ Accept Booking</a>
-      <a href="index.html" id="logoutBtn">🚪 Logout</a>
-    </div>
-  </div>
-</nav>
-
-
-<!-- ================================================
-     USER BAR
-     ================================================ -->
-<div class="userbar">
-  <span id="facultyInfo">Loading user...</span>
-</div>
-
-
-<!-- ================================================
-     PAGE HEADER
-     ================================================ -->
-<div class="page-header">
-  <div class="page-header-content">
-    <div>
-      <h1>📋 Your Bookings</h1>
-      <p>View and track all your venue booking requests</p>
-    </div>
-    <div class="header-actions">
-      <a href="youtbooking.html" class="header-action secondary">
-        📋 View Bookings
-      </a>
-      <a href="book.html" class="header-action">
-        ➕ New Booking
-      </a>
-    </div>
-  </div>
-</div>
-
-
-<!-- ================================================
-     STATS SUMMARY
-     ================================================ -->
-<div class="stats-summary">
-  <div class="summary-card">
-    <div class="summary-icon total">📊</div>
-    <div class="summary-info">
-      <h3 id="statTotal">0</h3>
-      <p>Total Bookings</p>
-    </div>
-  </div>
-
-  <div class="summary-card">
-    <div class="summary-icon pending">⏳</div>
-    <div class="summary-info">
-      <h3 id="statPending">0</h3>
-      <p>Pending</p>
-    </div>
-  </div>
-
-  <div class="summary-card">
-    <div class="summary-icon accepted">✅</div>
-    <div class="summary-info">
-      <h3 id="statAccepted">0</h3>
-      <p>Accepted</p>
-    </div>
-  </div>
-
-  <div class="summary-card">
-    <div class="summary-icon rejected">❌</div>
-    <div class="summary-info">
-      <h3 id="statRejected">0</h3>
-      <p>Rejected</p>
-    </div>
-  </div>
-</div>
-
-
-<!-- ================================================
-     FILTER TABS
-     ================================================ -->
-<div class="filter-tabs">
-  <button class="filter-tab active" data-filter="all">All Bookings</button>
-  <button class="filter-tab" data-filter="pending">⏳ Pending</button>
-  <button class="filter-tab" data-filter="accepted">✅ Accepted</button>
-  <button class="filter-tab" data-filter="rejected">❌ Rejected</button>
-</div>
-
-
-<!-- ================================================
-     BOOKINGS CONTAINER
-     ================================================ -->
-<div class="bookings-container" id="bookingsContainer">
-  <div class="loading-state">
-    <div class="loading-spinner"></div>
-    <p>Loading your bookings...</p>
-  </div>
-</div>
-
-
-<!-- ================================================
-     FOOTER
-     ================================================ -->
-<footer>
-  <p>© PCCOE Venue Booking Portal</p>
-</footer>
 
 </body>
 </html>

@@ -7,6 +7,10 @@
 <link rel="stylesheet" href="style.css">
 
 <style>
+/* ================================================
+   ADMIN PAGE ENHANCED STYLING - FULL CONTROL
+   ================================================ */
+
 /* Page Background */
 body {
   background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf3 100%);
@@ -76,90 +80,140 @@ body {
   padding: 0 30px 60px;
 }
 
-/* Request Card - Enhanced */
+/* Request Card - Enhanced to Match Faculty UI */
 .request-card {
   background: #ffffff;
-  border-radius: 18px;
-  padding: 28px 32px;
-  margin-bottom: 28px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  padding: 0;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
   transition: all 0.35s ease;
-  border-left: 6px solid #dc3545;
-  position: relative;
+  border: 1px solid #e8ecf3;
+  overflow: hidden;
 }
 
 .request-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
 }
 
-/* Card Title */
-.request-card .title {
-  margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 2px solid #f0f4f8;
+/* Card Header - Matching Faculty UI */
+.request-card .card-top {
+  padding: 20px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f0f4f8;
+  background: linear-gradient(135deg, #ffebee, #fce4ec);
+  border-left: 5px solid #f44336;
 }
 
-.request-card .title .label {
-  font-size: 11px;
-  color: #888;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-weight: 600;
-  display: block;
-  margin-bottom: 6px;
+/* Card Body */
+.request-card .card-content {
+  padding: 25px;
 }
 
-.request-card .title h2 {
-  font-size: 22px;
-  color: #0b3d91;
-  margin: 0;
+/* Event Title */
+.event-title {
+  font-size: 20px;
   font-weight: 700;
-}
-
-/* Card Info Rows */
-.request-card p {
-  margin: 10px 0;
-  font-size: 14px;
-  color: #444;
-  line-height: 1.6;
-}
-
-.request-card p b {
   color: #1a1a2e;
-  font-weight: 600;
-  min-width: 80px;
-  display: inline-block;
+  margin: 0;
 }
 
-/* Description Box */
-.request-card .description {
-  margin-top: 18px;
-  padding-top: 15px;
-  border-top: 2px solid #f0f4f8;
+/* Info Grid - Matching Faculty UI */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
 }
 
-.request-card .description .label {
-  font-size: 11px;
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.info-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.info-text label {
+  font-size: 12px;
   color: #888;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 0.5px;
+  display: block;
+}
+
+.info-text p {
+  font-size: 15px;
   font-weight: 600;
+  color: #333;
+  margin: 4px 0 0 0;
+}
+
+/* Description Section - Matching Faculty UI */
+.description-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f4f8;
+}
+
+.description-section label {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   display: block;
   margin-bottom: 8px;
 }
 
-.request-card .description p {
-  background: linear-gradient(135deg, #f8fafc, #f0f4ff);
-  padding: 14px 18px;
+.description-text {
+  background: linear-gradient(135deg, #f5f8ff, #eef3ff);
+  padding: 15px 18px;
   border-radius: 12px;
   font-style: italic;
   color: #555;
-  margin: 0;
-  border: 1px solid #e8ecf3;
+  font-size: 14px;
+  line-height: 1.6;
+  border: 1px solid #e0e8f5;
 }
 
-/* Status Badge - ENHANCED */
+/* Rejection Display Box */
+.rejection-display {
+  margin-top: 20px;
+  padding: 15px 18px;
+  background: linear-gradient(135deg, #ffebee, #fce4ec);
+  border-radius: 12px;
+  border-left: 4px solid #f44336;
+}
+
+.rejection-display label {
+  font-size: 12px;
+  color: #c62828;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.rejection-display p {
+  margin: 8px 0 0 0;
+  color: #b71c1c;
+  font-size: 14px;
+}
+
+/* ================================================
+   STATUS BADGE - ENHANCED COLORS
+   ================================================ */
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -170,195 +224,536 @@ body {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+/* Pending - Yellow/Orange Bold */
+.status-badge.pending {
+  background: linear-gradient(135deg, #fff3cd, #ffe69c);
+  color: #856404;
+  border: 2px solid #ffc107;
+}
+
+/* Accepted - Green Bold */
+.status-badge.accepted {
+  background: linear-gradient(135deg, #d4edda, #b7dfb9);
+  color: #155724;
+  border: 2px solid #28a745;
+}
+
+/* Rejected - Red Bold */
+.status-badge.rejected {
   background: linear-gradient(135deg, #f8d7da, #f1aeb5);
   color: #721c24;
   border: 2px solid #dc3545;
 }
 
-/* Rejection Display Box */
-.rejection-display {
-  background: linear-gradient(135deg, #f8d7da, #fce4ec);
-  border-left: 4px solid #dc3545;
-  padding: 14px 18px;
-  border-radius: 0 12px 12px 0;
-  margin-top: 15px;
+/* ================================================
+   BUTTONS CONTAINER - FULL CONTROL
+   ================================================ */
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
 }
 
-.rejection-display b {
+/* Card Footer with Buttons - Matching Faculty UI */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 2px solid #f0f4f8;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.card-footer .status-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-footer .action-buttons-right {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Accept Button - GREEN */
+.acceptBtn {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.acceptBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(46, 204, 113, 0.4);
+  background: linear-gradient(135deg, #27ae60, #1e8449);
+}
+
+.acceptBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Reject Button - RED */
+.rejectBtn {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rejectBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+  background: linear-gradient(135deg, #c0392b, #a93226);
+}
+
+.rejectBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Edit Button - BLUE */
+.editBtn {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+}
+
+.editBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Edit Form Panel */
+.editForm {
+  background: linear-gradient(135deg, #f8fafc, #eef3ff);
+  padding: 25px;
+  border-radius: 16px;
+  margin-top: 20px;
+  border: 2px solid #ccd9ff;
+  display: none;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.editForm > label {
+  font-weight: 700;
+  color: #0b3d91;
+  display: block;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.editForm input[type="date"] {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  font-size: 14px;
+  width: 220px;
+  transition: all 0.3s;
+}
+
+.editForm input[type="date"]:focus {
+  border-color: #0b3d91;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(11, 61, 145, 0.15);
+}
+
+/* Slot Section */
+.slot-section {
+  margin-top: 22px;
+  padding: 20px;
+  background: linear-gradient(135deg, #e8f4fd, #f0f8ff);
+  border-radius: 14px;
+  border: 2px solid #b8daff;
+}
+
+.slot-section-title {
+  font-weight: 700;
+  color: #004085;
+  font-size: 16px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.slotContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  min-height: 60px;
+  padding: 15px;
+  background: white;
+  border-radius: 12px;
+  border: 2px solid #e0e8f5;
+}
+
+.slot-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: #f8fafc;
+  border-radius: 10px;
+  border: 2px solid #dee2e6;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 13px;
+  transition: all 0.25s ease;
+}
+
+.slot-item:hover:not(.booked) {
+  background: #e9f0ff;
+  border-color: #0b3d91;
+  transform: translateY(-2px);
+}
+
+.slot-item.booked {
+  color: #c0392b;
+  text-decoration: line-through;
+  background: linear-gradient(135deg, #ffebee, #fce4ec);
+  border-color: #f5c6cb;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.slot-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #0b3d91;
+}
+
+.loading-slots {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #666;
+  padding: 30px;
+  font-style: italic;
+}
+
+.no-slots {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #dc3545;
+  padding: 30px;
+  font-weight: 600;
+}
+
+/* Status Selection - ALL THREE OPTIONS */
+.status-selection {
+  margin-top: 22px;
+  padding: 20px;
+  background: white;
+  border-radius: 14px;
+  border: 2px solid #e0e8f5;
+}
+
+.status-selection > label {
+  font-weight: 700;
+  color: #333;
+  display: block;
+  margin-bottom: 15px;
+  font-size: 15px;
+}
+
+.status-options {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.status-options label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  border: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.status-options input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  accent-color: currentColor;
+}
+
+.opt-pending {
+  background: linear-gradient(135deg, #fff3cd, #ffe69c);
+  color: #856404;
+}
+
+.opt-pending:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+}
+
+.opt-pending:has(input:checked) {
+  border-color: #ffc107;
+  box-shadow: 0 4px 20px rgba(255, 193, 7, 0.4);
+}
+
+.opt-accept {
+  background: linear-gradient(135deg, #d4edda, #c3e6cb);
+  color: #155724;
+}
+
+.opt-accept:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.opt-accept:has(input:checked) {
+  border-color: #28a745;
+  box-shadow: 0 4px 20px rgba(40, 167, 69, 0.4);
+}
+
+.opt-reject {
+  background: linear-gradient(135deg, #f8d7da, #f5c6cb);
   color: #721c24;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
-.editForm{
-  background:#f0f4ff;
-  padding:20px;
-  border-radius:12px;
-  margin-top:15px;
-  border:1px solid #ccd9ff;
-  display:none;
+.opt-reject:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
 }
 
-.editForm > label{
-  font-weight:600;
-  color:#0b3d91;
-  display:block;
-  margin-bottom:8px;
+.opt-reject:has(input:checked) {
+  border-color: #dc3545;
+  box-shadow: 0 4px 20px rgba(220, 53, 69, 0.4);
 }
 
-.editForm input[type="date"]{
-  padding:10px 14px;
-  border-radius:8px;
-  border:1px solid #bbb;
-  font-size:14px;
-  width:200px;
+/* Selected Status Indicator */
+.selected-status {
+  margin-top: 15px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  display: none;
+  text-align: center;
 }
 
-.slot-section{
-  margin-top:20px;
-  padding:15px;
-  background:#e8f4fd;
-  border-radius:10px;
-  border:1px solid #b8daff;
+.selected-status.pending {
+  background: linear-gradient(135deg, #fff3cd, #ffe69c);
+  color: #856404;
+  display: block;
+  border: 2px solid #ffc107;
 }
 
-.slot-section-title{
-  font-weight:600;
-  color:#004085;
-  font-size:16px;
-  margin-bottom:12px;
+.selected-status.accept {
+  background: linear-gradient(135deg, #d4edda, #c3e6cb);
+  color: #155724;
+  display: block;
+  border: 2px solid #28a745;
 }
 
-.slotContainer{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  min-height:60px;
-  padding:10px;
-  background:#fff;
-  border-radius:8px;
-  border:1px solid #ddd;
+.selected-status.reject {
+  background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+  color: #721c24;
+  display: block;
+  border: 2px solid #dc3545;
 }
 
-.slot-item{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:12px 16px;
-  background:#f8f9fa;
-  border-radius:8px;
-  border:1px solid #dee2e6;
-  cursor:pointer;
-  font-weight:500;
-  font-size:14px;
-  transition:0.2s;
+/* Action Buttons */
+.action-buttons {
+  margin-top: 22px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 18px;
+  border-top: 2px solid #e0e8f5;
 }
 
-.slot-item:hover{ background:#e9f0ff; border-color:#0b3d91; }
-
-.slot-item.booked{
-  color:#c0392b;
-  text-decoration:line-through;
-  background:#ffebee;
-  border-color:#f5c6cb;
-  cursor:not-allowed;
+.updateBtn {
+  background: linear-gradient(135deg, #9b59b6, #8e44ad);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.slot-item input[type="checkbox"]{ width:18px; height:18px; cursor:pointer; }
-
-.loading-slots{ grid-column:1/-1; text-align:center; color:#666; padding:20px; font-style:italic; }
-.no-slots{ grid-column:1/-1; text-align:center; color:#dc3545; padding:20px; }
-
-.status-selection{
-  margin-top:20px;
-  padding:15px;
-  background:#fff;
-  border-radius:10px;
-  border:1px solid #ddd;
+.updateBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(155, 89, 182, 0.4);
 }
 
-.status-selection > label{ font-weight:600; color:#333; display:block; margin-bottom:10px; }
-
-.status-options{ display:flex; gap:20px; }
-
-.status-options label{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:12px 20px;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:600;
-  border:2px solid transparent;
-  transition:0.2s;
+.updateBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
-.status-options input[type="radio"]{ width:18px; height:18px; }
-
-.opt-accept{ background:#d4edda; color:#155724; }
-.opt-accept:has(input:checked){ border-color:#28a745; }
-.opt-reject{ background:#f8d7da; color:#721c24; }
-.opt-reject:has(input:checked){ border-color:#dc3545; }
-
-.selected-status{ margin-top:12px; padding:10px 14px; border-radius:6px; font-weight:600; display:none; }
-.selected-status.accept{ background:#d4edda; color:#155724; display:block; }
-.selected-status.reject{ background:#f8d7da; color:#721c24; display:block; }
-
-.action-buttons{
-  margin-top:20px;
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  padding-top:15px;
-  border-top:1px solid #ddd;
+.cancelBtn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.editBtn{
-  background:linear-gradient(135deg,#3498db,#2980b9);
-  color:white;
-  border:none;
-  padding:10px 22px;
-  border-radius:10px;
-  font-weight:600;
-  cursor:pointer;
-  transition:0.25s;
+.cancelBtn:hover {
+  background: #5a6268;
+  transform: scale(1.02);
 }
 
-.editBtn:hover{ transform:scale(1.05); box-shadow:0 5px 15px rgba(0,0,0,0.2); }
-
-.updateBtn{
-  background:linear-gradient(135deg,#9b59b6,#8e44ad);
-  color:white;
-  border:none;
-  padding:10px 22px;
-  border-radius:10px;
-  font-weight:600;
-  cursor:pointer;
-  transition:0.25s;
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 30px;
+  color: #888;
 }
 
-.updateBtn:hover{ transform:scale(1.05); box-shadow:0 5px 15px rgba(0,0,0,0.2); }
-
-.cancelBtn{
-  background:#6c757d;
-  color:white;
-  border:none;
-  padding:10px 22px;
-  border-radius:10px;
-  font-weight:600;
-  cursor:pointer;
+.empty-state-icon {
+  font-size: 60px;
+  margin-bottom: 15px;
+  opacity: 0.5;
 }
 
-.cancelBtn:hover{ background:#5a6268; }
+/* ================================================
+   RESPONSIVE DESIGN
+   ================================================ */
+@media (max-width: 900px) {
+  .slotContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
-@media(max-width:900px){ .slotContainer{ grid-template-columns:repeat(2,1fr); } }
-@media(max-width:600px){ .slotContainer{ grid-template-columns:1fr; } .admin-nav{ padding:15px 20px; flex-wrap:wrap; } }
+  .admin-nav {
+    padding: 15px 20px;
+  }
+
+  .requestsContainer {
+    padding: 0 20px 40px;
+  }
+
+  .buttons {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .slotContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-nav {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .admin-nav a {
+    text-align: center;
+  }
+
+  .admin-title h1 {
+    font-size: 28px;
+  }
+
+  .request-card {
+    padding: 22px 20px;
+  }
+
+  .status-options {
+    flex-direction: column;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-buttons button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .buttons {
+    flex-direction: column;
+  }
+
+  .buttons button {
+    width: 100%;
+    justify-content: center;
+  }
+}
 </style>
 </head>
 
 <body>
 
+<!-- ================================================
+     NAVBAR
+     ================================================ -->
 <nav class="navbar">
   <img src="pccoe.jpg" class="logo" alt="PCCOE Logo" onerror="this.style.display='none'">
   <ul class="nav-links">
@@ -381,37 +776,58 @@ body {
   </div>
 </nav>
 
+<!-- ================================================
+     USER BAR
+     ================================================ -->
 <div class="userbar">
-<span id="facultyInfo">Loading user...</span>
+  <span id="facultyInfo">Loading user...</span>
 </div>
 
+<!-- ================================================
+     ADMIN NAV
+     ================================================ -->
 <div class="admin-nav">
-<a href="dashboard.html">Home</a>
-<a href="accept.html">All Requests</a>
-<a href="pending.html">Pending Requests</a>
-<a href="accepted.html">Accepted Bookings</a>
-<a href="rejected.html" class="active">Rejected Bookings</a>
+  <a href="dashboard.html">Home</a>
+  <a href="accept.html">All Requests</a>
+  <a href="pending.html">Pending Requests</a>
+  <a href="accepted.html">Accepted Bookings</a>
+  <a href="rejected.html" class="active">Rejected Bookings</a>
 </div>
 
+<!-- ================================================
+     ADMIN TITLE
+     ================================================ -->
 <div class="admin-title">
-<h1>❌ Rejected Bookings</h1>
-<p>View and manage rejected bookings</p>
+  <h1>Rejected Bookings</h1>
+  <p>View and manage rejected bookings - Full Admin Control</p>
 </div>
 
+<!-- ================================================
+     REQUESTS CONTAINER
+     ================================================ -->
 <div class="requestsContainer" id="requests"></div>
 
+<!-- ================================================
+     FOOTER
+     ================================================ -->
 <footer>
-<p>© PCCOE Venue Booking Portal - Admin Panel</p>
+  <p>PCCOE Venue Booking Portal - Admin Panel</p>
 </footer>
 
+<!-- ================================================
+     SCRIPTS - FULL ADMIN CONTROL
+     ================================================ -->
 <script type="module">
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
 
 const supabase = createClient(
-"https://xgrzymhgssxjjkogvuvw.supabase.co",
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhncnp5bWhnc3N4amprb2d2dXZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNzAyNTYsImV4cCI6MjA4Nzg0NjI1Nn0.A6tbTA6D2mmGdNTrm2oS5HSTJzgkMFbGARQQi5dL-TQ"
+  "https://xgrzymhgssxjjkogvuvw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhncnp5bWhnc3N4amprb2d2dXZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNzAyNTYsImV4cCI6MjA4Nzg0NjI1Nn0.A6tbTA6D2mmGdNTrm2oS5HSTJzgkMFbGARQQi5dL-TQ"
 )
+
+// Global variable for profile
+let currentProfile = null
 
 const profileBtn = document.getElementById("profileBtn")
 const profileMenu = document.getElementById("profileMenu")
@@ -431,17 +847,56 @@ document.getElementById("logoutBtn").onclick = async (e) => {
   window.location.href = "index.html"
 }
 
-function formatDate(dateStr){
-  return new Date(dateStr).toLocaleDateString("en-GB")
+function formatDate(dateStr) {
+  const options = { weekday: "short", day: "numeric", month: "short", year: "numeric" }
+  return new Date(dateStr).toLocaleDateString("en-GB", options)
 }
 
-async function loadSlots(container, selectedDate, currentBookingId, selectedSlots = []){
+// Quick Accept function
+async function quickAccept(bookingId, btn) {
+  btn.disabled = true
+  btn.textContent = "Accepting..."
+
+  try {
+    const result = await supabase.rpc("update_booking_safe_v2", {
+      p_booking_id: bookingId,
+      p_new_date: null,
+      p_new_slot_ids: [],
+      p_new_status: "accepted",
+      p_new_reason: null
+    })
+
+    if (result.error) {
+      alert("Accept failed: " + result.error.message)
+      btn.disabled = false
+      btn.textContent = "Accept"
+      return
+    }
+
+    const data = result.data
+    if (data && data.success === false) {
+      alert("Accept failed: " + (data.error || "Unknown error"))
+      btn.disabled = false
+      btn.textContent = "Accept"
+      return
+    }
+
+    alert("Booking accepted successfully!")
+    loadBookings()
+  } catch (e) {
+    alert("Error: " + e.message)
+    btn.disabled = false
+    btn.textContent = "Accept"
+  }
+}
+
+async function loadSlots(container, selectedDate, currentBookingId, selectedSlots = []) {
   container.innerHTML = '<div class="loading-slots">Loading slots...</div>'
 
   try {
     const { data: allSlots, error: slotsError } = await supabase.from("slots").select("*").order("start_time")
 
-    if(slotsError || !allSlots || !Array.isArray(allSlots) || allSlots.length === 0){
+    if (slotsError || !allSlots || !Array.isArray(allSlots) || allSlots.length === 0) {
       container.innerHTML = '<div class="no-slots">No slots available</div>'
       return
     }
@@ -455,12 +910,12 @@ async function loadSlots(container, selectedDate, currentBookingId, selectedSlot
     let bookedIds = []
 
     // NULL SAFETY - Explicit array check
-    if(booked && Array.isArray(booked)){
-      for(let i = 0; i < booked.length; i++){
+    if (booked && Array.isArray(booked)) {
+      for (let i = 0; i < booked.length; i++) {
         const b = booked[i]
-        if(b.id === currentBookingId) continue
-        if(b.booking_slots && Array.isArray(b.booking_slots)){
-          for(let j = 0; j < b.booking_slots.length; j++){
+        if (b.id === currentBookingId) continue
+        if (b.booking_slots && Array.isArray(b.booking_slots)) {
+          for (let j = 0; j < b.booking_slots.length; j++) {
             bookedIds.push(b.booking_slots[j].slot_id)
           }
         }
@@ -469,7 +924,7 @@ async function loadSlots(container, selectedDate, currentBookingId, selectedSlot
 
     container.innerHTML = ""
 
-    for(let i = 0; i < allSlots.length; i++){
+    for (let i = 0; i < allSlots.length; i++) {
       const slot = allSlots[i]
       const isBooked = bookedIds.includes(slot.id)
       const div = document.createElement("div")
@@ -485,24 +940,89 @@ async function loadSlots(container, selectedDate, currentBookingId, selectedSlot
       `
       container.appendChild(div)
 
-      if(selectedSlots.includes(slot.id) && !isBooked){
+      if (selectedSlots.includes(slot.id) && !isBooked) {
         div.querySelector("input").checked = true
       }
 
-      if(!isBooked){
+      if (!isBooked) {
         div.onclick = (e) => {
-          if(e.target.tagName !== 'INPUT'){
+          if (e.target.tagName !== 'INPUT') {
             div.querySelector("input").checked = !div.querySelector("input").checked
           }
         }
       }
     }
-  } catch(e){
+  } catch (e) {
     container.innerHTML = '<div class="no-slots">Error: ' + e.message + '</div>'
   }
 }
 
-async function loadRequests(){
+async function editBooking(booking, btn) {
+
+  const newStart = prompt("Enter start time (HH:MM)")
+  const newEnd = prompt("Enter end time (HH:MM)")
+
+  if (!newStart || !newEnd) return
+
+  btn.disabled = true
+  btn.textContent = "Updating..."
+
+  try {
+
+    let { data: slot } = await supabase
+      .from('slots')
+      .select('id')
+      .eq('start_time', newStart)
+      .eq('end_time', newEnd)
+      .single()
+
+    let slotId
+
+    if (slot) {
+      slotId = slot.id
+    } else {
+      const { data: newSlot, error } = await supabase
+        .from('slots')
+        .insert({
+          start_time: newStart,
+          end_time: newEnd,
+          slot_label: `${newStart}-${newEnd}`
+        })
+        .select()
+        .single()
+
+      if (error) throw error
+      slotId = newSlot.id
+    }
+
+    const { error: deleteError } = await supabase
+      .from('booking_slots')
+      .delete()
+      .eq('booking_id', booking.id)
+
+    if (deleteError) throw deleteError
+
+    const { error: insertError } = await supabase
+      .from('booking_slots')
+      .insert({
+        booking_id: booking.id,
+        slot_id: slotId
+      })
+
+    if (insertError) throw insertError
+
+    alert("Booking Updated Successfully")
+    loadBookings()
+
+  } catch (e) {
+    alert("Error: " + e.message)
+  }
+
+  btn.disabled = false
+  btn.textContent = "Edit"
+}
+
+async function loadBookings() {
   const { data, error } = await supabase
     .from("booking_requests")
     .select(`
@@ -519,77 +1039,137 @@ async function loadRequests(){
 
   const today = new Date().toISOString().split("T")[0]
 
-  if(!data || data.length === 0){
-    container.innerHTML = '<p style="text-align:center;padding:40px;color:#666;">No rejected bookings found.</p>'
+  if (!data || data.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">&#10060;</div>
+        <h3>No Rejected Bookings</h3>
+        <p style="color:#888;">There are no rejected bookings at the moment.</p>
+      </div>
+    `
     return
   }
 
   data.forEach(req => {
     const slotsDisplay = (req.booking_slots || []).map(bs => {
       const s = bs.slots
-      if(!s) return ''
+      if (!s) return ''
       return s.slot_label ? `${s.slot_label} (${s.start_time} - ${s.end_time})` : `${s.start_time} - ${s.end_time}`
     }).filter(Boolean).join(", ")
 
     const card = document.createElement("div")
     card.className = "request-card"
-    card.style.borderLeftColor = "#dc3545"
+
+    // Admin has full control - show Accept button for rejected bookings
+    const isAdmin = currentProfile && currentProfile.role === "admin"
 
     card.innerHTML = `
-      <div class="title">
-        <span class="label">EVENT NAME</span>
-        <h2>${(req.event_name || "").toUpperCase()}</h2>
+      <div class="card-top">
+        <h2 class="event-title">${(req.event_name || "Untitled Event").toUpperCase()}</h2>
+        <span class="status-badge rejected">REJECTED</span>
       </div>
-      <p><b>Faculty:</b> ${req.profiles?.name || 'N/A'} (${req.profiles?.employee_id || 'N/A'})</p>
-      <p><b>Venue:</b> ${req.venues?.venue_name || 'N/A'}</p>
-      <p><b>Date:</b> ${formatDate(req.booking_date)}</p>
-      <p><b>Slots:</b> ${slotsDisplay || 'None'}</p>
-      <p><b>Students:</b> ${req.total_students || 'N/A'}</p>
-      <div class="description">
-        <span class="label">DESCRIPTION</span>
-        <p>${req.description || 'No description'}</p>
-      </div>
-      <p style="margin-top:15px;">
-        <b>Status:</b>
-        <span class="status-badge">REJECTED</span>
-      </p>
-      ${req.rejection_reason ? `
-        <div class="rejection-display">
-          <b>Rejection Reason:</b> ${req.rejection_reason}
-        </div>
-      ` : ''}
-      <div class="buttons">
-        <button class="editBtn">Edit</button>
-      </div>
-      <div class="editForm">
-        <label>📅 Select New Date:</label>
-        <input type="date" class="editDate" value="${req.booking_date}" min="${today}">
-        <div class="slot-section">
-          <div class="slot-section-title">🕐 Select Time Slots:</div>
-          <div class="slotContainer"></div>
-        </div>
-        <div class="status-selection">
-          <label>Choose Action:</label>
-          <div class="status-options">
-            <label class="opt-accept">
-              <input type="radio" name="status_${req.id}" value="accepted">
-              Accept
-            </label>
-            <label class="opt-reject">
-              <input type="radio" name="status_${req.id}" value="rejected" checked>
-              Keep Rejected
-            </label>
+      <div class="card-content">
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-icon">&#128100;</div>
+            <div class="info-text">
+              <label>Faculty</label>
+              <p>${req.profiles?.name || 'N/A'} (${req.profiles?.employee_id || 'N/A'})</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">&#128205;</div>
+            <div class="info-text">
+              <label>Venue</label>
+              <p>${req.venues?.venue_name || 'N/A'}</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">&#128197;</div>
+            <div class="info-text">
+              <label>Date</label>
+              <p>${formatDate(req.booking_date)}</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">&#128336;</div>
+            <div class="info-text">
+              <label>Slots</label>
+              <p>${slotsDisplay || 'None'}</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">&#128101;</div>
+            <div class="info-text">
+              <label>Attendees</label>
+              <p>${req.total_students || 'N/A'}</p>
+            </div>
           </div>
         </div>
-        <div class="selected-status"></div>
-        <div class="action-buttons">
-          <button class="updateBtn">Update Booking</button>
-          <button class="cancelBtn">Cancel</button>
+        ${req.description ? `
+          <div class="description-section">
+            <label>Description</label>
+            <div class="description-text">${req.description}</div>
+          </div>
+        ` : ''}
+        ${req.rejection_reason ? `
+          <div class="rejection-display">
+            <label>Rejection Reason</label>
+            <p>${req.rejection_reason}</p>
+          </div>
+        ` : ''}
+        <div class="card-footer">
+          <div class="status-section">
+          </div>
+          <div class="action-buttons-right">
+            <button class="editBtn">Edit</button>
+            ${isAdmin ? `
+              <button class="acceptBtn" data-id="${req.id}">Accept</button>
+            ` : ''}
+          </div>
+        </div>
+        <div class="editForm">
+          <label>Select New Date:</label>
+          <input type="date" class="editDate" value="${req.booking_date}" min="${today}">
+          <div class="slot-section">
+            <div class="slot-section-title">Select Time Slots:</div>
+            <div class="slotContainer"></div>
+          </div>
+          <div class="status-selection">
+            <label>Choose Status (Full Admin Control):</label>
+            <div class="status-options">
+              <label class="opt-pending">
+                <input type="radio" name="status_${req.id}" value="pending">
+                Pending
+              </label>
+              <label class="opt-accept">
+                <input type="radio" name="status_${req.id}" value="accepted">
+                Accept
+              </label>
+              <label class="opt-reject">
+                <input type="radio" name="status_${req.id}" value="rejected" checked>
+                Keep Rejected
+              </label>
+            </div>
+          </div>
+          <div class="selected-status"></div>
+          <div class="action-buttons">
+            <button class="updateBtn">Update Booking</button>
+            <button class="cancelBtn">Cancel</button>
+          </div>
         </div>
       </div>
     `
 
     container.appendChild(card)
+
+    // Quick Accept button handler
+    const acceptBtn = card.querySelector(".acceptBtn")
+    if (acceptBtn) {
+      acceptBtn.onclick = function() {
+        quickAccept(req.id, this)
+      }
+    }
 
     const editBtn = card.querySelector(".editBtn")
     const form = card.querySelector(".editForm")
@@ -600,15 +1180,8 @@ async function loadRequests(){
     const statusRadios = card.querySelectorAll(`input[name="status_${req.id}"]`)
     const selectedStatusDiv = card.querySelector(".selected-status")
 
-    editBtn.onclick = async () => {
-      editBtn.disabled = true
-      editBtn.textContent = "Loading..."
-      form.style.display = "block"
-      const selected = (req.booking_slots || []).map(bs => bs.slot_id)
-      await loadSlots(slotContainer, dateInput.value, req.id, selected)
-      editBtn.style.display = "none"
-      editBtn.disabled = false
-      editBtn.textContent = "Edit"
+    editBtn.onclick = function() {
+      editBooking(req, this)
     }
 
     dateInput.onchange = async () => {
@@ -618,9 +1191,12 @@ async function loadRequests(){
 
     statusRadios.forEach(radio => {
       radio.onchange = () => {
-        if(radio.value === "accepted"){
+        if (radio.value === "accepted") {
           selectedStatusDiv.className = "selected-status accept"
           selectedStatusDiv.textContent = "Status will be: ACCEPTED"
+        } else if (radio.value === "pending") {
+          selectedStatusDiv.className = "selected-status pending"
+          selectedStatusDiv.textContent = "Status will be: PENDING"
         } else {
           selectedStatusDiv.className = "selected-status reject"
           selectedStatusDiv.textContent = "Status will remain: REJECTED"
@@ -630,7 +1206,7 @@ async function loadRequests(){
 
     cancelBtn.onclick = () => {
       form.style.display = "none"
-      editBtn.style.display = "inline-block"
+      editBtn.style.display = "inline-flex"
       selectedStatusDiv.className = "selected-status"
     }
 
@@ -646,15 +1222,15 @@ async function loadRequests(){
         .map(cb => cb.value)
 
       // REJECT: Pass empty array (SQL will NOT touch slots)
-      // ACCEPT: Pass selected slots (SQL will delete all old, insert only selected)
-      if(newStatus === "rejected"){
+      // ACCEPT/PENDING: Pass selected slots
+      if (newStatus === "rejected") {
         selectedSlots = []  // Ignore slots when rejecting
       }
 
-      // For rejected, keep existing reason unless accepting
+      // For rejected, keep existing reason unless changing status
       let newReason = newStatus === "rejected" ? req.rejection_reason : null
 
-      if(!newDate){
+      if (!newDate) {
         alert("Please select a date!")
         return
       }
@@ -673,7 +1249,7 @@ async function loadRequests(){
 
         console.log("RPC result:", result.data, result.error)
 
-        if(result.error){
+        if (result.error) {
           alert("Update failed: " + result.error.message)
           updateBtn.disabled = false
           updateBtn.textContent = "Update Booking"
@@ -681,16 +1257,18 @@ async function loadRequests(){
         }
 
         const data = result.data
-        if(data && data.success === false){
+        if (data && data.success === false) {
           alert("Update failed: " + (data.error || "Unknown error"))
           updateBtn.disabled = false
           updateBtn.textContent = "Update Booking"
           return
         }
 
-        if(data && data.success){
-          if(newStatus === "rejected"){
+        if (data && data.success) {
+          if (newStatus === "rejected") {
             alert("Booking remains rejected!\n\nSlots unchanged: " + data.total_slots)
+          } else if (newStatus === "pending") {
+            alert(`Booking moved to pending!\n\nTotal slots: ${data.total_slots}`)
           } else {
             alert(`Booking accepted!\n\nSlots removed: ${data.slots_removed}\nSlots added: ${data.slots_added}\nTotal slots: ${data.total_slots}`)
           }
@@ -698,8 +1276,8 @@ async function loadRequests(){
           alert("Booking updated successfully!")
         }
 
-        loadRequests()
-      } catch(e){
+        loadBookings()
+      } catch (e) {
         alert("Error: " + e.message)
         updateBtn.disabled = false
         updateBtn.textContent = "Update Booking"
@@ -710,21 +1288,22 @@ async function loadRequests(){
 
 window.addEventListener("DOMContentLoaded", async () => {
   const { data: { session } } = await supabase.auth.getSession()
-  if(!session){
+  if (!session) {
     window.location.href = "index.html"
     return
   }
 
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", session.user.id).single()
+  currentProfile = profile
   document.getElementById("facultyInfo").innerText = `${profile.name} | ${profile.employee_id} | ${profile.department || 'Admin'}`
 
-  if(profile.role !== "admin"){
-    alert("Access Denied")
+  if (profile.role !== "admin") {
+    alert("Access Denied: Admin only")
     window.location.href = "dashboard.html"
     return
   }
 
-  loadRequests()
+  loadBookings()
 })
 
 </script>
